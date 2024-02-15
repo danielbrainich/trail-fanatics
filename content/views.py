@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAll
 from django.views.decorators.http import require_http_methods
 from .models import Tag, Post, Comment, PostLike, CommentLike
 from rest_framework.parsers import JSONParser
+import json
 from .serializers import (
     TagSerializer,
     PostSerializer,
@@ -53,7 +54,8 @@ def post_list(request):
         serializer = PostSerializer(posts, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
-        serializer = PostSerializer(data=request.POST)
+        data = json.loads(request.body)
+        serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save(author=request.user)
             return JsonResponse(serializer.data, status=201)
