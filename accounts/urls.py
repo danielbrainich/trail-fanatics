@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import signup_view
 from .views import (
+    signup_view,
     user_profile_list,
     user_profile_detail,
     user_interest_list,

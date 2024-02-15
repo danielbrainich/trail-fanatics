@@ -4,7 +4,32 @@ from django.shortcuts import get_object_or_404
 from .models import UserProfile, UserInterest
 from .serializers import UserProfileSerializer, UserInterestSerializer
 from rest_framework.parsers import JSONParser
+from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
+
+# User Auth views
+User = get_user_model()
+
+@require_http_methods(["POST"])
+def signup_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return JsonResponse({'error': 'Username and password are required'}, status=400)
+
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+
+        user = User.objects.create_user(username=username, password=password)
+
+        return JsonResponse({'message': 'User created successfully'})
+
+    return JsonResponse({'error': 'Method Not Allowed'}, status=405)
 
 
 # User Profile views
