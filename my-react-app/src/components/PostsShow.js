@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import NewComment from "./CommentsNew";
 import { Link } from "react-router-dom";
 
-
 function ShowPost() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
@@ -13,24 +12,26 @@ function ShowPost() {
 
 
 
-  // useEffect(() => {
-  // const fetchComments = async () => {
-  //   const response = await fetch(
-  //     `localhost:8000/content/posts/${postId}/comments/`
-  //   );
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setComments(data);
-  //   }
-  // }; fetchComments();
-  // }, [postId, commentSuccess]);
+useEffect(() => {
+  const fetchComments = async () => {
+    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/`
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+      const data = await response.json();
+      setComments(data.reverse());
+    } else {
+      console.error("Failed to fetch posts");
+    }
+  };
+  fetchComments();
+}, [postId, commentSuccess]);
 
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/content/posts/${postId}`
+          `http://localhost:8000/content/posts/${postId}/`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -55,33 +56,48 @@ function ShowPost() {
     );
   }
 
-  const deletePost = async (postId) => {
-    const apiUrl = `localhost:8000/content/posts/${postId}`;
-    const fetchConfig = {
-      method: "DELETE",
-      headers: {
-
-      },
-    };
-    try {
-      const response = await fetch(apiUrl, fetchConfig);
-      if (!response.ok) {
-        throw new Error("Error deleting post");
-      }
-      navigate("/posts");
-    } catch (error) {
-      console.error("Could not delete post:", error);
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  };
+    return cookieValue;
+  }
+
+    const csrfToken = getCookie('csrftoken');
+    console.log("CSRF Token:", csrfToken);
+
+    const deletePost = async (postId) => {
+      const apiUrl = `http://localhost:8000/content/posts/${postId}/`;
+      const fetchConfig = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        credentials: 'include',
+      }
+      const response = await fetch(apiUrl, fetchConfig);
+      navigate('/social')
+    };
 
   const deleteComment = async (commentId, postId) => {
-    const apiUrl = `localhost:8000/content/posts/${postId}/comments/${commentId}`;
+    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/${commentId}/`;
     const fetchConfig = {
       method: "DELETE",
       headers: {
-
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
       },
-    };
+      credentials: 'include',
+    }
 
     try {
       const response = await fetch(apiUrl, fetchConfig);
@@ -98,25 +114,6 @@ function ShowPost() {
     }
   };
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return date.toLocaleDateString(undefined, options);
-  }
-
-  function formatTime(dateString) {
-    const date = new Date(dateString);
-    const options = {
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return date.toLocaleTimeString(undefined, options);
-  }
-
   return (
 
     <div className="container mt-5">
@@ -125,7 +122,6 @@ function ShowPost() {
           <div className="card-body">
           <div className="d-flex justify-content-between align-items-center">
             <h5 className="card-title">{post.title}</h5>
-            <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
           </div>
             <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
             <p className="card-text">{post.content}</p>
@@ -163,44 +159,14 @@ function ShowPost() {
         </div>
       </div>
 
-
-
-
       <div className="comments-section">
         <h5>Comments</h5>
-        {comments.map((comment) => (
+        {comments.slice().reverse().map((comment) => (
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <span className="text-muted">
-                  <div className="text-muted">{comment.author_id}</div>
-                  <div className="text-muted">
-                    {formatTime(comment.created_on)}
-                  </div>
-                  <div className="text-muted mb-2">
-                    {formatDate(comment.created_on)}
-                  </div>
-                </span>
-              </div>
-              {comment.pic_url && (
-                <img
-                  src={comment.pic_url}
-                  alt="Comment"
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                    marginBottom: "1rem",
-                  }}
-                />
-              )}
               <p className="card-text">{comment.content}</p>
                 <div className="d-flex">
-                  <div
-                    className="text-muted clickable"
-                    onClick={() => deleteComment(comment.id, comment.post_id)}
-                  >
-                    Delete
-                  </div>
+                  <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
                 </div>
             </div>
           </div>

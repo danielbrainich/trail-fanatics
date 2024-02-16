@@ -83,22 +83,24 @@ def post_detail(request, pk):
 
 # Comment views
 @require_http_methods(["GET", "POST"])
-def comment_list(request):
+def comment_list(request, post_pk):
     if request.method == "GET":
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
         return JsonResponse(serializer.data, safe=False)
-    elif request.method == "POST":
-        serializer = CommentSerializer(data=request.POST)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    elif request.method == 'POST':
+            data = json.loads(request.body)
+            data['post'] = post_pk
+            serializer = CommentSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
 
 @require_http_methods(["GET", "PUT", "DELETE"])
-def comment_detail(request, pk):
+def comment_detail(request, post_pk, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if request.method == "GET":
         serializer = CommentSerializer(comment)
