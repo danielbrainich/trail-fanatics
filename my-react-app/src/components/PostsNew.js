@@ -57,19 +57,37 @@ console.log("CSRF Token:", csrfToken);
   };
 
   const handleChangeInput = (e) => {
-    const { name, value } = e.target;
+    const { name, options } = e.target;
 
     if (name === "tags") {
+      const selectedTags = Array.from(options).filter(option => option.selected).map(option => option.value);
       setFormData({
         ...formData,
-        [name]: [value],
+        [name]: selectedTags,
       });
     } else {
       setFormData({
         ...formData,
-        [name]: value,
+        [name]: e.target.value,
       });
     }
+  };
+
+  const handleCheckboxChange = (e) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
+
+    setFormData(prevFormData => {
+      const isTagSelected = prevFormData.tags.includes(value);
+
+      if (isChecked && !isTagSelected) {
+        return { ...prevFormData, tags: [...prevFormData.tags, value] };
+      } else if (!isChecked && isTagSelected) {
+        return { ...prevFormData, tags: prevFormData.tags.filter(tagId => tagId !== value) };
+      } else {
+        return prevFormData;
+      }
+    });
   };
 
   return (
@@ -96,22 +114,25 @@ console.log("CSRF Token:", csrfToken);
             ></textarea>
           </div>
           <div className="mb-3">
-            <label className="form-label">Tags</label>
-            <select
-              name="tags"
-              className="form-select"
-              onChange={handleChangeInput}
-              value={formData.tags[0] || ''}
-            >
-              <option value="">Select a tag</option>
-              {console.log("TAGS", tagsList)}
-              {tagsList && tagsList.map((tag) => (
-                <option key={tag.id} value={tag.id}>
-                  {tag.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <label className="form-label">Tags</label>
+          <div>
+          {tagsList && tagsList.map((tag) => (
+            <div key={tag.id} className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value={tag.id}
+                id={`tag-${tag.id}`}
+                onChange={handleCheckboxChange}
+                checked={formData.tags.includes(tag.id.toString())}
+              />
+              <label className="form-check-label" htmlFor={`tag-${tag.id}`}>
+                {tag.name}
+              </label>
+            </div>
+          ))}
+        </div>
+        </div>
           <div className="text-end">
             <button className="btn btn-secondary me-2" type="reset">
               Clear

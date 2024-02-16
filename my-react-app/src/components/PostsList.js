@@ -6,8 +6,9 @@ import FilterPosts from "./PostsFilter";
 function ListPosts() {
   const [posts, setPosts] = useState([]);
   const [postSuccess, setPostSuccess] = useState(false);
-  const [filterTag, setFilterTag] = useState("");
   const [tagsList, setTagsList] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -87,15 +88,34 @@ function getCookie(name) {
   };
 
 
-  const filteredPosts = filterTag
-    ? posts.filter((post) => post.tags.includes(filterTag))
-    : posts;
+  const handleFilterChange = (selectedTagIds) => {
+    setSelectedTags(selectedTagIds);
+  };
+
+  useEffect(() => {
+    // Assuming you have a posts state that contains all posts
+    // Adjust this logic based on how you're fetching or storing posts
+    const applyFilter = () => {
+      if (selectedTags.length > 0) {
+        // Filter posts based on selected tags
+        const newFilteredPosts = posts.filter(post =>
+          post.tags.some(tag => selectedTags.includes(tag.toString()))
+        );
+        setFilteredPosts(newFilteredPosts);
+      } else {
+        // No tags selected, show all posts
+        setFilteredPosts(posts);
+      }
+    };
+
+    applyFilter();
+  }, [selectedTags, posts]); // Re-apply filter when selectedTags or posts change
 
   return (
     <div className="container mt-5">
       <div className="row d-flex align-items-stretch">
-        <div className="col-md-7">
-          <div className="card mb-4">
+        <div className="col-md-7 d-flex flex-fill">
+          <div className="card w-100 mb-4">
             <div className="card-body">
               <h5 className="card-title">New Post</h5>
               <p className="card-text">Add to the conversation. </p>
@@ -122,7 +142,7 @@ function getCookie(name) {
 
         </div>
         <div className="d-flex col-md-5">
-        <FilterPosts onFilterChange={setFilterTag} setTagsList={setTagsList} tagsList={tagsList} />
+        <FilterPosts onFilterChange={handleFilterChange} tagsList={tagsList} />
         </div>
       </div>
       <div className="row">
