@@ -28,7 +28,6 @@ console.log("CSRF Token:", csrfToken);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // const apiUrl = `${process.env.REACT_APP_API_HOST}/posts`;
     const apiUrl = `http://localhost:8000/content/posts/`;
 
     const fetchConfig = {
@@ -37,7 +36,6 @@ console.log("CSRF Token:", csrfToken);
       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": csrfToken,
-
       },
       credentials: 'include',
     };
@@ -76,7 +74,7 @@ console.log("CSRF Token:", csrfToken);
 
   return (
     <div className="card w-100 my-3 border-0">
-      <h5 class="card-title">New Post</h5>
+      <h5 className="card-title">New Post</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -92,36 +90,36 @@ console.log("CSRF Token:", csrfToken);
             <label className="form-label">Content</label>
             <textarea
               name="content"
-              className="form-control form-control-lg"
+              className="form-control"
               onChange={handleChangeInput}
               rows="4"
             ></textarea>
           </div>
           <div className="mb-3">
-          <label className="form-label">Tags</label>
-          <select
-            name="tags"
-            className="form-select"
-            onChange={handleChangeInput}
-            value={formData.tags[0] || ''}
-          >
-            <option value="">Select a tag</option>
-            {console.log("TAGS", tagsList)}
-            {tagsList && tagsList.map((tag) => (
-              <option key={tag.id} value={tag.id}>
-                {tag.name}
-              </option>
-            ))}
-          </select>
-        </div>
-            <div className="text-end">
-              <button className="btn btn-secondary me-2" type="reset">
-                Clear
-              </button>
-              <button className="btn btn-primary" type="submit">
-                Post
-              </button>
-            </div>
+            <label className="form-label">Tags</label>
+            <select
+              name="tags"
+              className="form-select"
+              onChange={handleChangeInput}
+              value={formData.tags[0] || ''}
+            >
+              <option value="">Select a tag</option>
+              {console.log("TAGS", tagsList)}
+              {tagsList && tagsList.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="text-end">
+            <button className="btn btn-secondary me-2" type="reset">
+              Clear
+            </button>
+            <button className="btn btn-primary" type="submit">
+              Post
+            </button>
+          </div>
         </form>
       </div>
     </div>

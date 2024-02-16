@@ -10,8 +10,8 @@ function ListPosts() {
   const [tagsList, setTagsList] = useState("");
 
   useEffect(() => {
-    const getData = async () => {
-      const apiUrl = `${process.env.REACT_APP_API_HOST}/content/posts/`;
+    const fetchPosts = async () => {
+      const apiUrl = `http://localhost:8000/content/posts/`;
       const response = await fetch(apiUrl);
       if (response.ok) {
         const data = await response.json();
@@ -20,7 +20,7 @@ function ListPosts() {
         console.error("Failed to fetch posts");
       }
     };
-    getData();
+    fetchPosts();
   }, [postSuccess]);
 
   useEffect(() => {
@@ -38,16 +38,54 @@ function ListPosts() {
     fetchTags();
   }, []);
 
+  function formatDate(isoDateString) {
+    const date = new Date(isoDateString);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'UTC',
+    }).format(date);
+  }
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+  const csrfToken = getCookie('csrftoken');
+  console.log("CSRF Token:", csrfToken);
+
   const deletePost = async (postId) => {
-    const apiUrl = `${process.env.REACT_APP_API_HOST}/posts/${postId}`;
+    const apiUrl = `http://localhost:8000/content/posts/${postId}/`;
     const fetchConfig = {
       method: "DELETE",
-    };
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      credentials: 'include',
+    }
+
     const response = await fetch(apiUrl, fetchConfig);
     if (response.ok) {
       setPostSuccess(!postSuccess);
     }
   };
+
 
   const filteredPosts = filterTag
     ? posts.filter((post) => post.tags.includes(filterTag))
@@ -57,26 +95,25 @@ function ListPosts() {
     <div className="container mt-5">
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7">
-
-          <div class="card mb-4">
-            <div class="card-body">
-              <h5 class="card-title">New Post</h5>
-              <p class="card-text">Add to the conversation. </p>
-              <div class="form-group">
-                <div id="fakeInput" class="form-control" data-bs-toggle="modal" data-bs-target="#staticBackdrop" role="button" tabindex="0">
+          <div className="card mb-4">
+            <div className="card-body">
+              <h5 className="card-title">New Post</h5>
+              <p className="card-text">Add to the conversation. </p>
+              <div className="form-group">
+                <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#staticBackdrop" role="button" tabIndex="0">
                   What's on your mind?
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                 <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
                 </div>
               </div>
@@ -93,12 +130,18 @@ function ListPosts() {
         <div className="col-12 mb-3" key={post.id}>
             <div className="card">
               <div className="card-body">
+              <div className="d-flex justify-content-between align-items-center">
                 <h5 className="card-title">{post.title}</h5>
+                <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
+              </div>
                 <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
                 <p className="card-text">{post.content}</p>
-                <div className="badge bg-secondary">{post.tags}</div>
-                <Link to={`/posts/edit/${post.id}`} className="card-link">Edit</Link>
-                <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                <div>
+                  <div className="badge bg-secondary me-3">{post.tags}</div>
+                  <Link to={`/social/posts/${post.id}`} className="card-link">Comment</Link>
+                  <Link to={`#`} className="card-link">Edit</Link>
+                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                </div>
               </div>
             </div>
           </div>

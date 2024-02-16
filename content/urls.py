@@ -20,8 +20,8 @@ urlpatterns = [
     path("posts/<int:pk>/", post_detail, name="post_detail"),
 
     # Comment URLs
-    path("comments/", comment_list, name="comment_list"),
-    path("comments/<int:pk>/", comment_detail, name="comment_detail"),
+    path("posts/<int:post_pk>/comments/", comment_list, name="comment_list"),
+    path("posts/<int:post_pk>/comments/<int:pk>/", comment_detail, name="comment_detail"),
 
     # PostLike URLs
     path("post-likes/", post_like_list, name="post_like_list"),
