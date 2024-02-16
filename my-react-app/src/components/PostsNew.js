@@ -75,9 +75,9 @@ console.log("CSRF Token:", csrfToken);
   };
 
   return (
-    <div className="card w-100 my-3">
+    <div className="card w-100 my-3 border-0">
+      <h5 class="card-title">New Post</h5>
       <div className="card-body">
-        <h5>Create Post</h5>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Title</label>
@@ -90,12 +90,12 @@ console.log("CSRF Token:", csrfToken);
           </div>
           <div className="mb-3">
             <label className="form-label">Content</label>
-            <input
+            <textarea
               name="content"
-              type="text"
-              className="form-control"
+              className="form-control form-control-lg"
               onChange={handleChangeInput}
-            />
+              rows="4"
+            ></textarea>
           </div>
           <div className="mb-3">
           <label className="form-label">Tags</label>

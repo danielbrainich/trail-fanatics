@@ -56,16 +56,41 @@ function ListPosts() {
   return (
     <div className="container mt-5">
       <div className="row d-flex align-items-stretch">
-        <div className="col-md-6">
-        <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
+        <div className="col-md-7">
+
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">New Post</h5>
+              <p class="card-text">Add to the conversation. </p>
+              <div class="form-group">
+                <div id="fakeInput" class="form-control" data-bs-toggle="modal" data-bs-target="#staticBackdrop" role="button" tabindex="0">
+                  What's on your mind?
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div className="d-flex col-md-6">
+        <div className="d-flex col-md-5">
         <FilterPosts onFilterChange={setFilterTag} setTagsList={setTagsList} tagsList={tagsList} />
         </div>
       </div>
       <div className="row">
-        {filteredPosts.map((post) => (
-          <div className="col-12 mb-3" key={post.id}>
+      {filteredPosts.slice().reverse().map((post) => (
+        <div className="col-12 mb-3" key={post.id}>
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{post.title}</h5>

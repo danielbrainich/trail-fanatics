@@ -1,5 +1,5 @@
 
-function Sidebar({ isOpen, toggleSidebar }) {
+function Sidebar({ isOpen }) {
   return (
       <div className={`mt-5 col-md-3 col-lg-2 d-md-block sidebar ${isOpen ? '' : 'collapse'}`} id="sidebarMenu">
         <div className="position-sticky pt-3">
@@ -11,22 +11,17 @@ function Sidebar({ isOpen, toggleSidebar }) {
             </li>
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#">
+                Social
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">
                 Trails
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Saved
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                My Trails
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Saved
+                Races
               </a>
             </li>
           </ul>

@@ -1,10 +1,10 @@
 function FilterPosts({ onFilterChange, tagsList }) {
   return (
-    <div className="card w-100 my-3">
+    <div className="card w-100 mb-4">
       <div className="card-body">
         <h5 className="card-title">Filter Posts</h5>
-        <div className="mb-3">
-          <label htmlFor="tagFilter" className="form-label">
+        <div className="">
+          <label htmlFor="tagFilter" className="form-label mb-3">
             Filter by Tag
           </label>
           <select
