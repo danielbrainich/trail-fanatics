@@ -11979,3 +11979,9 @@ textarea.form-control-lg {
 .vh-90 {
   height: 90vh;
 }
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.15rem;
+}

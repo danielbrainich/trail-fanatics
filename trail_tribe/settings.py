@@ -51,8 +51,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "trail_tribe.urls"
@@ -137,9 +137,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    "http://localhost:3000",
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000'
-]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+LOGIN_REDIRECT_URL = 'http://localhost:3000/social'

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NewPostForm from "./PostsNew";
 import FilterPosts from "./PostsFilter";
+import LikeButton from "./PostLikeButton";
 
 function ListPosts() {
   const [posts, setPosts] = useState([]);
@@ -93,23 +94,19 @@ function getCookie(name) {
   };
 
   useEffect(() => {
-    // Assuming you have a posts state that contains all posts
-    // Adjust this logic based on how you're fetching or storing posts
     const applyFilter = () => {
       if (selectedTags.length > 0) {
-        // Filter posts based on selected tags
         const newFilteredPosts = posts.filter(post =>
           post.tags.some(tag => selectedTags.includes(tag.toString()))
         );
         setFilteredPosts(newFilteredPosts);
       } else {
-        // No tags selected, show all posts
         setFilteredPosts(posts);
       }
     };
 
     applyFilter();
-  }, [selectedTags, posts]); // Re-apply filter when selectedTags or posts change
+  }, [selectedTags, posts]);
 
   return (
     <div className="container mt-5">
@@ -154,10 +151,20 @@ function getCookie(name) {
                 <h5 className="card-title">{post.title}</h5>
                 <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
               </div>
-                <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
-                <p className="card-text">{post.content}</p>
+              <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+              <p className="card-text">{post.content}</p>
                 <div>
-                  <div className="badge bg-secondary me-3">{post.tags}</div>
+                  <div>
+                    {post.tags.map(tagId => {
+                        const tagObj = tagsList.find(tag => tag.id === tagId);
+                        return (
+                            <div key={tagId} className="badge bg-secondary mb-2 me-2">
+                                {tagObj ? tagObj.name : 'Unknown Tag'}
+                            </div>
+                        );
+                    })}
+                  </div>
+                  <LikeButton postId={post.id} />
                   <Link to={`/social/posts/${post.id}`} className="card-link">Comment</Link>
                   <Link to={`#`} className="card-link">Edit</Link>
                   <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>

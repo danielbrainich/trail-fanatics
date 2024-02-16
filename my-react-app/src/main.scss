@@ -13,3 +13,9 @@ $secondary: #D9FE96;
 .vh-90 {
     height: 90vh;
 }
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .15rem;
+}

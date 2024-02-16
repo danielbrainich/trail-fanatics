@@ -21,30 +21,32 @@ function FilterPosts({ onFilterChange, tagsList }) {
   }, [selectedTags, onFilterChange]);
 
   return (
-    <div className="card w-100 mb-4">
-      <div className="card-body">
-        <h5 className="card-title">Filter Posts</h5>
-        <div>
-          <label className="form-label mb-3">
-            Filter by Tag
-          </label>
-          {tagsList && tagsList.map((tag) => (
-            <div key={tag.id} className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id={`tag-${tag.id}`}
-                value={tag.id}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor={`tag-${tag.id}`} className="form-check-label">
-                {tag.name}
-              </label>
-            </div>
-          ))}
-        </div>
+<div className="card w-100 mb-4">
+  <div className="card-body">
+    <h5 className="card-title">Filter Posts</h5>
+    <div>
+      <label className="form-label mb-3">
+        Filter by Tag
+      </label>
+      <div className="checkbox-grid">
+        {tagsList && tagsList.map((tag) => (
+          <div key={tag.id} className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id={`tag-${tag.id}`}
+              value={tag.id}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor={`tag-${tag.id}`} className="form-check-label">
+              {tag.name}
+            </label>
+          </div>
+        ))}
       </div>
     </div>
+  </div>
+</div>
   );
 }
 

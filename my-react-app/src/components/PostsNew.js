@@ -115,7 +115,7 @@ console.log("CSRF Token:", csrfToken);
           </div>
           <div className="mb-3">
           <label className="form-label">Tags</label>
-          <div>
+          <div className="checkbox-grid">
           {tagsList && tagsList.map((tag) => (
             <div key={tag.id} className="form-check">
               <input

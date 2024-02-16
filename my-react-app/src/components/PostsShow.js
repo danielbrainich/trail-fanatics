@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import NewComment from "./CommentsNew";
+import PostLikeButton from "./PostLikeButton";
 import { Link } from "react-router-dom";
 
 function ShowPost() {
@@ -9,8 +10,23 @@ function ShowPost() {
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [commentSuccess, setCommentSuccess] = useState(false);
+  const [tagsList, setTagsList] = useState("");
 
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      const apiUrl = `http://localhost:8000/content/tags/`;
+      const response = await fetch(apiUrl);
+      if (response.ok) {
+        const tags = await response.json();
+        setTagsList(tags);
+      } else {
+        console.error("Failed to fetch tags");
+      }
+    };
+
+    fetchTags();
+  }, []);
 
 useEffect(() => {
   const fetchComments = async () => {
@@ -114,6 +130,19 @@ useEffect(() => {
     }
   };
 
+  function formatDate(isoDateString) {
+    const date = new Date(isoDateString);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'UTC',
+    }).format(date);
+  }
+
   return (
 
     <div className="container mt-5">
@@ -122,11 +151,23 @@ useEffect(() => {
           <div className="card-body">
           <div className="d-flex justify-content-between align-items-center">
             <h5 className="card-title">{post.title}</h5>
+            <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
+
           </div>
             <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
             <p className="card-text">{post.content}</p>
             <div>
-              <div className="badge bg-secondary me-3">{post.tags}</div>
+              <div>
+                {tagsList && post && post.tags && post.tags.map(tagId => {
+                    const tagObj = tagsList.find(tag => tag.id === tagId);
+                    return (
+                        <div key={tagId} className="badge bg-secondary mb-2 me-2">
+                            {tagObj ? tagObj.name : 'Unknown Tag'}
+                        </div>
+                    );
+                })}
+              </div>
+              <PostLikeButton />
               <Link to={`#`} className="card-link">Edit</Link>
               <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
             </div>

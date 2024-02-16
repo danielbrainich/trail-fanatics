@@ -4,6 +4,9 @@ import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import ShowPost from './components/PostsShow';
 import HomePage from './components/HomePage';
+import SignupForm from './components/Signup';
+import LoginForm from './components/Login';
+import LogoutButton from "./components/Logout";
 import './main.css';
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
           <div className="flex-grow-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/signup" element={<SignupForm />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/logout" element={<LogoutButton />} />
               <Route path="social" element={<ListPosts />} />
               <Route path="social/posts/:postId" element={<ShowPost />} />
               <Route path="*" element={<div>Route not found</div>} />

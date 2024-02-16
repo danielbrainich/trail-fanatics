@@ -12,6 +12,7 @@ from .serializers import (
     CommentLikeSerializer,
 )
 
+
 # Tag views
 @require_http_methods(["GET", "POST"])
 def tag_list(request):
@@ -27,6 +28,7 @@ def tag_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def tag_detail(request, pk):
@@ -46,6 +48,7 @@ def tag_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # Post views
 @require_http_methods(["GET", "POST"])
 def post_list(request):
@@ -62,6 +65,7 @@ def post_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def post_detail(request, pk):
@@ -81,6 +85,7 @@ def post_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # Comment views
 @require_http_methods(["GET", "POST"])
 def comment_list(request, post_pk):
@@ -88,16 +93,17 @@ def comment_list(request, post_pk):
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
         return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'POST':
-            data = json.loads(request.body)
-            data['post'] = post_pk
-            serializer = CommentSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, status=201)
-            return JsonResponse(serializer.errors, status=400)
+    elif request.method == "POST":
+        data = json.loads(request.body)
+        data["post"] = post_pk
+        serializer = CommentSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def comment_detail(request, post_pk, pk):
@@ -117,25 +123,33 @@ def comment_detail(request, post_pk, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # PostLike views
 @require_http_methods(["GET", "POST"])
-def post_like_list(request):
+def post_like_list(request, post_pk):
     if request.method == "GET":
         post_likes = PostLike.objects.all()
         serializer = PostLikeSerializer(post_likes, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
-        serializer = PostLikeSerializer(data=request.POST)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        try:
+            post = Post.objects.get(pk=post_pk)
+            like, created = PostLike.objects.get_or_create(
+                post=post
+            )  # don't forget to add user eventually
+            if created:
+                serializer = PostLikeSerializer(like)
+                return JsonResponse(serializer.data, status=201)
+            else:
+                return JsonResponse({"message": "Like already exists"}, status=200)
+        except Post.DoesNotExist:
+            return HttpResponseBadRequest("Post does not exist")
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
 
+
 @require_http_methods(["GET", "PUT", "DELETE"])
-@require_http_methods(["GET", "PUT", "DELETE"])
-def post_like_detail(request, pk):
+def post_like_detail(request, post_pk, pk):
     post_like = get_object_or_404(PostLike, pk=pk)
     if request.method == "GET":
         serializer = PostLikeSerializer(post_like)
@@ -152,6 +166,7 @@ def post_like_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # CommentLike views
 @require_http_methods(["GET", "POST"])
 def comment_like_list(request):
@@ -167,6 +182,7 @@ def comment_like_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def comment_like_detail(request, pk):

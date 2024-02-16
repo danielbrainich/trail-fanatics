@@ -11,6 +11,7 @@ from .serializers import (
     UserRaceSerializer,
 )
 
+
 # Trail views
 @require_http_methods(["GET", "POST"])
 def trail_list(request):
@@ -26,6 +27,7 @@ def trail_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def trail_detail(request, pk):
@@ -45,6 +47,7 @@ def trail_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # Race views
 @require_http_methods(["GET", "POST"])
 def race_list(request):
@@ -60,6 +63,7 @@ def race_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 def race_detail(request, pk):
@@ -79,6 +83,7 @@ def race_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # UserTrail views
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
@@ -95,6 +100,7 @@ def user_trail_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @csrf_exempt
 @require_http_methods(["GET", "PUT", "DELETE"])
@@ -118,6 +124,7 @@ def user_trail_detail(request, pk):
     else:
         return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
 
+
 # UserRace views
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
@@ -135,6 +142,7 @@ def user_race_list(request):
         return JsonResponse(serializer.errors, status=400)
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+
 
 @csrf_exempt
 @require_http_methods(["GET", "PUT", "DELETE"])
