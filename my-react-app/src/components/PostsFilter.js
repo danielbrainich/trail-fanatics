@@ -13,7 +13,7 @@ function FilterPosts({ onFilterChange, tagsList }) {
             onChange={(e) => onFilterChange(e.target.value)}
           >
             <option value="">All Tags</option>
-            {tagsList.map((tag) => (
+            {tagsList && tagsList.map((tag) => (
               <option key={tag.id} value={tag.id}>
                 {tag.name}
               </option>
