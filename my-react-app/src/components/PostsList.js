@@ -13,6 +13,7 @@ function ListPosts() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
+
   useEffect(() => {
     const fetchPosts = async () => {
       const apiUrl = `http://localhost:8000/content/posts/`;
@@ -134,11 +135,11 @@ function ListPosts() {
         <div className="col-12 mb-3" key={post.id}>
             <div className="card">
               <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <h5 className="card-title">{post.title}</h5>
-                <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
-              </div>
-              <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+                  <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
+                </div>
+              <h5 className="card-title">{post.title}</h5>
               <p className="card-text">{post.content}</p>
                 <div>
                   <div>

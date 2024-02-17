@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponse
 from django.views.decorators.http import require_http_methods
 from .models import Tag, Post, Comment, PostLike, CommentLike
 from rest_framework.parsers import JSONParser
@@ -57,6 +57,8 @@ def post_list(request):
         serializer = PostSerializer(posts, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
         data = json.loads(request.body)
         serializer = PostSerializer(data=data)
         if serializer.is_valid():

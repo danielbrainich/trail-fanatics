@@ -11,11 +11,19 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from django.views.decorators.http import require_POST
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+
 import json
 
 
 # User Auth views
 User = get_user_model()
+
+@login_required
+def current_user(request):
+    return JsonResponse({
+        'username': request.user.username,
+    })
 
 @require_POST
 def custom_logout(request):

@@ -9,11 +9,15 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+
+    author_username = serializers.CharField(source='author.profile.user.username', read_only=True)
+
     class Meta:
         model = Post
         fields = [
             "id",
             "author",
+            "author_username",
             "tags",
             "title",
             "content",

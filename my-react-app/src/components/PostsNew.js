@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
+import useAuth from '../hooks/useAuth';
 
 
 function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     tags: [],
+    author: user ? user.id : null,
   });
 
 const csrfToken = useCsrfToken();
@@ -38,6 +41,7 @@ console.log("CSRF Token:", csrfToken);
         title: "",
         content: "",
         tags: [],
+        author: user ? user.id : null, 
       });
       setPostSuccess(!postSuccess)
     }
