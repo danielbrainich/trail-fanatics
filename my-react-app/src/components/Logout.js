@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useCsrfToken from '../hooks/useCsrfToken';
 
 
-function LogoutButton() {
+function Logout() {
   const navigate = useNavigate();
 
   const csrfToken = useCsrfToken();
@@ -32,8 +32,8 @@ function LogoutButton() {
   };
 
   return (
-    <button onClick={handleLogout} className="btn btn-danger">Sign Out</button>
+    <button onClick={handleLogout} className="dropdown-item">Logout</button>
   );
 }
 
-export default LogoutButton;
+export default Logout;
