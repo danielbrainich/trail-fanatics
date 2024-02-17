@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
+import useAuth from '../hooks/useAuth';
+
 
 
 function NewComment({ postId, setCommentSuccess, commentSuccess }) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     content: "",
-
+    author: user ? user.id : null,
   });
 
   const csrfToken = useCsrfToken();
@@ -32,7 +35,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
       event.target.reset();
       setFormData({
         content: "",
-
+        author: user ? user.id : null,
       });
       setCommentSuccess(!commentSuccess);
     }

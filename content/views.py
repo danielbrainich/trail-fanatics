@@ -96,11 +96,13 @@ def comment_list(request, post_pk):
         serializer = CommentSerializer(comments, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
         data = json.loads(request.body)
         data["post"] = post_pk
         serializer = CommentSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(author=request.user)
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
     else:

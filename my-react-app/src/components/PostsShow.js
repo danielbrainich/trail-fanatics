@@ -18,7 +18,7 @@ function ShowPost() {
   const csrfToken = useCsrfToken();
   console.log("CSRF Token:", csrfToken);
 
-  
+
   useEffect(() => {
     const fetchTags = async () => {
       const apiUrl = `http://localhost:8000/content/tags/`;
@@ -138,31 +138,30 @@ useEffect(() => {
       <div className="col-12 mb-3" key={post.id}>
         <div className="card">
           <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center">
-            <h5 className="card-title">{post.title}</h5>
-            <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
-
-          </div>
-            <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
-            <p className="card-text">{post.content}</p>
-            <div>
-              <div>
-                {tagsList && post && post.tags && post.tags.map(tagId => {
-                    const tagObj = tagsList.find(tag => tag.id === tagId);
-                    return (
-                        <div key={tagId} className="badge bg-secondary mb-2 me-2">
-                            {tagObj ? tagObj.name : 'Unknown Tag'}
-                        </div>
-                    );
-                })}
+                <div className="d-flex justify-content-between align-items-center">
+                  <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+                  <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
+                </div>
+              <h5 className="card-title">{post.title}</h5>
+              <p className="card-text">{post.content}</p>
+                <div>
+                  <div>
+                    {tagsList && post && post.tags && post.tags.map(tagId => {
+                        const tagObj = tagsList.find(tag => tag.id === tagId);
+                        return (
+                            <div key={tagId} className="badge bg-secondary mb-2 me-2">
+                                {tagObj ? tagObj.name : 'Unknown Tag'}
+                            </div>
+                        );
+                    })}
+                  </div>
+                  <PostLikeButton />
+                  <Link to={`#`} className="card-link">Edit</Link>
+                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                </div>
               </div>
-              <PostLikeButton />
-              <Link to={`#`} className="card-link">Edit</Link>
-              <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
             </div>
           </div>
-        </div>
-      </div>
 
       <div className="card mb-4">
         <div className="card-body">
@@ -194,6 +193,10 @@ useEffect(() => {
         {comments.slice().reverse().map((comment) => (
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
+              <div className="d-flex justify-content-between align-items-center">
+                  <h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6>
+                  <h6 className="card-subtitle text-muted small">{formatDate(comment.created_at)}</h6>
+              </div>
               <p className="card-text">{comment.content}</p>
                 <div className="d-flex">
                   <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
