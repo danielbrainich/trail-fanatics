@@ -5,7 +5,6 @@ from .models import UserProfile, UserInterest
 from .serializers import UserProfileSerializer, UserInterestSerializer
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
-from django.contrib.auth.forms import UserCreationForm
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status

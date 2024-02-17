@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useCsrfToken from '../hooks/useCsrfToken';
+
 
 function LoginForm() {
   const [username, setUsername] = useState('');
@@ -7,24 +9,8 @@ function LoginForm() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-  }
-
-    const csrfToken = getCookie('csrftoken');
-    console.log("CSRF Token:", csrfToken);
+  const csrfToken = useCsrfToken();
+  console.log("CSRF Token:", csrfToken);
 
 
   const handleSubmit = async (e) => {

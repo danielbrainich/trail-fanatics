@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import NewComment from "./CommentsNew";
 import PostLikeButton from "./PostLikeButton";
 import { Link } from "react-router-dom";
+import useCsrfToken from '../hooks/useCsrfToken';
+
 
 function ShowPost() {
   const { postId } = useParams();
@@ -13,6 +15,10 @@ function ShowPost() {
   const [tagsList, setTagsList] = useState("");
 
 
+  const csrfToken = useCsrfToken();
+  console.log("CSRF Token:", csrfToken);
+
+  
   useEffect(() => {
     const fetchTags = async () => {
       const apiUrl = `http://localhost:8000/content/tags/`;
@@ -72,23 +78,6 @@ useEffect(() => {
     );
   }
 
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-  }
-
-    const csrfToken = getCookie('csrftoken');
-    console.log("CSRF Token:", csrfToken);
 
     const deletePost = async (postId) => {
       const apiUrl = `http://localhost:8000/content/posts/${postId}/`;
