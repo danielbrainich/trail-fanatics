@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import ListPosts from './components/PostsList';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -7,9 +7,11 @@ import HomePage from './components/HomePage';
 import SignupForm from './components/Signup';
 import LoginForm from './components/Login';
 import LogoutButton from "./components/Logout";
+import Profile from "./components/Profile";
 import './main.css';
 
 function App() {
+
 
   return (
     <BrowserRouter>
@@ -26,6 +28,7 @@ function App() {
               <Route path="/signup" element={<SignupForm />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/logout" element={<LogoutButton />} />
+              <Route path="/profiles/:userId" element={<Profile />} />
               <Route path="social" element={<ListPosts />} />
               <Route path="social/posts/:postId" element={<ShowPost />} />
               <Route path="*" element={<div>Route not found</div>} />

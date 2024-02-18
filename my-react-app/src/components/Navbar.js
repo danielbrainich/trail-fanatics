@@ -22,10 +22,9 @@ function Navbar() {
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Account
                 </a>
+                {console.log(user, "USER")}
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <h5 className="nav-link pt-2">{user && user.username}</h5>    {/* This needs to re-render on login and logout. Fix this */}
-                  </li>
+                  <li><Link className="dropdown-item" to={`/profiles/${user?.profile?.id}`}>{user?.username}</Link></li>
                   <li><Link className="dropdown-item" to="/login">Login</Link></li>
                   <li><Link className="dropdown-item" to="/signup">Signup</Link></li>
                   <li><Logout /></li>

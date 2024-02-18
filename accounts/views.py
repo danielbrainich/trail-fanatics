@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
 from .models import UserProfile, UserInterest
-from .serializers import UserProfileSerializer, UserInterestSerializer
+from .serializers import UserProfileSerializer, UserInterestSerializer, UserSerializer
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
 from rest_framework.response import Response
@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
+
 import json
 
 
@@ -21,9 +22,8 @@ User = get_user_model()
 
 @login_required
 def current_user(request):
-    return JsonResponse({
-        'username': request.user.username,
-    })
+    user_data = UserSerializer(request.user).data
+    return JsonResponse(user_data)
 
 @require_POST
 def custom_logout(request):
