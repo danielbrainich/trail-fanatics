@@ -31,16 +31,25 @@ function Profile() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            {userProfile ? (
+<div className="container mt-5 vh-100">
+    <div className="card">
+        <div className="card-body">
+            {console.log("userprof$$$$$$$ile", userProfile)}
+            <div>
+                {userProfile ? (
                 <div>
-                    <h2>{userProfile.user}'s Profile</h2>
+                    <h2>{userProfile.username}'s Profile</h2>
                     <p>{userProfile.bio}</p>
+                    <p>{userProfile.contact_email}</p>
                 </div>
-            ) : (
+                ) : (
                 <div>User not found</div>
-            )}
+                )}
+            </div>
         </div>
+    </div>
+</div>
+
     );
 }
 

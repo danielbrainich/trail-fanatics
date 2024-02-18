@@ -25,6 +25,7 @@ def current_user(request):
     user_data = UserSerializer(request.user).data
     return JsonResponse(user_data)
 
+
 @require_POST
 def custom_logout(request):
     logout(request)
