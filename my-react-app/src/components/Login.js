@@ -48,7 +48,6 @@ function LoginForm() {
         {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-3">
-          <label htmlFor="username" className="form-label">Username</label>
           <input
             id="username"
             type="text"

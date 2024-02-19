@@ -1,5 +1,10 @@
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponse
+from django.http import (
+    JsonResponse,
+    HttpResponseBadRequest,
+    HttpResponseNotAllowed,
+    HttpResponse,
+)
 from django.views.decorators.http import require_http_methods
 from .models import Tag, Post, Comment, PostLike, CommentLike
 from rest_framework.parsers import JSONParser

@@ -3,13 +3,14 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
-
 class CustomUser(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
-    profile_picture = models.ImageField(upload_to="profile_pictures/", null=True, blank=True)
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/", null=True, blank=True
+    )
 
     def __str__(self):
-        return f"{self.user.username}'s profile"
+        return f"{self.username}'s profile"
 
 
 class UserInterest(models.Model):
@@ -24,4 +25,4 @@ class UserInterest(models.Model):
         unique_together = ("user", "tag")
 
     def __str__(self):
-        return f"{self.user.username}'s interest in {self.tag.name}"
+        return f"{self.username}'s interest in {self.tag.name}"

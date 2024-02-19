@@ -7,7 +7,7 @@ import HomePage from './components/HomePage';
 import SignupForm from './components/Signup';
 import LoginForm from './components/Login';
 import LogoutButton from "./components/Logout";
-import Profile from "./components/Profile";
+import Profile from "./components/ProfileShow";
 import './main.css';
 
 function App() {

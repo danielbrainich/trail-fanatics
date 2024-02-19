@@ -8,7 +8,7 @@ from .views import (
     user_interest_detail,
     custom_login,
     custom_logout,
-    current_user
+    current_user,
 )
 
 urlpatterns = [
@@ -19,9 +19,8 @@ urlpatterns = [
     path("interests/", user_interest_list, name="user_interest_list"),
     path("interests/<int:pk>/", user_interest_detail, name="user_interest_detail"),
     # User Auth
-    path('login/', custom_login, name='custom_login'),
+    path("login/", custom_login, name="custom_login"),
     path("logout/", custom_logout, name="logout"),
     path("signup/", signup_view, name="signup"),
     path("current_user/", current_user, name="current_user"),
-
 ]

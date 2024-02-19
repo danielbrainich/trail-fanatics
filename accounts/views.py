@@ -13,29 +13,36 @@ import json
 
 CustomUser = get_user_model()
 
+
 @login_required
-@api_view(['GET'])
+@api_view(["GET"])
 def current_user(request):
     user_data = CustomUserSerializer(request.user).data
     return JsonResponse(user_data)
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def custom_logout(request):
     logout(request)
     return JsonResponse({"success": True, "message": "Logged out successfully"})
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def custom_login(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+    username = request.data.get("username")
+    password = request.data.get("password")
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
         return Response({"success": True, "message": "Login successful"})
     else:
-        return Response({"success": False, "message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"success": False, "message": "Invalid credentials"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def signup_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -56,7 +63,8 @@ def signup_view(request):
     else:
         return JsonResponse({"error": "Method Not Allowed"}, status=405)
 
-@api_view(['GET', 'POST'])
+
+@api_view(["GET", "POST"])
 def user_interest_list(request):
     if request.method == "GET":
         interests = UserInterest.objects.all()
@@ -69,7 +77,8 @@ def user_interest_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+
+@api_view(["GET", "PUT", "DELETE"])
 def user_interest_detail(request, pk):
     interest = get_object_or_404(UserInterest, pk=pk)
     if request.method == "GET":
@@ -83,9 +92,13 @@ def user_interest_detail(request, pk):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":
         interest.delete()
-        return JsonResponse({"message": "Interest deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse(
+            {"message": "Interest deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
-@api_view(['GET', 'POST'])
+
+@api_view(["GET", "POST"])
 def user_list(request):
     if request.method == "GET":
         users = CustomUser.objects.all()
@@ -98,7 +111,8 @@ def user_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+
+@api_view(["GET", "PUT", "DELETE"])
 def user_detail(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
     if request.method == "GET":
@@ -112,4 +126,6 @@ def user_detail(request, pk):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":
         user.delete()
-        return JsonResponse({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse(
+            {"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+        )
