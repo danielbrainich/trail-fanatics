@@ -13,7 +13,6 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
   });
 
 const csrfToken = useCsrfToken();
-console.log("CSRF Token:", csrfToken);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,7 +40,7 @@ console.log("CSRF Token:", csrfToken);
         title: "",
         content: "",
         tags: [],
-        author: user ? user.id : null, 
+        author: user ? user.id : null,
       });
       setPostSuccess(!postSuccess)
     }
