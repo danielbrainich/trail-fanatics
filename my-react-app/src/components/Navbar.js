@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
 import useAuth from '../hooks/useAuth';
@@ -16,20 +16,26 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-              </li>
+            {user ? (
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Account
                 </a>
-                {console.log(user, "USER")}
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><Link className="dropdown-item" to={`/profiles/${user?.profile?.id}`}>{user?.username}</Link></li>
-                  <li><Link className="dropdown-item" to="/login">Login</Link></li>
-                  <li><Link className="dropdown-item" to="/signup">Signup</Link></li>
+                  <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
                   <li><Logout /></li>
                 </ul>
               </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signup">Signup</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

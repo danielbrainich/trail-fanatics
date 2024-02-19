@@ -1,32 +1,25 @@
 from django.http import JsonResponse, HttpResponseNotAllowed
-from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
-from .models import UserProfile, UserInterest
-from .serializers import UserProfileSerializer, UserInterestSerializer, UserSerializer
+from .models import UserInterest
+from .serializers import UserInterestSerializer, CustomUserSerializer
 from rest_framework.parsers import JSONParser
-from django.http import JsonResponse
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view
-from django.views.decorators.http import require_POST
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
-
 import json
 
-
-# User Auth views
-User = get_user_model()
+CustomUser = get_user_model()
 
 @login_required
+@api_view(['GET'])
 def current_user(request):
-    user_data = UserSerializer(request.user).data
+    user_data = CustomUserSerializer(request.user).data
     return JsonResponse(user_data)
 
-
-@require_POST
+@api_view(['POST'])
 def custom_logout(request):
     logout(request)
     return JsonResponse({"success": True, "message": "Logged out successfully"})
@@ -42,7 +35,7 @@ def custom_login(request):
     else:
         return Response({"success": False, "message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 def signup_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -54,93 +47,69 @@ def signup_view(request):
                 {"error": "Username and password are required"}, status=400
             )
 
-        if User.objects.filter(username=username).exists():
+        if CustomUser.objects.filter(username=username).exists():
             return JsonResponse({"error": "Username already exists"}, status=400)
 
-        user = User.objects.create_user(username=username, password=password)
+        user = CustomUser.objects.create_user(username=username, password=password)
 
         return JsonResponse({"message": "User created successfully"})
-
-    return JsonResponse({"error": "Method Not Allowed"}, status=405)
-
-
-# User Profile views
-@require_http_methods(["GET", "POST"])
-def user_profile_list(request):
-    if request.method == "GET":
-        profiles = UserProfile.objects.all()
-        serializer = UserProfileSerializer(profiles, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = UserProfileSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
     else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+        return JsonResponse({"error": "Method Not Allowed"}, status=405)
 
-
-@require_http_methods(["GET", "PUT", "DELETE"])
-def user_profile_detail(request, pk):
-    profile = get_object_or_404(UserProfile, pk=pk)
-    if request.method == "GET":
-        serializer = UserProfileSerializer(profile)
-        return JsonResponse(serializer.data)
-
-    elif request.method == "PUT":
-        data = JSONParser().parse(request)
-        serializer = UserProfileSerializer(profile, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
-    elif request.method == "DELETE":
-        profile.delete()
-        return JsonResponse({"message": "Profile deleted successfully"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
-
-
-# User Interest views
-@require_http_methods(["GET", "POST"])
+@api_view(['GET', 'POST'])
 def user_interest_list(request):
     if request.method == "GET":
         interests = UserInterest.objects.all()
         serializer = UserInterestSerializer(interests, many=True)
         return JsonResponse(serializer.data, safe=False)
-
     elif request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = UserInterestSerializer(data=data)
+        serializer = UserInterestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@require_http_methods(["GET", "PUT", "DELETE"])
+@api_view(['GET', 'PUT', 'DELETE'])
 def user_interest_detail(request, pk):
     interest = get_object_or_404(UserInterest, pk=pk)
     if request.method == "GET":
         serializer = UserInterestSerializer(interest)
         return JsonResponse(serializer.data)
-
     elif request.method == "PUT":
-        data = JSONParser().parse(request)
-        serializer = UserInterestSerializer(interest, data=data)
+        serializer = UserInterestSerializer(interest, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "DELETE":
         interest.delete()
-        return JsonResponse({"message": "Interest deleted successfully"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
+        return JsonResponse({"message": "Interest deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST'])
+def user_list(request):
+    if request.method == "GET":
+        users = CustomUser.objects.all()
+        serializer = CustomUserSerializer(users, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == "POST":
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_detail(request, pk):
+    user = get_object_or_404(CustomUser, pk=pk)
+    if request.method == "GET":
+        serializer = CustomUserSerializer(user)
+        return JsonResponse(serializer.data)
+    elif request.method == "PUT":
+        serializer = CustomUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "DELETE":
+        user.delete()
+        return JsonResponse({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)

@@ -98,6 +98,7 @@ function ListPosts() {
 
   return (
     <div className="container mt-5">
+      {console.log(posts)}
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
           <div className="card w-100 mb-4">
@@ -136,7 +137,7 @@ function ListPosts() {
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
-                  <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+                  <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
                 </div>
               <h5 className="card-title">{post.title}</h5>

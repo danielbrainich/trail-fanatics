@@ -10,7 +10,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    author_username = serializers.CharField(source='author.profile.user.username', read_only=True)
+    author_username = serializers.CharField(source='author.username', read_only=True)
+    author_id = serializers.CharField(source='author.id', read_only=True)
 
     class Meta:
         model = Post
@@ -18,6 +19,7 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "author_username",
+            "author_id",
             "tags",
             "title",
             "content",
@@ -30,7 +32,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    author_username = serializers.CharField(source='author.profile.user.username', read_only=True)
+    author_username = serializers.CharField(source='author.username', read_only=True)
+    author_id = serializers.CharField(source='author.id', read_only=True)
 
     class Meta:
         model = Comment
@@ -38,6 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "author_username",
+            "author_id",
             "post",
             "content",
             "image",

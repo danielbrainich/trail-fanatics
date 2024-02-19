@@ -40,7 +40,7 @@ function Profile() {
                 <div>
                     <h2>{userProfile.username}'s Profile</h2>
                     <p>{userProfile.bio}</p>
-                    <p>{userProfile.contact_email}</p>
+                    <p>{userProfile.email}</p>
                 </div>
                 ) : (
                 <div>User not found</div>

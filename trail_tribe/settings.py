@@ -143,3 +143,5 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
 LOGIN_REDIRECT_URL = 'http://localhost:3000/social'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'

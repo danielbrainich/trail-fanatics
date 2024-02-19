@@ -139,7 +139,7 @@ useEffect(() => {
         <div className="card">
           <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
-                  <h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6>
+                <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
                 </div>
               <h5 className="card-title">{post.title}</h5>
@@ -194,7 +194,7 @@ useEffect(() => {
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center">
-                  <h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6>
+              <Link to={`/profiles/${comment.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(comment.created_at)}</h6>
               </div>
               <p className="card-text">{comment.content}</p>
