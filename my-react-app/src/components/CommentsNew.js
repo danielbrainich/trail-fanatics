@@ -24,7 +24,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
       body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     };

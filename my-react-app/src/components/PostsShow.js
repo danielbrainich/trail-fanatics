@@ -4,6 +4,7 @@ import NewComment from "./CommentsNew";
 import PostLikeButton from "./PostLikeButton";
 import { Link } from "react-router-dom";
 import useCsrfToken from '../hooks/useCsrfToken';
+import CommentLikeButton from "./CommentLikeButton";
 
 
 function ShowPost() {
@@ -194,6 +195,7 @@ useEffect(() => {
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center">
+              <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
               <Link to={`/profiles/${comment.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(comment.created_at)}</h6>
               </div>

@@ -177,36 +177,43 @@ def post_like_detail(request, post_pk, pk):
 
 
 # CommentLike views
+@require_http_methods(["GET"])
+def check_comment_like(request, post_pk, comment_pk):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).first()
+
+    if like:
+        return JsonResponse({"liked": True, "likeId": like.pk})
+    else:
+        return JsonResponse({"liked": False, "likeId": None})
+
+
 @require_http_methods(["GET", "POST"])
-def comment_like_list(request):
+def comment_like_list(request, post_pk, comment_pk):
     if request.method == "GET":
-        comment_likes = CommentLike.objects.all()
+        comment_likes = CommentLike.objects.filter(comment_id=comment_pk)
         serializer = CommentLikeSerializer(comment_likes, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
-        serializer = CommentLikeSerializer(data=request.POST)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        existing_like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).first()
+        if existing_like:
+            return JsonResponse({"message": "Like already exists"}, status=200)
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        like = CommentLike.objects.create(comment=comment, author=request.user)
+        serializer = CommentLikeSerializer(like)
+        return JsonResponse(serializer.data, status=201)
 
 
-@require_http_methods(["GET", "PUT", "DELETE"])
-def comment_like_detail(request, pk):
-    comment_like = get_object_or_404(CommentLike, pk=pk)
-    if request.method == "GET":
-        serializer = CommentLikeSerializer(comment_like)
-        return JsonResponse(serializer.data)
-    elif request.method == "PUT":
-        serializer = CommentLikeSerializer(comment_like, data=request.POST)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-    elif request.method == "DELETE":
-        comment_like.delete()
-        return JsonResponse({"message": "CommentLike deleted"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
+@require_http_methods(["DELETE"])
+def comment_like_detail(request, post_pk, comment_pk, pk):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+    try:
+        comment_like = CommentLike.objects.get(pk=pk, comment_id=comment_pk, author=request.user)
+    except CommentLike.DoesNotExist:
+        return HttpResponse(status=404)
+    comment_like.delete()
+    return JsonResponse({"message": "Like removed"}, status=204)
