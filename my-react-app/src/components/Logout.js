@@ -1,39 +1,24 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from "../contexts/AuthContext";
 import useCsrfToken from '../hooks/useCsrfToken';
 
-
-function Logout() {
-  const navigate = useNavigate();
+function LogoutButton() {
+  const { logout } = useAuthContext();
 
   const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
-
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8000/accounts/logout/', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            "X-CSRFToken": csrfToken,
-          },
-      });
-
-      if (response.ok) {
-        console.log("Sign-out successful");
-        navigate('/login');
-      } else {
-        console.error("Failed to sign out");
-      }
+      await logout();
+      console.log("Logged out successfully");
     } catch (error) {
-      console.error("Error during sign out:", error);
+      console.error("Logout failed", error);
     }
   };
 
   return (
-    <button onClick={handleLogout} className="dropdown-item">Logout</button>
+    <div style={{ cursor: 'pointer' }} className="dropdown-item" onClick={handleLogout}>Logout</div>
   );
 }
 
-export default Logout;
+export default LogoutButton;

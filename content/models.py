@@ -75,11 +75,14 @@ class PostLike(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+def __str__(self):
+    if self.author is not None:
         return f"Post like by {self.author.username} at {self.created_at.strftime('%Y-%m-%d')}"
+    else:
+        return "Post like by Unknown User"
 
-    class Meta:
-        ordering = ["-created_at"]
+class Meta:
+    ordering = ["-created_at"]
 
 
 class CommentLike(models.Model):

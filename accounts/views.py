@@ -9,16 +9,19 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
 import json
 
 CustomUser = get_user_model()
 
 
-@login_required
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def current_user(request):
     user_data = CustomUserSerializer(request.user).data
-    return JsonResponse(user_data)
+    return Response(user_data)
 
 
 @api_view(["POST"])

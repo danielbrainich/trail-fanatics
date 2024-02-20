@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
-import useAuth from '../hooks/useAuth';
+import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
 
 
 function Navbar() {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
+
 
   return (
     <nav className="navbar navbar-expand-lg mt-4">

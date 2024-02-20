@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCsrfToken from '../hooks/useCsrfToken';
+import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
+
 
 
 function LoginForm() {
@@ -8,37 +10,23 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
+    const formData = {'username': username, 'password': password};
+    console.log("Form data:", formData);
 
     try {
-      const response = await fetch('http://localhost:8000/accounts/login/', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-          "X-CSRFToken": csrfToken,
-        },
-      });
-
-      if (response.ok) {
-        console.log('Login successful');
-        navigate('/social');
-      } else {
-        const data = await response.json();
-        setError(data.error || 'Unknown error occurred');
-      }
+      await login(username, password);
+      console.log('Login successful');
+      navigate('/social');
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setError('Failed to submit form');
+      console.error('Error during login:', error);
+      setError(error.message || 'Unknown error occurred');
     }
   };
 
