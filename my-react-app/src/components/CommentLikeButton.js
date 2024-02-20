@@ -4,14 +4,14 @@ import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import useCsrfToken from '../hooks/useCsrfToken';
 
-function CommentLikeButton({ commentId }) {
+function CommentLikeButton({ commentId, postId }) {
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [likeId, setLikeId] = useState(null);
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
-      const response = await fetch(`http://localhost:8000/content/posts/${commentId}/comments/${commentId}/check-comment-like/`, {
+      const response = await fetch(`http://localhost:8000/content/posts/${postId}/comments/${commentId}/check-comment-like/`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -28,13 +28,13 @@ function CommentLikeButton({ commentId }) {
 
   useEffect(() => {
     const fetchLikeCount = async () => {
-      const response = await fetch(`http://localhost:8000/content/posts/${commentId}/comments/${commentId}/comment-likes/`, {
+      const response = await fetch(`http://localhost:8000/content/posts/${postId}/comments/${commentId}/`, {
         credentials: 'include',
       });
       if (response.ok) {
         const data = await response.json();
         console.log("data", data);
-        setLikeCount(data.likeCount);
+        setLikeCount(data.like_count);
       }
     };
 
@@ -47,7 +47,7 @@ function CommentLikeButton({ commentId }) {
     if (!liked) {
       try {
         console.log(csrfToken);
-        const response = await fetch(`http://localhost:8000/content/posts/${commentId}/comments/${commentId}/comment-likes/`, {
+        const response = await fetch(`http://localhost:8000/content/posts/${postId}/comments/${commentId}/comment-likes/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ function CommentLikeButton({ commentId }) {
     } else {
       try {
         if (likeId) {
-          const response = await fetch(`http://localhost:8000/content/posts/${commentId}/comments/${commentId}/comment-likes/${likeId}/`, {
+          const response = await fetch(`http://localhost:8000/content/posts/${postId}/comments/${commentId}/comment-likes/${likeId}/`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

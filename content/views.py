@@ -122,7 +122,10 @@ def comment_detail(request, post_pk, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if request.method == "GET":
         serializer = CommentSerializer(comment)
-        return JsonResponse(serializer.data)
+        like_count = CommentLike.objects.filter(comment=comment).count()
+        data = serializer.data
+        data['like_count'] = like_count
+        return JsonResponse(data)
     elif request.method == "PUT":
         serializer = CommentSerializer(comment, data=request.POST)
         if serializer.is_valid():
