@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = { width: '400px', height: '400px' };
@@ -6,10 +6,10 @@ const center = { lat: -34.397, lng: 150.644 };
 const libraries = ["drawing"];
 
 function MyMap() {
-  console.log("keykey", process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
-  const { isLoaded } = useJsApiLoader({
+  const [mapError, setMapError] = useState(null);
+  const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
-    key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries
   });
   const mapRef = useRef(null);
@@ -18,25 +18,17 @@ function MyMap() {
   }, []);
 
   useEffect(() => {
-    if (isLoaded && mapRef.current) {
-      const drawingManager = new window.google.maps.drawing.DrawingManager({
-        drawingMode: window.google.maps.drawing.OverlayType.POLYLINE,
-        drawingControl: true,
-        drawingControlOptions: {
-          position: window.google.maps.ControlPosition.TOP_CENTER,
-          drawingModes: ['polyline']
-        },
-        polylineOptions: {
-          strokeColor: '#ff0000',
-          strokeWeight: 2,
-          clickable: false,
-          editable: true,
-          zIndex: 1
-        }
-      });
-      drawingManager.setMap(mapRef.current);
+    if (loadError) {
+      setMapError(loadError);
     }
-  }, [isLoaded]);
+    if (isLoaded && mapRef.current) {
+      // Your map initialization code here
+    }
+  }, [isLoaded, loadError]);
+
+  if (mapError) {
+    return <div>Error loading map: {mapError.message}</div>;
+  }
 
   return isLoaded ? (
     <GoogleMap
