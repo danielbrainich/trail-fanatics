@@ -65,7 +65,7 @@ function ListPosts() {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     }

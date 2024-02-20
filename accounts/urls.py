@@ -9,6 +9,7 @@ from .views import (
     custom_login,
     custom_logout,
     current_user,
+    csrf_test_view,
 )
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     path("logout/", custom_logout, name="logout"),
     path("signup/", signup_view, name="signup"),
     path("current_user/", current_user, name="current_user"),
+    # Test
+    path('csrf-test/', csrf_test_view, name='csrf-test'),
 ]

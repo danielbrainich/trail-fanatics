@@ -46,11 +46,12 @@ function PostLikeButton({ postId }) {
   const toggleLike = async () => {
     if (!liked) {
       try {
+        console.log(csrfToken);
         const response = await fetch(`http://localhost:8000/content/posts/${postId}/post-likes/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "X-CSRFToken": csrfToken,
+            "X-CSRFToken": csrfToken.csrfToken,
           },
           credentials: 'include',
         });
@@ -72,7 +73,7 @@ function PostLikeButton({ postId }) {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
-              "X-CSRFToken": csrfToken,
+              "X-CSRFToken": csrfToken.csrfToken,
             },
             credentials: 'include',
           });

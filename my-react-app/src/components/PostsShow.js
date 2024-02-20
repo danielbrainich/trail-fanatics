@@ -85,7 +85,7 @@ useEffect(() => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
+          "X-CSRFToken": csrfToken.csrfToken,
         },
         credentials: 'include',
       }
@@ -99,7 +99,7 @@ useEffect(() => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     }

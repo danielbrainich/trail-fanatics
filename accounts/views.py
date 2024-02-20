@@ -13,6 +13,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 import json
+from django.http import HttpResponse
+from django.middleware.csrf import get_token
 
 CustomUser = get_user_model()
 
@@ -132,3 +134,8 @@ def user_detail(request, pk):
         return JsonResponse(
             {"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT
         )
+
+def csrf_test_view(request):
+    csrf_token = get_token(request)
+    print(csrf_token)  # For server logs
+    return HttpResponse(csrf_token)  # Directly return the token in response for testing

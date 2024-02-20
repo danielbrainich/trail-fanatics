@@ -24,7 +24,7 @@ function useCsrfToken() {
 
   const updateCsrfToken = () => setCsrfToken(getCookie('csrftoken'));
 
-  return [csrfToken, updateCsrfToken];
+  return { csrfToken, updateCsrfToken };
 }
 
 export default useCsrfToken;

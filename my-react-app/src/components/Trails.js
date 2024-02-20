@@ -8,7 +8,7 @@ const libraries = ["drawing"];
 function MyMap() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    key: 'AIzaSyC6i66WmXF9y08ZPcfpXhIepjDkpTU9bEc',
     libraries
   });
   console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)

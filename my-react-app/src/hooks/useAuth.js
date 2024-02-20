@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [csrfToken, updateCsrfToken] = useCsrfToken();
+  const { csrfToken, updateCsrfToken } = useCsrfToken();
   const navigate = useNavigate();
 
   const fetchCurrentUser = async () => {
