@@ -8,6 +8,7 @@ import SignupForm from './components/Signup';
 import LoginForm from './components/Login';
 import LogoutButton from "./components/Logout";
 import Profile from "./components/ProfileShow";
+import MyMap from "./components/Trails";
 import './main.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
               <Route path="/profiles/:userId" element={<Profile />} />
               <Route path="social" element={<ListPosts />} />
               <Route path="social/posts/:postId" element={<ShowPost />} />
+              <Route path="trails" element={<MyMap />} />
               <Route path="*" element={<div>Route not found</div>} />
             </Routes>
           </div>

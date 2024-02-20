@@ -11,8 +11,8 @@ class Trail(models.Model):
     )
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=280)
-    link = models.URLField(max_length=200, null=True, help_text="Enter a valid URL")
     image = models.ImageField(upload_to="trail_images/", null=True)
+    coordinates = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

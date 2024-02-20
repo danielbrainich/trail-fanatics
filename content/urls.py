@@ -9,6 +9,7 @@ from .views import (
     post_like_list,
     post_like_detail,
     comment_like_list,
+    check_like,
 )
 
 urlpatterns = [
@@ -30,6 +31,8 @@ urlpatterns = [
         post_like_detail,
         name="post_like_detail",
     ),
+    path('posts/<int:post_pk>/check-like/', check_like, name='check_like'),
+
     # CommentLike URLs
     path("comment-likes/", comment_like_list, name="comment_like_list"),
 ]

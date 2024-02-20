@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, viewsets
 from .models import Trail, Race, UserTrail, UserRace
 
 
@@ -10,12 +10,15 @@ class TrailSerializer(serializers.ModelSerializer):
             "creator",
             "name",
             "description",
-            "link",
             "image",
+            "coordinates",
             "created_at",
             "updated_at",
         ]
 
+class TrailViewSet(viewsets.ModelViewSet):
+    queryset = Trail.objects.all()
+    serializer_class = TrailSerializer
 
 class RaceSerializer(serializers.ModelSerializer):
     class Meta:

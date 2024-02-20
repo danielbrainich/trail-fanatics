@@ -4,6 +4,11 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .models import Trail, Race, UserTrail, UserRace
+from .models import Trail
+from rest_framework.response import Response
+import json
+
+
 from .serializers import (
     TrailSerializer,
     RaceSerializer,
@@ -12,7 +17,6 @@ from .serializers import (
 )
 
 
-# Trail views
 @require_http_methods(["GET", "POST"])
 def trail_list(request):
     if request.method == "GET":
@@ -20,7 +24,8 @@ def trail_list(request):
         serializer = TrailSerializer(trails, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
-        serializer = TrailSerializer(data=request.POST)
+        data = json.loads(request.body)
+        serializer = TrailSerializer(data=data)
         if serializer.is_valid():
             serializer.save(creator=request.user)
             return JsonResponse(serializer.data, status=201)
@@ -36,7 +41,8 @@ def trail_detail(request, pk):
         serializer = TrailSerializer(trail)
         return JsonResponse(serializer.data)
     elif request.method == "PUT":
-        serializer = TrailSerializer(trail, data=request.POST)
+        data = json.loads(request.body)
+        serializer = TrailSerializer(trail, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)

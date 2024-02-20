@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import useCsrfToken from '../hooks/useCsrfToken';
+import useCsrfToken from './useCsrfToken';
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
