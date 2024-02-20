@@ -50,23 +50,20 @@ def custom_login(request):
 @api_view(["POST"])
 def signup_view(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        username = data.get("username")
-        password = data.get("password")
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data.get("username")
+            password = serializer.validated_data.get("password")
 
-        if not username or not password:
-            return JsonResponse(
-                {"error": "Username and password are required"}, status=400
-            )
+            if CustomUser.objects.filter(username=username).exists():
+                return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if CustomUser.objects.filter(username=username).exists():
-            return JsonResponse({"error": "Username already exists"}, status=400)
-
-        user = CustomUser.objects.create_user(username=username, password=password)
-
-        return JsonResponse({"message": "User created successfully"})
+            user = CustomUser.objects.create_user(username=username, password=password)
+            return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return JsonResponse({"error": "Method Not Allowed"}, status=405)
+        return Response({"error": "Method Not Allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(["GET", "POST"])

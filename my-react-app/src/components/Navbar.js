@@ -7,7 +7,7 @@ import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
 function Navbar() {
   const { user } = useAuthContext();
 
-
+  console.log(user, "uuuser")
   return (
     <nav className="navbar navbar-expand-lg mt-4">
       <div className="container">

@@ -22,30 +22,24 @@ function SignupForm() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
 
     try {
       const response = await fetch('http://localhost:8000/accounts/signup/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-        headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrfToken.csrfToken,
         },
         credentials: 'include',
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
       });
 
       if (response.ok) {
         console.log("Signup successful");
-        navigate('/home');
+        navigate('/login');
       } else {
         const data = await response.json();
         setError(data.error || 'An unknown error occurred');

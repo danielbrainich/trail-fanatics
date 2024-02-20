@@ -6,12 +6,12 @@ const center = { lat: -34.397, lng: 150.644 };
 const libraries = ["drawing"];
 
 function MyMap() {
+  console.log("keykey", process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    key: 'AIzaSyC6i66WmXF9y08ZPcfpXhIepjDkpTU9bEc',
+    key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries
   });
-  console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
   const mapRef = useRef(null);
   const onLoad = React.useCallback(function callback(map) {
     mapRef.current = map;

@@ -33,6 +33,16 @@ const useAuth = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (csrfToken) {
+        await fetchCurrentUser();
+      }
+    };
+
+    fetchData();
+  }, [csrfToken]);
+
 
   const login = async (username, password) => {
     setIsLoading(true);
