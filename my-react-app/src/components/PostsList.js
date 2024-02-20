@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NewPostForm from "./PostsNew";
 import FilterPosts from "./PostsFilter";
-import LikeButton from "./PostLikeButton";
+import PostLikeButton from "./PostLikeButton";
 import useCsrfToken from '../hooks/useCsrfToken';
 
 
@@ -153,7 +153,7 @@ function ListPosts() {
                         );
                     })}
                   </div>
-                  <LikeButton postId={post.id} />
+                  <PostLikeButton postId={post.id} />
                   <Link to={`/social/posts/${post.id}`} className="card-link">Comment</Link>
                   <Link to={`#`} className="card-link">Edit</Link>
                   <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>

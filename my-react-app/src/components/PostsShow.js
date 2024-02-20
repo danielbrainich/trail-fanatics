@@ -156,7 +156,7 @@ useEffect(() => {
                         );
                     })}
                   </div>
-                  <PostLikeButton />
+                  <PostLikeButton postId={post.id} />
                   <Link to={`#`} className="card-link">Edit</Link>
                   <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
                 </div>
@@ -195,12 +195,12 @@ useEffect(() => {
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center">
-              <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
               <Link to={`/profiles/${comment.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(comment.created_at)}</h6>
               </div>
               <p className="card-text">{comment.content}</p>
                 <div className="d-flex">
+                  <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
                   <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
                 </div>
             </div>
