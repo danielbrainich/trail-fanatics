@@ -1,7 +1,6 @@
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404
-from .models import UserInterest
-from .serializers import UserInterestSerializer, CustomUserSerializer
+from .serializers import CustomUserSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -64,40 +63,6 @@ def signup_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"error": "Method Not Allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-@api_view(["GET", "POST"])
-def user_interest_list(request):
-    if request.method == "GET":
-        interests = UserInterest.objects.all()
-        serializer = UserInterestSerializer(interests, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    elif request.method == "POST":
-        serializer = UserInterestSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["GET", "PUT", "DELETE"])
-def user_interest_detail(request, pk):
-    interest = get_object_or_404(UserInterest, pk=pk)
-    if request.method == "GET":
-        serializer = UserInterestSerializer(interest)
-        return JsonResponse(serializer.data)
-    elif request.method == "PUT":
-        serializer = UserInterestSerializer(interest, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == "DELETE":
-        interest.delete()
-        return JsonResponse(
-            {"message": "Interest deleted successfully"},
-            status=status.HTTP_204_NO_CONTENT,
-        )
 
 
 @api_view(["GET", "POST"])
