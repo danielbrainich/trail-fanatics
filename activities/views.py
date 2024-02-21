@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -24,6 +24,8 @@ def trail_list(request):
         serializer = TrailSerializer(trails, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
         data = json.loads(request.body)
         serializer = TrailSerializer(data=data)
         if serializer.is_valid():
