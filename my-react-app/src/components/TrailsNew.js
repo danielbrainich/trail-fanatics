@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
@@ -9,16 +9,19 @@ const libraries = ['places'];
 
 function NewTrails() {
   const { user } = useAuth();
-  const [mapError, setMapError] = useState(null);
   const csrfToken = useCsrfToken();
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
+  const [formData, setFormData] = useState({
+    trailName: '',
+    trailDescription: '',
+  });
   const [markerPosition, setMarkerPosition] = useState(null);
-  const [trailName, setTrailName] = useState('');
-  const [trailDescription, setTrailDescription] = useState('');
+  const [trailSuccess, setTrailSuccess] = useState(false);
+  const [mapError, setMapError] = useState(null);
 
   useEffect(() => {
     if (loadError) {
@@ -33,13 +36,30 @@ function NewTrails() {
     });
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: value,
+    }));
+  };
+
   const resetForm = () => {
-    setTrailName('');
-    setTrailDescription('');
+    setFormData({
+      trailName: '',
+      trailDescription: '',
+    });
     setMarkerPosition(null);
   };
 
   const saveMap = async () => {
+    const trailData = {
+      name: formData.trailName,
+      description: formData.trailDescription,
+      creator: user ? user.id : null,
+      coordinates: markerPosition ? [markerPosition] : [],
+    };
+
     try {
       const apiUrl = 'http://localhost:8000/activities/trails/';
       const response = await fetch(apiUrl, {
@@ -49,17 +69,13 @@ function NewTrails() {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken.csrfToken,
         },
-        body: JSON.stringify({
-          name: trailName,
-          description: trailDescription,
-          creator: user ? user.id : null,
-          coordinates: markerPosition ? [markerPosition] : [],
-        }),
+        body: JSON.stringify(trailData),
       });
 
       if (response.ok) {
         console.log('Trail saved successfully');
         resetForm();
+        setTrailSuccess(!trailSuccess); // Optionally toggle a success state or message
       } else {
         console.error('Failed to save trail:', response.statusText);
       }
@@ -100,8 +116,9 @@ function NewTrails() {
               type="text"
               className="form-control"
               id="trailName"
-              value={trailName}
-              onChange={(e) => setTrailName(e.target.value)}
+              name="trailName"
+              value={formData.trailName}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group mb-3">
@@ -109,16 +126,17 @@ function NewTrails() {
             <textarea
               id="trailDescription"
               className="form-control"
-              value={trailDescription}
-              onChange={(e) => setTrailDescription(e.target.value)}
+              name="trailDescription"
+              value={formData.trailDescription}
+              onChange={handleChange}
               rows="3"
             ></textarea>
           </div>
           <div className="text-end">
-              <button className="btn btn-secondary me-2" onClick={resetForm} data-bs-dismiss="modal" type="reset">
+              <button className="btn btn-secondary me-2" data-bs-dismiss="modal" onClick={resetForm} type="button">
                 Clear
               </button>
-              <button className="btn btn-primary" onClick={saveMap} data-bs-dismiss="modal" type="submit">
+              <button className="btn btn-primary" data-bs-dismiss="modal" onClick={saveMap} type="button">
                 Save Map
               </button>
           </div>
