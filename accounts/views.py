@@ -47,9 +47,13 @@ def signup_view(request):
         username = serializer.validated_data.get("username")
         password = serializer.validated_data.get("password")
         if CustomUser.objects.filter(username=username).exists():
-            return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST
+            )
         user = CustomUser.objects.create_user(username=username, password=password)
-        return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "User created successfully"}, status=status.HTTP_201_CREATED
+        )
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,6 +81,12 @@ def user_detail(request, pk):
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         else:
-            return Response({"detail": "You do not have permission to edit this user."}, status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"detail": "You do not have permission to edit this user."},
+                status=status.HTTP_403_FORBIDDEN,
+            )

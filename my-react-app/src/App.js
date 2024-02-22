@@ -4,11 +4,10 @@ import ListPosts from './components/PostsList';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import ShowPost from './components/PostsShow';
-import HomePage from './components/HomePage';
 import SignupForm from './components/Signup';
 import LoginForm from './components/Login';
 import Profile from "./components/ProfileShow";
-import MyMap from "./components/Trails";
+import TrailsList from "./components/TrailsList";
 import About from "./components/About";
 import './main.css';
 
@@ -27,13 +26,13 @@ function App() {
             <Sidebar />
             <div className="flex-grow-1">
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<ListPosts />} />
                 <Route path="/signup" element={<SignupForm />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profiles/:userId" element={<Profile />} />
                 <Route path="social" element={<ListPosts />} />
                 <Route path="social/posts/:postId" element={<ShowPost />} />
-                <Route path="trails" element={<MyMap />} />
+                <Route path="trails" element={<TrailsList />} />
                 <Route path="about" element={<About />} />
                 <Route path="*" element={<div>Route not found</div>} />
               </Routes>

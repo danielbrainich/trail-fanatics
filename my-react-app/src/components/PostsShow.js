@@ -146,7 +146,7 @@ useEffect(() => {
                 <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
                 </div>
-              <h5 className="card-title">{post.title}</h5>
+              <h6 className="card-title">{post.title}</h6>
               <p className="card-text">{post.content}</p>
                 <div>
                   <div>

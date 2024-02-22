@@ -34,7 +34,6 @@ class CommentSerializer(serializers.ModelSerializer):
     author_id = serializers.CharField(source="author.id", read_only=True)
     post_id = serializers.PrimaryKeyRelatedField(source="post", read_only=True)
 
-
     class Meta:
         model = Comment
         fields = [

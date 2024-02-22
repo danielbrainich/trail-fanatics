@@ -3,7 +3,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Tag, Post, Comment, PostLike, CommentLike
-from .serializers import (TagSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer)
+from .serializers import (
+    TagSerializer,
+    PostSerializer,
+    CommentSerializer,
+    PostLikeSerializer,
+    CommentLikeSerializer,
+)
 
 
 # Tag views
@@ -13,6 +19,7 @@ def tag_list(request):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
+
 
 # Post views
 @api_view(["GET", "POST"])
@@ -24,7 +31,10 @@ def post_list(request):
 
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
@@ -42,14 +52,20 @@ def post_detail(request, pk):
         serializer = PostSerializer(post)
         likeCount = PostLike.objects.filter(post=post).count()
         data = serializer.data
-        data['likeCount'] = likeCount
+        data["likeCount"] = likeCount
         return Response(data)
 
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     if request.user != post.author:
-        return Response({"detail": "You do not have permission to modify this post."}, status=status.HTTP_403_FORBIDDEN)
+        return Response(
+            {"detail": "You do not have permission to modify this post."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
     if request.method == "PUT":
         serializer = PostSerializer(post, data=request.data)
@@ -75,7 +91,10 @@ def comment_list(request, post_pk):
 
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
         data = request.data
         data["post"] = post_pk
@@ -94,15 +113,21 @@ def comment_detail(request, post_pk, pk):
     if request.method == "GET":
         like_count = CommentLike.objects.filter(comment=comment).count()
         data = CommentSerializer(comment).data
-        data['like_count'] = like_count
+        data["like_count"] = like_count
         return Response(data)
 
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     if request.method == "PUT":
         if request.user != comment.author:
-            return Response({"detail": "You do not have permission to edit this comment."}, status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"detail": "You do not have permission to edit this comment."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid():
@@ -112,17 +137,25 @@ def comment_detail(request, post_pk, pk):
 
     if request.method == "DELETE":
         if request.user != comment.author:
-            return Response({"detail": "You do not have permission to delete this comment."}, status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"detail": "You do not have permission to delete this comment."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         comment.delete()
-        return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT
+        )
 
 
 # PostLike views
 @api_view(["GET"])
 def check_like(request, post_pk):
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     like = PostLike.objects.filter(post_id=post_pk, author=request.user).first()
 
@@ -130,6 +163,7 @@ def check_like(request, post_pk):
         return Response({"liked": True, "likeId": like.pk})
     else:
         return Response({"liked": False, "likeId": None})
+
 
 @api_view(["GET", "POST"])
 def post_like_list(request, post_pk):
@@ -140,11 +174,18 @@ def post_like_list(request, post_pk):
 
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
-        existing_like = PostLike.objects.filter(post_id=post_pk, author=request.user).first()
+        existing_like = PostLike.objects.filter(
+            post_id=post_pk, author=request.user
+        ).first()
         if existing_like:
-            return Response({"message": "Like already exists"}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Like already exists"}, status=status.HTTP_200_OK
+            )
 
         like = PostLike.objects.create(post_id=post_pk, author=request.user)
         serializer = PostLikeSerializer(like)
@@ -154,7 +195,10 @@ def post_like_list(request, post_pk):
 @api_view(["DELETE"])
 def post_like_detail(request, post_pk, pk):
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     post_like = get_object_or_404(PostLike, pk=pk, post_id=post_pk, author=request.user)
 
@@ -167,9 +211,14 @@ def post_like_detail(request, post_pk, pk):
 @api_view(["GET"])
 def check_comment_like(request, post_pk, comment_pk):
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
-    like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).first()
+    like = CommentLike.objects.filter(
+        comment_id=comment_pk, author=request.user
+    ).first()
 
     return Response({"liked": like is not None, "likeId": like.pk if like else None})
 
@@ -183,11 +232,18 @@ def comment_like_list(request, post_pk, comment_pk):
 
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
-        existing_like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).exists()
+        existing_like = CommentLike.objects.filter(
+            comment_id=comment_pk, author=request.user
+        ).exists()
         if existing_like:
-            return Response({"message": "Like already exists"}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Like already exists"}, status=status.HTTP_200_OK
+            )
 
         comment = get_object_or_404(Comment, pk=comment_pk)
 
@@ -199,13 +255,22 @@ def comment_like_list(request, post_pk, comment_pk):
 @api_view(["DELETE"])
 def comment_like_detail(request, post_pk, comment_pk, pk):
     if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
     try:
-        comment_like = CommentLike.objects.get(pk=pk, comment_id=comment_pk, author=request.user)
+        comment_like = CommentLike.objects.get(
+            pk=pk, comment_id=comment_pk, author=request.user
+        )
     except CommentLike.DoesNotExist:
-        return Response({"detail": "Comment like not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"detail": "Comment like not found."}, status=status.HTTP_404_NOT_FOUND
+        )
 
     comment_like.delete()
 
-    return Response({"message": "Comment like removed."}, status=status.HTTP_204_NO_CONTENT)
+    return Response(
+        {"message": "Comment like removed."}, status=status.HTTP_204_NO_CONTENT
+    )
