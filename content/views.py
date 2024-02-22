@@ -1,144 +1,128 @@
 from django.shortcuts import get_object_or_404
-from django.http import (
-    JsonResponse,
-    HttpResponseBadRequest,
-    HttpResponseNotAllowed,
-    HttpResponse,
-)
+from rest_framework import status
+from django.http import (JsonResponse, HttpResponseNotAllowed, HttpResponse)
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from django.views.decorators.http import require_http_methods
 from .models import Tag, Post, Comment, PostLike, CommentLike
-from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
 import json
-from .serializers import (
-    TagSerializer,
-    PostSerializer,
-    CommentSerializer,
-    PostLikeSerializer,
-    CommentLikeSerializer,
-)
+from .serializers import (TagSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer)
 
 
 # Tag views
-@require_http_methods(["GET", "POST"])
+@api_view(["GET"])
 def tag_list(request):
     if request.method == "GET":
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    elif request.method == "POST":
-        serializer = TagSerializer(data=request.POST)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
-
-
-@require_http_methods(["GET", "PUT", "DELETE"])
-def tag_detail(request, pk):
-    tag = get_object_or_404(Tag, pk=pk)
-    if request.method == "GET":
-        serializer = TagSerializer(tag)
-        return JsonResponse(serializer.data)
-    elif request.method == "PUT":
-        serializer = TagSerializer(tag, data=request.POST)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-    elif request.method == "DELETE":
-        tag.delete()
-        return JsonResponse({"message": "Tag deleted"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
-
+        return Response(serializer.data)
 
 # Post views
-@require_http_methods(["GET", "POST"])
+@api_view(["GET", "POST"])
 def post_list(request):
     if request.method == "GET":
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        data = json.loads(request.body)
-        serializer = PostSerializer(data=data)
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(author=request.user)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@require_http_methods(["GET", "PUT", "DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
     if request.method == "GET":
         serializer = PostSerializer(post)
         likeCount = PostLike.objects.filter(post=post).count()
         data = serializer.data
         data['likeCount'] = likeCount
-        return JsonResponse(data)
-    elif request.method == "PUT":
-        serializer = PostSerializer(post, data=request.POST)
+        return Response(data)
+
+    if not request.user.is_authenticated:
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.user != post.author:
+        return Response({"detail": "You do not have permission to modify this post."}, status=status.HTTP_403_FORBIDDEN)
+
+    if request.method == "PUT":
+        serializer = PostSerializer(post, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-    elif request.method == "DELETE":
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
         post.delete()
-        return JsonResponse({"message": "Post deleted"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
+        return Response({"message": "Post deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
 # Comment views
-@require_http_methods(["GET", "POST"])
+@api_view(["GET", "POST"])
 def comment_list(request, post_pk):
+    get_object_or_404(Post, pk=post_pk)
+
     if request.method == "GET":
-        comments = Comment.objects.all()
+        comments = Comment.objects.filter(post=post_pk)
         serializer = CommentSerializer(comments, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        data = json.loads(request.body)
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        data = request.data
         data["post"] = post_pk
         serializer = CommentSerializer(data=data)
         if serializer.is_valid():
             serializer.save(author=request.user)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    else:
-        return HttpResponseNotAllowed(["GET", "POST"])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@require_http_methods(["GET", "PUT", "DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 def comment_detail(request, post_pk, pk):
-    comment = get_object_or_404(Comment, pk=pk)
+    comment = get_object_or_404(Comment, pk=pk, post_id=post_pk)
+
     if request.method == "GET":
-        serializer = CommentSerializer(comment)
         like_count = CommentLike.objects.filter(comment=comment).count()
-        data = serializer.data
+        data = CommentSerializer(comment).data
         data['like_count'] = like_count
-        return JsonResponse(data)
-    elif request.method == "PUT":
-        serializer = CommentSerializer(comment, data=request.POST)
+        return Response(data)
+
+    if not request.user.is_authenticated:
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.method == "PUT":
+        if request.user != comment.author:
+            return Response({"detail": "You do not have permission to edit this comment."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-    elif request.method == "DELETE":
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
+        if request.user != comment.author:
+            return Response({"detail": "You do not have permission to delete this comment."}, status=status.HTTP_403_FORBIDDEN)
+
         comment.delete()
-        return JsonResponse({"message": "Comment deleted"}, status=204)
-    else:
-        return HttpResponseNotAllowed(["GET", "PUT", "DELETE"])
+        return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
+# PostLike views
 @require_http_methods(["GET"])
 def check_like(request, post_pk):
     if not request.user.is_authenticated:

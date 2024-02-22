@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import (
     tag_list,
-    tag_detail,
     post_list,
     post_detail,
     comment_list,
@@ -17,7 +16,6 @@ from .views import (
 urlpatterns = [
     # Tag URLs
     path("tags/", tag_list, name="tag_list"),
-    path("tags/<int:pk>/", tag_detail, name="tag_detail"),
     # Post URLs
     path("posts/", post_list, name="post_list"),
     path("posts/<int:pk>/", post_detail, name="post_detail"),
