@@ -51,104 +51,114 @@ Coming soon!
 
 ## Models
 
-This project consists of the following data models divided into three Django apps: accounts, activities, and content. Each app contains models representing different aspects of the Trail Fanatics project.
+This project consists of the following data models divided into three Django apps: accounts, activities, and content. Each app contains models representing different aspects of the Trail People project.
 
 ### Accounts
 
 #### CustomUser
 
-| Field            | Type       |
-|------------------|------------|
-| bio              | TextField  |
-| profile_picture  | ImageField |
+| Field            | Type          |
+|------------------|---------------|
+| id               | PrimaryKey    |
+| bio              | TextField     |
+| profile_picture  | ImageField    |
 
 ### Activities
 
 #### Trail
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| creator        | ForeignKey(CustomUser)         |
-| name           | CharField                                     |
-| description    | CharField                                     |
-| image          | ImageField                                    |
-| coordinates    | JSONField                                     |
-| created_at     | DateTimeField                                 |
-| updated_at     | DateTimeField                                 |
+| Field          | Type                   |
+|----------------|------------------------|
+| id             | PrimaryKey             |
+| creator        | ForeignKey(CustomUser) |
+| name           | CharField              |
+| description    | TextField              |
+| image          | ImageField             |
+| coordinates    | JSONField              |
+| created_at     | DateTimeField          |
+| updated_at     | DateTimeField          |
 
 #### Race
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| creator        | ForeignKey(CustomUser)         |
-| name           | CharField                                     |
-| description    | CharField                                     |
-| link           | URLField                                      |
-| image          | ImageField                                    |
-| created_at     | DateTimeField                                 |
-| updated_at     | DateTimeField                                 |
+| Field          | Type                   |
+|----------------|------------------------|
+| id             | PrimaryKey             |
+| creator        | ForeignKey(CustomUser) |
+| name           | CharField              |
+| description    | TextField              |
+| link           | URLField               |
+| image          | ImageField             |
+| created_at     | DateTimeField          |
+| updated_at     | DateTimeField          |
 
 #### UserTrail
 
-| Field  | Type                                          |
-|--------|-----------------------------------------------|
-| user   | ForeignKey(CustomUser)          |
-| trail  | ForeignKey(Trail)                             |
+| Field  | Type                          |
+|--------|-------------------------------|
+| id     | PrimaryKey                    |
+| user   | ForeignKey(CustomUser)        |
+| trail  | ForeignKey(Trail)             |
 
 #### UserRace
 
-| Field  | Type                                          |
-|--------|-----------------------------------------------|
-| user   | ForeignKey(CustomUser)          |
-| race   | ForeignKey(Race)                              |
+| Field  | Type                          |
+|--------|-------------------------------|
+| id     | PrimaryKey                    |
+| user   | ForeignKey(CustomUser)        |
+| race   | ForeignKey(Race)              |
 
 ### Content
 
 #### Tag
 
-| Field  | Type                                          |
-|--------|-----------------------------------------------|
-| name   | CharField                                     |
+| Field  | Type          |
+|--------|---------------|
+| id     | PrimaryKey    |
+| name   | CharField     |
 
 #### Post
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| author         | ForeignKey(CustomUser)         |
-| tags           | ManyToManyField(Tag)                         |
-| title          | CharField                                     |
-| content        | CharField                                     |
-| image          | ImageField                                    |
-| created_at     | DateTimeField                                 |
-| updated_at     | DateTimeField                                 |
-| status         | CharField                                     |
+| Field          | Type                    |
+|----------------|-------------------------|
+| id             | PrimaryKey              |
+| author         | ForeignKey(CustomUser)  |
+| tags           | ManyToManyField(Tag)    |
+| title          | CharField               |
+| content        | TextField               |
+| image          | ImageField              |
+| created_at     | DateTimeField           |
+| updated_at     | DateTimeField           |
+| status         | CharField               |
 
 #### Comment
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| author         | ForeignKey(CustomUser)         |
-| post           | ForeignKey(Post)                             |
-| content        | CharField                                     |
-| image          | ImageField                                    |
-| created_at     | DateTimeField                                 |
-| updated_at     | DateTimeField                                 |
+| Field          | Type                    |
+|----------------|-------------------------|
+| id             | PrimaryKey              |
+| author         | ForeignKey(CustomUser)  |
+| post           | ForeignKey(Post)        |
+| content        | TextField               |
+| image          | ImageField (Optional)   |
+| created_at     | DateTimeField           |
+| updated_at     | DateTimeField           |
 
 #### PostLike
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| author         | ForeignKey(CustomUser)         |
-| post           | ForeignKey(Post)                             |
-| created_at     | DateTimeField                                 |
+| Field          | Type                    |
+|----------------|-------------------------|
+| id             | PrimaryKey              |
+| author         | ForeignKey(CustomUser)  |
+| post           | ForeignKey(Post)        |
+| created_at     | DateTimeField           |
 
 #### CommentLike
 
-| Field          | Type                                          |
-|----------------|-----------------------------------------------|
-| author         | ForeignKey(CustomUser)         |
-| comment        | ForeignKey(Comment)                          |
-| created_at     | DateTimeField                                 |
+| Field          | Type                    |
+|----------------|-------------------------|
+| id             | PrimaryKey              |
+| author         | ForeignKey(CustomUser)  |
+| comment        | ForeignKey(Comment)     |
+| created_at     | DateTimeField           |
 
 ## API Endpoints
 Coming soon!
