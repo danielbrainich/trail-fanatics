@@ -4,6 +4,8 @@ import NewPostForm from "./PostsNew";
 import FilterPosts from "./PostsFilter";
 import PostLikeButton from "./PostLikeButton";
 import useCsrfToken from '../hooks/useCsrfToken';
+import AlertModal from './AlertModal';
+import { useAuthContext } from "../contexts/AuthContext";
 
 
 function ListPosts() {
@@ -12,6 +14,8 @@ function ListPosts() {
   const [tagsList, setTagsList] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const { user } = useAuthContext();
+
 
 
   useEffect(() => {
@@ -97,7 +101,7 @@ function ListPosts() {
   }, [selectedTags, posts]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-3 mt-md-5">
       {console.log(posts)}
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
@@ -120,7 +124,11 @@ function ListPosts() {
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
-                <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
+                {user ? (
+                  <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
+                  ) : (
+                  <AlertModal title="Hello!" feature="create a new post" modalId={"staticBackdrop"}/>
+                  )}
                 </div>
               </div>
             </div>

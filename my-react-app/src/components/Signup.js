@@ -51,7 +51,7 @@ function SignupForm() {
   };
 
   return (
-    <div className="container mt-5 mx-auto w-50">
+    <div className="container mt-3 mt-md-5 mx-auto w-50">
       <h4>Signup</h4>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">

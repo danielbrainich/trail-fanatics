@@ -135,7 +135,7 @@ useEffect(() => {
 
   return (
 
-    <div className="container mt-5">
+    <div className="container mt-3 mt-md-5">
       <div className="col-12 mb-3" key={post.id}>
         <div className="card">
           <div className="card-body">

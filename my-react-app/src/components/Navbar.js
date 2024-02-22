@@ -23,7 +23,7 @@ function Navbar() {
                   Account
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
+                  <li><Link className="dropdown-item text-primary" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
                   <li><Logout /></li>
                 </ul>
               </li>

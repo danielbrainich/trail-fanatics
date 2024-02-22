@@ -33,19 +33,19 @@ function Profile() {
   }, [userId, profileUpdateSuccess]);
 
   if (loading) {
-    return <div className="text-center mt-5">Loading...</div>;
+    return <div className="text-center mt-3 mt-md-5">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-5">Error: {error}</div>;
+    return <div className="text-center mt-3 mt-md-5">Error: {error}</div>;
   }
 
   if (!userProfile) {
-    return <div className="text-center mt-5">User not found</div>;
+    return <div className="text-center mt-3 mt-md-5">User not found</div>;
   }
 
   return (
-    <div className="container d-flex justify-content-center mt-5 vh-100">
+    <div className="container d-flex justify-content-center mt-3 mt-md-5 vh-100">
       <div className="row flex-fill d-flex justify-content-center">
         <div className="col-lg-9">
           <div className="card">
