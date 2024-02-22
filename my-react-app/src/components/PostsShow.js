@@ -5,6 +5,8 @@ import PostLikeButton from "./PostLikeButton";
 import { Link } from "react-router-dom";
 import useCsrfToken from '../hooks/useCsrfToken';
 import CommentLikeButton from "./CommentLikeButton";
+import AlertModal from './AlertModal';
+import { useAuthContext } from "../contexts/AuthContext";
 
 
 function ShowPost() {
@@ -14,6 +16,7 @@ function ShowPost() {
   const [comments, setComments] = useState([]);
   const [commentSuccess, setCommentSuccess] = useState(false);
   const [tagsList, setTagsList] = useState("");
+  const { user } = useAuthContext();
 
 
   const csrfToken = useCsrfToken();
@@ -183,7 +186,11 @@ useEffect(() => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
+              { user ? (
+                <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
+              ) : (
+                <AlertModal title="Hello!" feature="comment on this post" />
+              )}
             </div>
           </div>
         </div>

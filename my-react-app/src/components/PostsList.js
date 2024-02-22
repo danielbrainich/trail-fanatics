@@ -127,7 +127,7 @@ function ListPosts() {
                 {user ? (
                   <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
                   ) : (
-                  <AlertModal title="Hello!" feature="create a new post" modalId={"staticBackdrop"}/>
+                  <AlertModal title="Hello!" feature="post a new post" />
                   )}
                 </div>
               </div>
@@ -162,7 +162,7 @@ function ListPosts() {
                     })}
                   </div>
                   <PostLikeButton postId={post.id} />
-                  <Link to={`/social/posts/${post.id}`} className="card-link">Comment</Link>
+                  <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
                   <Link to={`#`} className="card-link">Edit</Link>
                   <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
                 </div>
