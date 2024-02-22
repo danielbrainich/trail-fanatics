@@ -19,8 +19,6 @@ const csrfToken = useCsrfToken();
 
     const apiUrl = `http://localhost:8000/content/posts/`;
 
-    console.log("this is my csrf token", csrfToken)
-
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(formData),
