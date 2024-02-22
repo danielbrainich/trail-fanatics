@@ -1,4 +1,4 @@
-# Trail Fanatics
+# Trail People
 
 ## Table of Contents
 1. [Description](#description)
@@ -12,19 +12,19 @@
 
 ## Description
 
-Trail Fanatics is a platform designed for trail runners, providing a social media experience where users can connect, share, and explore their passion for trail running. Features include:
+Trail People is a platform designed for trail runners, providing a social media experience where users can connect, share, and explore their passion for trail running. Features include:
 
 - **Social Media Platform**: Users can post updates, comment on posts, and like content shared by other users. The platform includes search and filter functionality for discovering and exploring content within the social media feed.
 
-- **Trail Map Creation and Sharing**: Trail Fanatics allows users to create, share, and save trail maps for their favorite trail runs. This feature enables runners to discover new trails, plan their runs, and share their experiences with others.
+- **Trail Map Creation and Sharing**: Trail People allows users to create, share, and save trail maps for their favorite trail runs. This feature enables runners to discover new trails, plan their runs, and share their experiences with others.
 
-Trail Fanatics aims to provide a comprehensive platform where the trail running
+Trail People aims to provide a comprehensive platform where the trail running
 community can meet and engage!
 
 
 ## Project Progress
 
-Trail Fanatics is a work in progress and is currently my main focus. This project will consolidate and build upon the full-stack skills showcased in my earlier projects, and will be a comprehensive demonstration of my capabilities.
+Trail People is a work in progress and is currently my main focus. This project will consolidate and build upon the full-stack skills showcased in my earlier projects, and will be a comprehensive demonstration of my capabilities.
 
 ## Screenshots
 
@@ -167,7 +167,7 @@ Coming soon!
 
 ### Google Maps JavaScript API
 
-The Trail Fanatics project integrates the Google Maps JavaScript API to enable interactive map functionalities. This integration allows users to:
+The Trail People project integrates the Google Maps JavaScript API to enable interactive map functionalities. This integration allows users to:
 
 - **Map Interaction:** Users can click on the map to place markers, indicating the starting point of new trails.
 - **Map Visualization:** The API provides a visually appealing map interface for users to view and interact with.

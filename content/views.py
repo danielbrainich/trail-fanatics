@@ -1,12 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from django.http import (JsonResponse, HttpResponseNotAllowed, HttpResponse)
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.views.decorators.http import require_http_methods
 from .models import Tag, Post, Comment, PostLike, CommentLike
-from rest_framework.permissions import IsAuthenticated
-import json
 from .serializers import (TagSerializer, PostSerializer, CommentSerializer, PostLikeSerializer, CommentLikeSerializer)
 
 
@@ -123,84 +119,93 @@ def comment_detail(request, post_pk, pk):
 
 
 # PostLike views
-@require_http_methods(["GET"])
+@api_view(["GET"])
 def check_like(request, post_pk):
     if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
     like = PostLike.objects.filter(post_id=post_pk, author=request.user).first()
 
     if like:
-        return JsonResponse({"liked": True, "likeId": like.pk})
+        return Response({"liked": True, "likeId": like.pk})
     else:
-        return JsonResponse({"liked": False, "likeId": None})
+        return Response({"liked": False, "likeId": None})
 
-@require_http_methods(["GET", "POST"])
+@api_view(["GET", "POST"])
 def post_like_list(request, post_pk):
     if request.method == "GET":
         post_likes = PostLike.objects.filter(post_id=post_pk)
         serializer = PostLikeSerializer(post_likes, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return HttpResponse(status=401)
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
         existing_like = PostLike.objects.filter(post_id=post_pk, author=request.user).first()
         if existing_like:
-            return JsonResponse({"message": "Like already exists"}, status=200)
+            return Response({"message": "Like already exists"}, status=status.HTTP_200_OK)
+
         like = PostLike.objects.create(post_id=post_pk, author=request.user)
         serializer = PostLikeSerializer(like)
-        return JsonResponse(serializer.data, status=201)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@require_http_methods(["DELETE"])
+@api_view(["DELETE"])
 def post_like_detail(request, post_pk, pk):
     if not request.user.is_authenticated:
-        return HttpResponse(status=401)
-    try:
-        post_like = PostLike.objects.get(pk=pk, post_id=post_pk, author=request.user)
-    except PostLike.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    post_like = get_object_or_404(PostLike, pk=pk, post_id=post_pk, author=request.user)
+
     post_like.delete()
-    return JsonResponse({"message": "Like removed"}, status=204)
+
+    return Response({"message": "Like removed"}, status=status.HTTP_204_NO_CONTENT)
 
 
 # CommentLike views
-@require_http_methods(["GET"])
+@api_view(["GET"])
 def check_comment_like(request, post_pk, comment_pk):
     if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
     like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).first()
 
-    if like:
-        return JsonResponse({"liked": True, "likeId": like.pk})
-    else:
-        return JsonResponse({"liked": False, "likeId": None})
+    return Response({"liked": like is not None, "likeId": like.pk if like else None})
 
 
-@require_http_methods(["GET", "POST"])
+@api_view(["GET", "POST"])
 def comment_like_list(request, post_pk, comment_pk):
     if request.method == "GET":
         comment_likes = CommentLike.objects.filter(comment_id=comment_pk)
         serializer = CommentLikeSerializer(comment_likes, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
     elif request.method == "POST":
         if not request.user.is_authenticated:
-            return HttpResponse(status=401)
-        existing_like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).first()
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        existing_like = CommentLike.objects.filter(comment_id=comment_pk, author=request.user).exists()
         if existing_like:
-            return JsonResponse({"message": "Like already exists"}, status=200)
+            return Response({"message": "Like already exists"}, status=status.HTTP_200_OK)
+
         comment = get_object_or_404(Comment, pk=comment_pk)
+
         like = CommentLike.objects.create(comment=comment, author=request.user)
         serializer = CommentLikeSerializer(like)
-        return JsonResponse(serializer.data, status=201)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@require_http_methods(["DELETE"])
+@api_view(["DELETE"])
 def comment_like_detail(request, post_pk, comment_pk, pk):
     if not request.user.is_authenticated:
-        return HttpResponse(status=401)
+        return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
     try:
         comment_like = CommentLike.objects.get(pk=pk, comment_id=comment_pk, author=request.user)
     except CommentLike.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response({"detail": "Comment like not found."}, status=status.HTTP_404_NOT_FOUND)
+
     comment_like.delete()
-    return JsonResponse({"message": "Like removed"}, status=204)
+
+    return Response({"message": "Comment like removed."}, status=status.HTTP_204_NO_CONTENT)
