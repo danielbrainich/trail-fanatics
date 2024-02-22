@@ -15,7 +15,7 @@ function ListTrails() {
     if (user) {
       fetchMyTrails();
     }
-  }, [user]);
+  }, [user, trailSuccess]);
 
   const fetchMyTrails = async () => {
     try {

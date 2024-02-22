@@ -7,7 +7,7 @@ const containerStyle = { width: '400px', height: '400px' };
 const center = { lat: 37.8117, lng: -122.1815 };
 const libraries = ['places'];
 
-function NewTrails() {
+function NewTrails( {setTrailSuccess, trailSuccess} ) {
   const { user } = useAuth();
   const csrfToken = useCsrfToken();
   const { isLoaded, loadError } = useJsApiLoader({
@@ -20,7 +20,6 @@ function NewTrails() {
     trailDescription: '',
   });
   const [markerPosition, setMarkerPosition] = useState(null);
-  const [trailSuccess, setTrailSuccess] = useState(false);
   const [mapError, setMapError] = useState(null);
 
   useEffect(() => {
@@ -61,7 +60,7 @@ function NewTrails() {
     };
 
     try {
-      const apiUrl = 'http://localhost:8000/activities/trails/';
+      const apiUrl = 'http://localhost:8000/activities/my_trails/';
       const response = await fetch(apiUrl, {
         method: 'POST',
         credentials: 'include',
@@ -75,7 +74,7 @@ function NewTrails() {
       if (response.ok) {
         console.log('Trail saved successfully');
         resetForm();
-        setTrailSuccess(!trailSuccess); // Optionally toggle a success state or message
+        setTrailSuccess(!trailSuccess);
       } else {
         console.error('Failed to save trail:', response.statusText);
       }
