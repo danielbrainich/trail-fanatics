@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth';
 import NewTrails from './TrailsNew';
 import AlertModal from './AlertModal';
 import { useAuthContext } from '../contexts/AuthContext';
+import MapComponent from './MapComponent';
 
 
 function ListTrails() {
@@ -31,6 +32,8 @@ function ListTrails() {
       console.error('Error fetching my trails:', error);
     }
   };
+
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 return (
   <div className="container mt-3 mt-md-5">
@@ -75,8 +78,8 @@ return (
               <div className="tab-pane fade show active" id="my-trails-tab-pane" role="tabpanel" aria-labelledby="my-trails-tab" tabIndex="0">
                 <div className="mt-3">
                   {myTrails.map((trail, index) => (
-                      <div key={index}>{trail.name}</div>
-                    ))}
+                    <MapComponent key={index} trail={trail} index={index} />
+                  ))}
                 </div>
               </div>
               <div className="tab-pane fade" id="saved-trails-tab-pane" role="tabpanel" aria-labelledby="saved-trails-tab" tabIndex="0">
