@@ -3,14 +3,16 @@ import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
 import NewTrails from './TrailsNew';
 import AlertModal from './AlertModal';
-import { useAuthContext } from '../contexts/AuthContext';
 import MapComponent from './MapComponent';
+import { useAuthContext } from "../contexts/AuthContext";
 
 
 function ListTrails() {
   const [trailSuccess, setTrailSuccess] = useState(false);
   const [myTrails, setMyTrails] = useState([]);
   const { user } = useAuthContext();
+  const csrfToken = useCsrfToken();
+
 
   useEffect(() => {
     if (user) {
@@ -30,6 +32,29 @@ function ListTrails() {
       }
     } catch (error) {
       console.error('Error fetching my trails:', error);
+    }
+  };
+
+  const handleDeleteTrail = async (index) => {
+    const trailToDelete = myTrails[index];
+    try {
+      const response = await fetch(`http://localhost:8000/activities/my_trails/${trailToDelete.id}/`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken.csrfToken,
+        },
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const updatedTrails = [...myTrails];
+        updatedTrails.splice(index, 1);
+        setMyTrails(updatedTrails);
+      } else {
+        console.error('Failed to delete trail');
+      }
+    } catch (error) {
+      console.error('Error deleting trail:', error);
     }
   };
 
@@ -77,9 +102,24 @@ return (
             <div className="tab-content" id="myTabContent">
               <div className="tab-pane fade show active" id="my-trails-tab-pane" role="tabpanel" aria-labelledby="my-trails-tab" tabIndex="0">
                 <div className="mt-3">
-                  {myTrails.map((trail, index) => (
-                    <MapComponent key={index} trail={trail} index={index} />
-                  ))}
+                {myTrails.map((trail, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="card">
+                      <div className="row g-0">
+                        <div className="col-md-6">
+                          <MapComponent trail={trail} index={index} />
+                        </div>
+                        <div className="col-md-6">
+                          <div className="card-body">
+                            <h5 className="card-title">{trail.name}</h5>
+                            <p className="card-text">{trail.description}</p>
+                            <button className="btn btn-danger" onClick={() => handleDeleteTrail(index)}>Delete</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
                 </div>
               </div>
               <div className="tab-pane fade" id="saved-trails-tab-pane" role="tabpanel" aria-labelledby="saved-trails-tab" tabIndex="0">

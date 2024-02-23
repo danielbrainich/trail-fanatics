@@ -41,7 +41,7 @@ def user_trail_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def user_trail_detail(request, pk):
-    user_trail = get_object_or_404(Trail, pk=pk, user=request.user)
+    user_trail = get_object_or_404(Trail, pk=pk, creator=request.user)
 
     if request.method == "GET":
         serializer = TrailSerializer(user_trail)
