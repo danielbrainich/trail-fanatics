@@ -1,44 +1,28 @@
-import React, { useEffect, useState } from "react";
-import useGoogleMaps from "../hooks/useGoogleMaps";
+import React from 'react';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
-function MapComponent({ trail, index }) {
-  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-  const isGoogleMapsLoaded = useGoogleMaps();
+const MapComponent = ({ trail, handleDeleteTrail }) => {
+  const containerStyle = { width: '325px', height: '325px' };
+  const defaultCenter = { lat: 37.8117, lng: -122.1815 };
 
-  useEffect(() => {
-    if (!scriptLoaded && isGoogleMapsLoaded) {
-      setScriptLoaded(true);
-    }
-  }, [isGoogleMapsLoaded, scriptLoaded]);
-
-  useEffect(() => {
-    if (scriptLoaded) {
-      createMapAndMarker();
-    }
-  }, [trail, index, scriptLoaded]);
-
-  const createMapAndMarker = () => {
-    const map = new window.google.maps.Map(document.getElementById(`map-${index}`), {
-      center: { lat: trail.coordinates[0].lat, lng: trail.coordinates[0].lng },
-      zoom: 12,
-      options: {
-        mapTypeId: 'roadmap',
-        zoomControl: true,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: false,
-      }
-    });
-
-    new window.google.maps.Marker({
-      position: { lat: trail.coordinates[0].lat, lng: trail.coordinates[0].lng },
-      map: map,
-      title: trail.name,
-    });
-  };
-
-  return <div className="mb-3" id={`map-${index}`} style={{ width: "300px", height: "300px" }}></div>;
-}
+  return (
+    <div className="col-md-auto mx-md-auto p-3">
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={trail.coordinates[0] || defaultCenter}
+        zoom={12}
+        options={{
+          mapTypeId: 'roadmap',
+          zoomControl: true,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        {trail.coordinates && <Marker position={trail.coordinates[0]} />}
+      </GoogleMap>
+    </div>
+  );
+};
 
 export default MapComponent;

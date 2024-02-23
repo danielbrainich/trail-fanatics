@@ -52,11 +52,15 @@ function NewTrails( {setTrailSuccess, trailSuccess} ) {
   };
 
   const saveMap = async () => {
+    if (!markerPosition) {
+      console.error('No coordinates selected for the trail.');
+      return;
+    }
     const trailData = {
       name: formData.trailName,
       description: formData.trailDescription,
       creator: user ? user.id : null,
-      coordinates: markerPosition ? [markerPosition] : [],
+      coordinates: [markerPosition],
     };
 
     try {

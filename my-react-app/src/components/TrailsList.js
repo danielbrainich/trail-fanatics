@@ -1,17 +1,18 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
 import NewTrails from './TrailsNew';
 import AlertModal from './AlertModal';
-import MapComponent from './MapComponent';
 import { useAuthContext } from "../contexts/AuthContext";
-
+import MapComponent from './MapComponent';
 
 function ListTrails() {
   const [trailSuccess, setTrailSuccess] = useState(false);
   const [myTrails, setMyTrails] = useState([]);
   const { user } = useAuthContext();
   const csrfToken = useCsrfToken();
+  const containerStyle = { width: '325px', height: '325px' };
+  const defaultCenter = { lat: 37.8117, lng: -122.1815 };
 
 
   useEffect(() => {
@@ -35,10 +36,9 @@ function ListTrails() {
     }
   };
 
-  const handleDeleteTrail = async (index) => {
-    const trailToDelete = myTrails[index];
+  const handleDeleteTrail = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8000/activities/my_trails/${trailToDelete.id}/`, {
+      const response = await fetch(`http://localhost:8000/activities/my_trails/${id}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -47,8 +47,7 @@ function ListTrails() {
         credentials: 'include',
       });
       if (response.ok) {
-        const updatedTrails = [...myTrails];
-        updatedTrails.splice(index, 1);
+        const updatedTrails = myTrails.filter(trail => trail.id !== id);
         setMyTrails(updatedTrails);
       } else {
         console.error('Failed to delete trail');
@@ -58,13 +57,10 @@ function ListTrails() {
     }
   };
 
-const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-return (
-  <div className="container mt-3 mt-md-5">
+  return (
+    <div className="container mt-3 mt-md-5">
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-column flex-fill">
-
           <div>
             <div className="d-flex mb-4">
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -82,8 +78,7 @@ return (
                       <NewTrails setTrailSuccess={setTrailSuccess} trailSuccess={trailSuccess} />
                     ) : (
                       <AlertModal title="Hello!" feature="create a new trail" />
-                    )
-                    }
+                    )}
                   </div>
                 </div>
               </div>
@@ -101,36 +96,42 @@ return (
             </ul>
             <div className="tab-content" id="myTabContent">
               <div className="tab-pane fade show active" id="my-trails-tab-pane" role="tabpanel" aria-labelledby="my-trails-tab" tabIndex="0">
-                <div className="mt-3">
-                {myTrails.map((trail, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="card">
-                      <div className="row g-0">
-                        <div className="col-md-6">
-                          <MapComponent trail={trail} index={index} />
-                        </div>
-                        <div className="col-md-6">
-                          <div className="card-body">
-                            <h5 className="card-title">{trail.name}</h5>
-                            <p className="card-text">{trail.description}</p>
-                            <button className="btn btn-danger" onClick={() => handleDeleteTrail(index)}>Delete</button>
+                 <div>
+                  {myTrails.map((trail, index) => (
+                    console.log(trail),
+                    <div key={index} className="my-4">
+                      <div className="card">
+                        <div className="row g-0">
+                        <div className="col-md-auto mx-md-auto p-3">
+                        <MapComponent trail={trail} handleDeleteTrail={handleDeleteTrail} />
+                          </div>
+                          <div className="col-md">
+                            <div className="card-body">
+                              <h5 className="card-title">{trail.name}</h5>
+                              <p className="card-text">{trail.description}</p>
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => handleDeleteTrail(trail.id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
                 </div>
               </div>
               <div className="tab-pane fade" id="saved-trails-tab-pane" role="tabpanel" aria-labelledby="saved-trails-tab" tabIndex="0">
-              <div className="mt-3">This is where everyone else's trails will live</div>
+                <div className="mt-3">This is where everyone else's trails will live</div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-);
+  );
 }
 
 export default ListTrails;

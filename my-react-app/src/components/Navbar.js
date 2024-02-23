@@ -23,9 +23,9 @@ function Navbar() {
             </ul>
           </li>
           ) : (
-            <ul>
-              <li className="nav-item">
-                <Link className="nav-link me-3 me-sm-0 text-primary" to="/login">Login</Link>
+            <ul className="list-unstyled d-flex flex-wrap align-items-center">
+              <li className="nav-item me-3 me-sm-0">
+                <Link className="nav-link text-primary" to="/login">Login</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link text-primary" to="/signup">Signup</Link>

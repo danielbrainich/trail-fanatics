@@ -15,7 +15,7 @@ function ShowPost() {
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [commentSuccess, setCommentSuccess] = useState(false);
-  const [tagsList, setTagsList] = useState("");
+  const [tagsList, setTagsList] = useState([]);
   const { user } = useAuthContext();
 
 

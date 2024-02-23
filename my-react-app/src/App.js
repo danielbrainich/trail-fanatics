@@ -9,6 +9,9 @@ import LoginForm from './components/Login';
 import Profile from "./components/ProfileShow";
 import TrailsList from "./components/TrailsList";
 import About from "./components/About";
+import GoogleMapsLoader from "./components/GoogleMapsLoader";
+import NewTrails from "./components/TrailsNew";
+
 import './main.css';
 
 function App() {
@@ -32,8 +35,9 @@ function App() {
                 <Route path="/profiles/:userId" element={<Profile />} />
                 <Route path="social" element={<ListPosts />} />
                 <Route path="social/posts/:postId" element={<ShowPost />} />
-                <Route path="trails" element={<TrailsList />} />
+                <Route path="trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
                 <Route path="about" element={<About />} />
+                <Route path="new-trails" element={<GoogleMapsLoader><NewTrails /></GoogleMapsLoader>} />
                 <Route path="*" element={<div>Route not found</div>} />
               </Routes>
             </div>

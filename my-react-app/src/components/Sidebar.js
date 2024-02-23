@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Sidebar() {
   return (
-    <div className="mt-md-5 col-md-3 col-lg-2 d-md-block" sidebar id="sidebarMenu">
+    <div className="mt-md-5 col-md-3 col-lg-2 d-md-block">
       <div className="position-sticky">
       <ul className="nav flex-md-column flex-sm-row sidebar-nav">
           <li className="nav-item">
