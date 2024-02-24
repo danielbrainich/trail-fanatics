@@ -29,8 +29,11 @@ function ListTrails() {
 
   const fetchAPI = async (url, options = {}) => {
     try {
-      const response = await fetch(url, options);
-      if (!response.ok) throw new Error('Network response was not ok');
+      const response = await fetch(url, { ...options, credentials: 'include' }); // Ensure credentials are included if necessary
+      if (!response.ok) {
+        console.error(`Fetch error: ${response.status} ${response.statusText}`);
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
       return response.json();
     } catch (error) {
       console.error('Fetch error:', error);
@@ -57,7 +60,7 @@ function ListTrails() {
 
   const handleSaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`http://localhost:8000/activities/saved_trails/`, {
+      const response = await fetch(`http://localhost:8000/activities/saved_trails/${trailId}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +70,7 @@ function ListTrails() {
       });
       if (response.ok) {
         console.log('Trail saved successfully');
-        fetchSavedTrails();
+        await fetchSavedTrails();
       } else {
         console.error('Failed to save trail');
       }
@@ -75,7 +78,6 @@ function ListTrails() {
       console.error('Error saving trail:', error);
     }
   };
-
 
   const handleUnsaveTrail = async (trailId) => {
     try {
@@ -89,7 +91,7 @@ function ListTrails() {
       });
       if (response.ok) {
         console.log('Trail unsaved successfully');
-        fetchSavedTrails();
+        await fetchSavedTrails();
       } else {
         console.error('Failed to unsave trail');
       }
@@ -170,7 +172,7 @@ function ListTrails() {
                             <h5 className="card-title">{trail.name}</h5>
                             <Link to={`/profiles/${trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.creator.username}</h6></Link>
                             <p className="card-text">{trail.description}</p>
-                            <button className="btn btn-primary" onClick={() => handleDeleteTrail(trail.id)}>
+                            <button className="btn btn-primary" onClick={() => handleDeleteTrail(trail.id, trail.creator.id)}>
                               Delete
                             </button>
                           </div>
@@ -209,13 +211,14 @@ function ListTrails() {
                     <div className="card">
                       <div className="row g-0">
                         <div className="col-md-auto mx-md-auto p-3">
-                          <MapComponent trail={trail} />
+                          <MapComponent trail={trail.trail} />
                         </div>
                         <div className="col-md">
                           <div className="card-body">
-                            <h5 className="card-title">{trail.name}</h5>
-                            <p className="card-text">{trail.description}</p>
-                            <button className="btn btn-danger" onClick={() => handleUnsaveTrail(trail.id)}>
+                            <h5 className="card-title">{trail.trail.name}</h5>
+                            <Link to={`/profiles/${trail.trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.trail.creator.username}</h6></Link>
+                            <p className="card-text">{trail.trail.description}</p>
+                            <button className="btn btn-primary" onClick={() => handleUnsaveTrail(trail.trail.id)}>
                               Unsave
                             </button>
                           </div>

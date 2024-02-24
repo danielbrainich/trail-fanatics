@@ -28,6 +28,13 @@ class TrailViewSet(viewsets.ModelViewSet):
 
 
 class SavedTrailSerializer(serializers.ModelSerializer):
+    trail = TrailSerializer(read_only=True)
+
     class Meta:
         model = SavedTrail
-        fields = ["id", "user", "trail"]
+        fields = ['id', 'trail']
+
+class SimpleSavedTrailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavedTrail
+        fields = ['id', 'trail']

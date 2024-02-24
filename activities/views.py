@@ -7,6 +7,7 @@ from rest_framework import status
 from .serializers import (
     TrailSerializer,
     SavedTrailSerializer,
+    SimpleSavedTrailSerializer,
 )
 
 
@@ -49,27 +50,26 @@ def trail_detail(request, pk):
             return Response(serializer.errors, status=400)
 
 
-#Saved trail views
-@api_view(["GET", "POST"])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def saved_trail_list(request):
-    if request.method == "GET":
-        saved_trails = SavedTrail.objects.filter(user=request.user)
-        serializer = SavedTrailSerializer(saved_trails, many=True)
-        return Response(serializer.data)
-    elif request.method == "POST":
-        serializer = SavedTrailSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
+def saved_trails_list(request):
+    saved_trails = SavedTrail.objects.filter(user=request.user)
+    serializer = SavedTrailSerializer(saved_trails, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def manage_saved_trail(request, trail_id):
+    if request.method == 'POST':
+        trail = get_object_or_404(Trail, pk=trail_id)
+        saved_trail, created = SavedTrail.objects.get_or_create(user=request.user, trail=trail)
+        if created:
+            serializer = SimpleSavedTrailSerializer(saved_trail)
             return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-
-
-@api_view(["DELETE"])
-@permission_classes([IsAuthenticated])
-def saved_trail_detail(request, pk):
-    saved_trail = get_object_or_404(SavedTrail, pk=pk, user=request.user)
-    if not request.user.is_authenticated:
-        return Response({"detail": "Authentication credentials were not provided."}, status=401)
-    saved_trail.delete()
-    return Response(status=204)
+        else:
+            return Response({'detail': 'Trail already saved.'}, status=400)
+    elif request.method == 'DELETE':
+        saved_trail = get_object_or_404(SavedTrail, user=request.user, trail_id=trail_id)
+        saved_trail.delete()
+        return Response(status=204)
