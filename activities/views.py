@@ -3,36 +3,23 @@ from .models import Trail, SavedTrail
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework import status
 from .serializers import (
     TrailSerializer,
     SavedTrailSerializer,
 )
 
 
-# All trails views
-@api_view(["GET"])
-def trail_list(request):
-    trails = Trail.objects.all()
-    serializer = TrailSerializer(trails, many=True)
-    return Response(serializer.data)
-
-
-@api_view(["GET"])
-def trail_detail(request, pk):
-    trail = get_object_or_404(Trail, pk=pk)
-    serializer = TrailSerializer(trail)
-    return Response(serializer.data)
-
-
-# User trails views
+# Trails views
 @api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def user_trail_list(request):
+def trail_list(request):
     if request.method == "GET":
-        user_trails = Trail.objects.filter(creator=request.user)
-        serializer = TrailSerializer(user_trails, many=True)
+        trails = Trail.objects.all()
+        serializer = TrailSerializer(trails, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=401)
         serializer = TrailSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(creator=request.user)
@@ -40,25 +27,26 @@ def user_trail_list(request):
         return Response(serializer.errors, status=400)
 
 
-@api_view(["GET", "PUT", "DELETE"])
-@permission_classes([IsAuthenticated])
-def user_trail_detail(request, pk):
-    user_trail = get_object_or_404(Trail, pk=pk, creator=request.user)
-
-    if request.method == "GET":
-        serializer = TrailSerializer(user_trail)
+@api_view(["GET", "DELETE", "PUT"])
+def trail_detail(request, pk):
+    trail = get_object_or_404(Trail, pk=pk)
+    if request.method == 'GET':
+        serializer = TrailSerializer(trail)
         return Response(serializer.data)
-
-    elif request.method == "PUT":
-        serializer = TrailSerializer(user_trail, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-
-    elif request.method == "DELETE":
-        user_trail.delete()
-        return Response(status=204)
+    elif request.method in ['DELETE', 'PUT']:
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=401)
+        if request.user != trail.creator:
+            return Response({"detail": "You do not have permission to modify or delete this trail."}, status=403)
+        if request.method == 'DELETE':
+            trail.delete()
+            return Response(status=204)
+        elif request.method == 'PUT':
+            serializer = TrailSerializer(trail, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=400)
 
 
 #Saved trail views
@@ -81,5 +69,7 @@ def saved_trail_list(request):
 @permission_classes([IsAuthenticated])
 def saved_trail_detail(request, pk):
     saved_trail = get_object_or_404(SavedTrail, pk=pk, user=request.user)
+    if not request.user.is_authenticated:
+        return Response({"detail": "Authentication credentials were not provided."}, status=401)
     saved_trail.delete()
     return Response(status=204)

@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
-const MapComponent = ({ trail, handleDeleteTrail }) => {
+const MapComponent = ({ trail }) => {
   const containerStyle = { width: '325px', height: '325px' };
   const defaultCenter = { lat: 37.8117, lng: -122.1815 };
 
