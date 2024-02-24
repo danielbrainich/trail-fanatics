@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import CustomUser
+from .models import CustomUser, Avatar
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -16,4 +15,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "last_name",
             "bio",
             "password",
+            "avatar",
         ]
+
+
+class AvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Avatar
+        fields = ['id', 'image', 'description']

@@ -6,6 +6,11 @@ function Sidebar() {
       <div className="position-sticky">
       <ul className="nav flex-md-column flex-sm-row sidebar-nav">
           <li className="nav-item">
+            <Link className="nav-link" to="/about">
+              About
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link" to="/social">
               Social
             </Link>
@@ -13,11 +18,6 @@ function Sidebar() {
           <li className="nav-item">
             <Link className="nav-link" to="/trails">
               Trails
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/about">
-              About
             </Link>
           </li>
         </ul>

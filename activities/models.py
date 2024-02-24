@@ -17,7 +17,7 @@ class Trail(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class UserTrail(models.Model):
+class SavedTrail(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -26,3 +26,4 @@ class UserTrail(models.Model):
     trail = models.ForeignKey(
         Trail, on_delete=models.CASCADE, related_name="trail_followers"
     )
+    saved_at = models.DateTimeField(auto_now_add=True)

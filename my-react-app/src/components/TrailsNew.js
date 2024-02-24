@@ -140,7 +140,7 @@ function NewTrails( {setTrailSuccess, trailSuccess} ) {
                 Clear
               </button>
               <button className="btn btn-primary" data-bs-dismiss="modal" onClick={saveMap} type="button">
-                Save Map
+                Save Trail
               </button>
           </div>
         </div>

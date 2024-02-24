@@ -1,5 +1,5 @@
 from rest_framework import serializers, viewsets
-from .models import Trail, UserTrail
+from .models import Trail, SavedTrail
 
 
 class TrailSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class TrailViewSet(viewsets.ModelViewSet):
     serializer_class = TrailSerializer
 
 
-class UserTrailSerializer(serializers.ModelSerializer):
+class SavedTrailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserTrail
+        model = SavedTrail
         fields = ["id", "user", "trail"]

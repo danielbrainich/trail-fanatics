@@ -150,8 +150,8 @@ useEffect(() => {
               <p className="card-text">{post.content}</p>
                 <div>
                   <div>
-                    {tagsList && post && post.tags && post.tags.map(tagId => {
-                        const tagObj = tagsList.find(tag => tag.id === tagId);
+                  {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                      const tagObj = tagsList.find(tag => tag.id === tagId);
                         return (
                             <div key={tagId} className="badge bg-secondary mb-2 me-2">
                                 {tagObj ? tagObj.name : 'Unknown Tag'}

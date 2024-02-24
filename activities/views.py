@@ -1,21 +1,23 @@
 from django.shortcuts import get_object_or_404
-from .models import Trail, UserTrail
+from .models import Trail, SavedTrail
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import (
     TrailSerializer,
-    UserTrailSerializer,
+    SavedTrailSerializer,
 )
 
+
 # All trails views
-@api_view(['GET'])
+@api_view(["GET"])
 def trail_list(request):
     trails = Trail.objects.all()
     serializer = TrailSerializer(trails, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def trail_detail(request, pk):
     trail = get_object_or_404(Trail, pk=pk)
     serializer = TrailSerializer(trail)
@@ -23,7 +25,7 @@ def trail_detail(request, pk):
 
 
 # User trails views
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def user_trail_list(request):
     if request.method == "GET":
@@ -38,7 +40,7 @@ def user_trail_list(request):
         return Response(serializer.errors, status=400)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(["GET", "PUT", "DELETE"])
 @permission_classes([IsAuthenticated])
 def user_trail_detail(request, pk):
     user_trail = get_object_or_404(Trail, pk=pk, creator=request.user)
@@ -57,3 +59,27 @@ def user_trail_detail(request, pk):
     elif request.method == "DELETE":
         user_trail.delete()
         return Response(status=204)
+
+
+#Saved trail views
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def saved_trail_list(request):
+    if request.method == "GET":
+        saved_trails = SavedTrail.objects.filter(user=request.user)
+        serializer = SavedTrailSerializer(saved_trails, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = SavedTrailSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def saved_trail_detail(request, pk):
+    saved_trail = get_object_or_404(SavedTrail, pk=pk, user=request.user)
+    saved_trail.delete()
+    return Response(status=204)
