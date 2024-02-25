@@ -35,3 +35,11 @@ cursor: pointer;
     font-family: 'SantaRosa', sans-serif !important;
     font-size: 2rem;
 }
+
+.nav-item.dropdown .dropdown-menu {
+position: absolute;
+}
+
+.dropdown-menu {
+transform: translateX(-50%);
+}

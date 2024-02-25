@@ -14,13 +14,13 @@ function Navbar() {
         <ul className="navbar-nav ms-auto d-flex flex-row">
           {user ? (
             <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Account
-            </a>
-            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><Link className="dropdown-item text-primary" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
-              <li><Logout /></li>
-            </ul>
+              <a className="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Account
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><Link className="dropdown-item text-primary" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
+                <li><Logout /></li>
+              </ul>
           </li>
           ) : (
             <ul className="list-unstyled d-flex flex-wrap align-items-center">
