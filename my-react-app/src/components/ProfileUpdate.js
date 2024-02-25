@@ -4,12 +4,15 @@ import useAuth from '../hooks/useAuth';
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
   const { user } = useAuth();
+  const [avatars, setAvatars] = useState([]);
   const [formData, setFormData] = useState({
     username: username || "",
     email: email || "",
     firstName: firstName || "",
     lastName: lastName || "",
     bio: bio || "",
+    avatar: null,
+
   });
 
   useEffect(() => {
@@ -19,8 +22,10 @@ function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, u
       firstName: firstName || "",
       lastName: lastName || "",
       bio: bio || "",
+      avatar: null,
+
     });
-  }, [username, email, firstName, lastName, bio]);
+  }, [username, email, firstName, lastName, bio, formData.avatar]);
 
 const csrfToken = useCsrfToken();
 
@@ -37,9 +42,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const dataToSend = {
         username: formData.username,
         email: formData.email,
-        first_name: formData.firstName, // Convert to backend's expected key
-        last_name: formData.lastName,   // Convert to backend's expected key
+        first_name: formData.firstName,
+        last_name: formData.lastName,
         bio: formData.bio,
+        avatar: formData.avatar,
     };
 
     const apiUrl = `http://localhost:8000/accounts/profiles/${userId}/`;
@@ -64,6 +70,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         firstName: "",
         lastName: "",
         bio: "",
+        avatar: null,
       });
       setProfileUpdateSuccess(!profileUpdateSuccess)
     }
@@ -76,6 +83,30 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/accounts/avatars/", {
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken.csrfToken,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setAvatars(data);
+        } else {
+          console.error("Failed to fetch avatars");
+        }
+      } catch (error) {
+        console.error("Error fetching avatars:", error);
+      }
+    };
+
+    fetchAvatars();
+  }, [csrfToken.csrfToken]);
 
   return (
     <div className="card w-100 my-3 border-0">
@@ -127,6 +158,24 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     onChange={handleChangeInput}
                     value={formData.bio}
                     ></textarea>
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Choose Avatar</label>
+                    {avatars.map((avatar) => (
+                      <div key={avatar.id} className="form-check">
+                        <input
+                          type="radio"
+                          id={avatar.id}
+                          name="avatar"
+                          value={avatar.id}
+                          onChange={handleChangeInput}
+                          checked={formData.avatar === avatar.id}
+                          className="form-check-input"
+                        />
+                        <label htmlFor={avatar.id} className="form-check-label">{avatar.description}</label>
+                        <img src={avatar.image} alt="Avatar" />
+                      </div>
+                    ))}
                 </div>
                 <div className="text-end">
                     <button className="btn btn-secondary me-2" data-bs-dismiss="modal" type="reset">
