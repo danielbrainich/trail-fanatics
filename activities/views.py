@@ -16,7 +16,7 @@ from .serializers import (
 def trail_list(request):
     if request.method == "GET":
         trails = Trail.objects.all()
-        serializer = TrailSerializer(trails, many=True)
+        serializer = TrailSerializer(trails, many=True, context={'request': request})
         return Response(serializer.data)
     elif request.method == "POST":
         if not request.user.is_authenticated:

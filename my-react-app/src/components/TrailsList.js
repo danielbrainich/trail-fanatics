@@ -29,7 +29,7 @@ function ListTrails() {
 
   const fetchAPI = async (url, options = {}) => {
     try {
-      const response = await fetch(url, { ...options, credentials: 'include' }); // Ensure credentials are included if necessary
+      const response = await fetch(url, { ...options, credentials: 'include' });
       if (!response.ok) {
         console.error(`Fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`Network response was not ok: ${response.status}`);
@@ -71,6 +71,8 @@ function ListTrails() {
       if (response.ok) {
         console.log('Trail saved successfully');
         await fetchSavedTrails();
+        setTrailSuccess(!trailSuccess);
+
       } else {
         console.error('Failed to save trail');
       }
@@ -92,6 +94,8 @@ function ListTrails() {
       if (response.ok) {
         console.log('Trail unsaved successfully');
         await fetchSavedTrails();
+        setTrailSuccess(!trailSuccess);
+
       } else {
         console.error('Failed to unsave trail');
       }
@@ -195,9 +199,15 @@ function ListTrails() {
                             <h5 className="card-title">{trail.name}</h5>
                             <Link to={`/profiles/${trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.creator.username}</h6></Link>
                             <p className="card-text">{trail.description}</p>
+                            {trail.is_saved ? (
+                            <button className="btn btn-tertiary" disabled>
+                              Save
+                            </button>
+                            ) : (
                             <button className="btn btn-primary" onClick={() => handleSaveTrail(trail.id)}>
                               Save
                             </button>
+                            )}
                           </div>
                         </div>
                       </div>
