@@ -6,7 +6,6 @@ from .views import (
     custom_login,
     custom_logout,
     current_user,
-    avatar_list,
 )
 
 urlpatterns = [
@@ -18,6 +17,4 @@ urlpatterns = [
     path("logout/", custom_logout, name="logout"),
     path("signup/", signup_view, name="signup"),
     path("current_user/", current_user, name="current_user"),
-     # Avatars
-    path("avatars/", avatar_list, name="avatar_list"),
 ]

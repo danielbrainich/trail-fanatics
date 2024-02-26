@@ -1,18 +1,32 @@
 import { useState, useEffect } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
+import sunglasses from '../assets/avatars/sunglasses.png';
+import dog from '../assets/avatars/dog.png';
+import mountains from '../assets/avatars/mountains.png';
+import map from '../assets/avatars/map.png';
+import bottle from '../assets/avatars/bottle.png';
+import shoe from '../assets/avatars/shoe.png';
+
+const avatarOptions = {
+  sunglasses,
+  dog,
+  mountains,
+  map,
+  bottle,
+  shoe,
+};
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
   const { user } = useAuth();
-  const [avatars, setAvatars] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState('');
   const [formData, setFormData] = useState({
     username: username || "",
     email: email || "",
     firstName: firstName || "",
     lastName: lastName || "",
     bio: bio || "",
-    avatar: null,
-
+    avatar: "",
   });
 
   useEffect(() => {
@@ -22,10 +36,9 @@ function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, u
       firstName: firstName || "",
       lastName: lastName || "",
       bio: bio || "",
-      avatar: null,
-
+      avatar: "",
     });
-  }, [username, email, firstName, lastName, bio, formData.avatar]);
+  }, [username, email, firstName, lastName, bio]);
 
 const csrfToken = useCsrfToken();
 
@@ -84,29 +97,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     }));
   };
 
-  useEffect(() => {
-    const fetchAvatars = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/accounts/avatars/", {
-          credentials: 'include',
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken.csrfToken,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setAvatars(data);
-        } else {
-          console.error("Failed to fetch avatars");
-        }
-      } catch (error) {
-        console.error("Error fetching avatars:", error);
-      }
-    };
-
-    fetchAvatars();
-  }, [csrfToken.csrfToken]);
+  const handleSelectAvatar = (key) => {
+    setSelectedAvatar(key);
+    setFormData(prev => ({ ...prev, avatar: key }));
+  };
 
   return (
     <div className="card w-100 my-3 border-0">
@@ -160,23 +154,24 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     ></textarea>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Choose Avatar</label>
-                    {avatars.map((avatar) => (
-                      <div key={avatar.id} className="form-check">
-                        <input
-                          type="radio"
-                          id={avatar.id}
-                          name="avatar"
-                          value={avatar.id}
-                          onChange={handleChangeInput}
-                          checked={formData.avatar === avatar.id}
-                          className="form-check-input"
-                        />
-                        <label htmlFor={avatar.id} className="form-check-label">{avatar.description}</label>
-                        <img src={avatar.image} alt="Avatar" />
-                      </div>
-                    ))}
-                </div>
+                <div className="form-label">Choose Avatar</div>
+                {Object.entries(avatarOptions).map(([key, src]) => (
+                  <img
+                    key={key}
+                    src={src}
+                    alt={key}
+                    onClick={() => handleSelectAvatar(key)}
+                    style={{
+                      cursor: 'pointer',
+                      width: 50,
+                      marginRight: 15,
+                      borderRadius: '50%',
+                      transform: selectedAvatar === key ? 'scale(1.25)' : 'scale(1)',
+                      transition: 'transform 0.3s ease',
+                    }}
+                  />
+                ))}
+              </div>
                 <div className="text-end">
                     <button className="btn btn-secondary me-2" data-bs-dismiss="modal" type="reset">
                     Clear

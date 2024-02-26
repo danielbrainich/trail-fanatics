@@ -7,11 +7,9 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import login, authenticate, logout
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Avatar
-from .serializers import AvatarSerializer
+
 
 CustomUser = get_user_model()
-
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -92,11 +90,3 @@ def user_detail(request, pk):
                 {"detail": "You do not have permission to edit this user."},
                 status=status.HTTP_403_FORBIDDEN,
             )
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def avatar_list(request):
-    avatars = Avatar.objects.all()
-    serializer = AvatarSerializer(avatars, many=True)
-    return Response(serializer.data)
