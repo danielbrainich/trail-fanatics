@@ -2,17 +2,34 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCsrfToken from '../hooks/useCsrfToken';
 
+import sunglasses from '../assets/avatars/sunglasses.png';
+import dog from '../assets/avatars/dog.png';
+import mountains from '../assets/avatars/mountains.png';
+import map from '../assets/avatars/map.png';
+import bottle from '../assets/avatars/bottle.png';
+import shoe from '../assets/avatars/shoe.png';
+
+const avatarOptions = {
+  sunglasses,
+  dog,
+  mountains,
+  map,
+  bottle,
+  shoe,
+};
 
 function SignupForm() {
-  const [username, setUsername] = useState('');
+  const [selectedAvatar, setSelectedAvatar] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    passwordConfirm: '',
+  });
   const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +39,12 @@ function SignupForm() {
       return;
     }
 
+    const dataToSend = {
+      username: formData.username,
+      password: formData.password,
+      passwordConfirm: formData.passwordConfirm,
+      avatar: selectedAvatar,
+    };
 
     try {
       const response = await fetch('http://localhost:8000/accounts/signup/', {
@@ -31,10 +54,7 @@ function SignupForm() {
           "X-CSRFToken": csrfToken.csrfToken,
         },
         credentials: 'include',
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
@@ -50,6 +70,18 @@ function SignupForm() {
     }
   };
 
+  const handleSelectAvatar = (key) => {
+    setSelectedAvatar(key);
+  };
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="container mt-3 mt-md-5 mx-auto w-50">
       <h4>Signup</h4>
@@ -61,9 +93,10 @@ function SignupForm() {
             type="text"
             className="form-control"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Choose a username"
+            name="username"
+            value={formData.username}
+            onChange={handleChangeInput}
+            placeholder="Enter your username"
             required
           />
         </div>
@@ -73,9 +106,10 @@ function SignupForm() {
             type="password"
             className="form-control"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Create a password"
+            name="password"
+            value={formData.password}
+            onChange={handleChangeInput}
+            placeholder="Enter a password"
             required
           />
         </div>
@@ -85,13 +119,33 @@ function SignupForm() {
             type="password"
             className="form-control"
             id="passwordConfirm"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
+            name="passwordConfirm"
+            value={formData.passwordConfirm}
+            onChange={handleChangeInput}
             placeholder="Confirm your password"
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Sign Up</button>
+        <div className="mb-3">
+          <div className="form-label">Choose an Avatar</div>
+          {Object.entries(avatarOptions).map(([key, src]) => (
+            <img
+              key={key}
+              src={src}
+              alt={key}
+              onClick={() => handleSelectAvatar(key)}
+              style={{
+                cursor: 'pointer',
+                width: 50,
+                marginRight: 15,
+                borderRadius: '50%',
+                transform: selectedAvatar === key ? 'scale(1.2)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+              }}
+            />
+          ))}
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   );

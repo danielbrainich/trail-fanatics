@@ -152,7 +152,7 @@ useEffect(() => {
                   {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
                       const tagObj = tagsList.find(tag => tag.id === tagId);
                         return (
-                            <div key={tagId} className="badge bg-secondary mb-2 me-2">
+                            <div key={tagId} className="badge mb-2 me-2">
                                 {tagObj ? tagObj.name : 'Unknown Tag'}
                             </div>
                         );

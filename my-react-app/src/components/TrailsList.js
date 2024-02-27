@@ -144,8 +144,8 @@ function ListTrails() {
             <div className="tab-content" id="myTabContent">
               <div className="tab-pane fade show active" id="my-trails" role="tabpanel" aria-labelledby="my-trails-tab">
                 <div className="d-flex my-4">
-                  <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrailModal">
-                    Add New Trail
+                  <button type="button" className="btn btn-primary new-trail-button" data-bs-toggle="modal" data-bs-target="#addTrailModal">
+                    + New Trail
                   </button>
                 </div>
                 <div className="modal fade" id="addTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addTrailModalLabel" aria-hidden="true">
@@ -168,7 +168,7 @@ function ListTrails() {
                   <div key={index} className="my-4">
                     <div className="card">
                       <div className="row g-0">
-                        <div className="col-md-auto mx-md-auto p-3">
+                        <div className="col-md-auto mx-md-auto p-3 d-flex justify-content-center">
                           <MapComponent trail={trail} />
                         </div>
                         <div className="col-md">

@@ -97,7 +97,11 @@ const useAuth = () => {
     }
   };
 
-  return { user, isLoading, login, logout };
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
+
+  return { user, isLoading, login, logout, updateUser };
 };
 
 export default useAuth;

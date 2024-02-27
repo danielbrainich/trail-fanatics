@@ -18,7 +18,7 @@ const avatarOptions = {
 };
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
-  const { user } = useAuth();
+  const { user, setUser, updateUser } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [formData, setFormData] = useState({
     username: username || "",
@@ -85,7 +85,9 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         bio: "",
         avatar: null,
       });
-      setProfileUpdateSuccess(!profileUpdateSuccess)
+      const updatedUserData = await response.json();
+      updateUser(updatedUserData);
+      setProfileUpdateSuccess(!profileUpdateSuccess);
     }
   };
 
@@ -100,6 +102,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleSelectAvatar = (key) => {
     setSelectedAvatar(key);
     setFormData(prev => ({ ...prev, avatar: key }));
+  };
+
+  const updateUserProfile = (updatedUser) => {
+    setUser(updatedUser);
   };
 
   return (
@@ -154,7 +160,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     ></textarea>
                 </div>
                 <div className="mb-3">
-                <div className="form-label">Choose Avatar</div>
+                <div className="form-label">Avatar</div>
                 {Object.entries(avatarOptions).map(([key, src]) => (
                   <img
                     key={key}
@@ -166,7 +172,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                       width: 50,
                       marginRight: 15,
                       borderRadius: '50%',
-                      transform: selectedAvatar === key ? 'scale(1.25)' : 'scale(1)',
+                      transform: selectedAvatar === key ? 'scale(1.2)' : 'scale(1)',
                       transition: 'transform 0.3s ease',
                     }}
                   />

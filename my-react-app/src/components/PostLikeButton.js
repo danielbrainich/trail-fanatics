@@ -3,28 +3,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import useCsrfToken from '../hooks/useCsrfToken';
+import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
+
 
 function PostLikeButton({ postId }) {
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [likeId, setLikeId] = useState(null);
+  const { user } = useAuthContext();
+
 
   useEffect(() => {
-    const fetchLikeStatus = async () => {
-      const response = await fetch(`http://localhost:8000/content/posts/${postId}/check-like/`, {
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setLiked(data.liked);
-        if (data.liked) {
-          setLikeId(data.likeId);
+    if (user) {
+      const fetchLikeStatus = async () => {
+        const response = await fetch(`http://localhost:8000/content/posts/${postId}/check-like/`, {
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setLiked(data.liked);
+          if (data.liked) {
+            setLikeId(data.likeId);
+          }
         }
-      }
-    };
+      };
 
-    fetchLikeStatus();
-  }, [postId]);
+      fetchLikeStatus();
+    }
+  }, [postId, user]);
 
   useEffect(() => {
     const fetchLikeCount = async () => {

@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
 import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
+import sunglasses from '../assets/avatars/sunglasses.png';
+import dog from '../assets/avatars/dog.png';
+import mountains from '../assets/avatars/mountains.png';
+import map from '../assets/avatars/map.png';
+import bottle from '../assets/avatars/bottle.png';
+import shoe from '../assets/avatars/shoe.png';
+
+const avatarOptions = {
+  sunglasses,
+  dog,
+  mountains,
+  map,
+  bottle,
+  shoe,
+};
 
 
 function Navbar() {
@@ -15,10 +30,11 @@ function Navbar() {
           {user ? (
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Account
+                {console.log("last airbender", user.avatar)}
+                {user?.avatar && <img src={avatarOptions[user.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item text-primary" to={`/profiles/${user?.id}`}>{user?.username}</Link></li>
+                <li><Link className="dropdown-item text-primary" to={`/profiles/${user?.id}`}>{`${user?.username}'s Profile`}</Link></li>
                 <li><Logout /></li>
               </ul>
           </li>

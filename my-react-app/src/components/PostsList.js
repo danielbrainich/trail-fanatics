@@ -15,7 +15,7 @@ function ListPosts() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const { user } = useAuthContext();
-
+  const csrfToken = useCsrfToken();
 
 
   useEffect(() => {
@@ -59,8 +59,6 @@ function ListPosts() {
     }).format(date);
   }
 
-  const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
 
   const deletePost = async (postId) => {
     const apiUrl = `http://localhost:8000/content/posts/${postId}/`;
@@ -78,7 +76,6 @@ function ListPosts() {
       setPostSuccess(!postSuccess);
     }
   };
-
 
   const handleFilterChange = (selectedTagIds) => {
     setSelectedTags(selectedTagIds);
@@ -109,14 +106,14 @@ function ListPosts() {
               <h5 className="card-title">New Post</h5>
               <p className="card-text">Add to the conversation. </p>
               <div className="form-group">
-                <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#staticBackdrop" role="button" tabIndex="0">
+                <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#newpostmodal" role="button" tabIndex="0">
                   What's on your mind?
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div className="modal fade" id="newpostmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="newpostmodalLabel" aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -126,7 +123,7 @@ function ListPosts() {
                 {user ? (
                   <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
                   ) : (
-                  <AlertModal title="Hello!" feature="post a new post" />
+                  <AlertModal title="Hello!" message="Please signup or login to post a new post" />
                   )}
                 </div>
               </div>
@@ -154,7 +151,7 @@ function ListPosts() {
                   {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
                       const tagObj = tagsList.find(tag => tag.id === tagId);
                         return (
-                            <div key={tagId} className="badge bg-secondary mb-2 me-2">
+                            <div key={tagId} className="badge mb-2 me-2">
                                 {tagObj ? tagObj.name : 'Unknown Tag'}
                             </div>
                         );
@@ -163,8 +160,28 @@ function ListPosts() {
                   <PostLikeButton postId={post.id} />
                   <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
                   <Link to={`#`} className="card-link">Edit</Link>
-                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
-                </div>
+                  {user && user.id === post.author ? (
+                    <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                    ) : (
+                    <>
+                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                        Delete
+                      </a>
+                      <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                              <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  </div>
               </div>
             </div>
           </div>

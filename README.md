@@ -61,6 +61,7 @@ This project consists of the following data models divided into three Django app
 |------------------|---------------|
 | id               | PrimaryKey    |
 | bio              | TextField     |
+| avatar           | CharField     |
 | profile_picture  | ImageField    |
 
 ### Activities
@@ -78,34 +79,14 @@ This project consists of the following data models divided into three Django app
 | created_at     | DateTimeField          |
 | updated_at     | DateTimeField          |
 
-#### Race
+#### SavedTrail
 
-| Field          | Type                   |
-|----------------|------------------------|
-| id             | PrimaryKey             |
-| creator        | ForeignKey(CustomUser) |
-| name           | CharField              |
-| description    | TextField              |
-| link           | URLField               |
-| image          | ImageField             |
-| created_at     | DateTimeField          |
-| updated_at     | DateTimeField          |
-
-#### UserTrail
-
-| Field  | Type                          |
-|--------|-------------------------------|
-| id     | PrimaryKey                    |
-| user   | ForeignKey(CustomUser)        |
-| trail  | ForeignKey(Trail)             |
-
-#### UserRace
-
-| Field  | Type                          |
-|--------|-------------------------------|
-| id     | PrimaryKey                    |
-| user   | ForeignKey(CustomUser)        |
-| race   | ForeignKey(Race)              |
+| Field     | Type                   |
+|-----------|------------------------|
+| id        | PrimaryKey             |
+| user      | ForeignKey(CustomUser) |
+| trail     | ForeignKey(Trail)      |
+| saved_at  | DateTimeField          |
 
 ### Content
 
