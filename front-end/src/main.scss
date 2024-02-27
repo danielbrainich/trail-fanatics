@@ -1,0 +1,86 @@
+@import './fonts.css';
+
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+$primary: black;
+$secondary: #FFAF82;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+
+:root {
+    --primary-color: black;
+    --secondary-color: #FFAF82;
+    --tertiary-color: #FFAF82;
+    --quaternary-color: #FFAF82;
+  }
+
+.vh-90 {
+    height: 90vh;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .15rem;
+}
+
+
+.logout-link {
+cursor: pointer;
+}
+
+.logout-link:hover {
+cursor: pointer;
+}
+
+.navbar-brand {
+    font-family: 'SantaRosa', sans-serif !important;
+    color: var(--primary-color) !important;
+    font-size: 2rem;
+}
+
+.nav-item.dropdown .dropdown-toggle {
+    color: var(--primary-color);
+}
+
+
+.nav-item.dropdown .dropdown-menu {
+position: absolute;
+}
+
+.dropdown-menu {
+transform: translateX(-50%);
+}
+
+.new-trail-button {
+    border: none;
+    height: fit-content;
+    border-radius: 0;
+    line-height: 1.25rem;
+}
+
+.borderless-card {
+    border: none !important;
+  }
+
+  h1 {
+    font-family: 'SantaRosa', sans-serif !important;
+    font-size: 3rem;
+    color: var(--primary-color);
+  }
+
+  .badge {
+    background-color: var(--tertiary-color);
+    font-size: 1rem;
+    font-weight: 500
+  }
+
+  .form-control:focus {
+    border-color: var(--tertiary-color);
+    outline: none;
+    box-shadow: none;  }
