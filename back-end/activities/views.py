@@ -3,12 +3,30 @@ from .models import Trail, SavedTrail
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     TrailSerializer,
     SavedTrailSerializer,
     SimpleSavedTrailSerializer,
 )
+
+class TrailPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'total': self.page.paginator.count,
+            'page_size': self.page_size,
+            'current_page': self.page.number,
+            'total_pages': self.page.paginator.num_pages,
+            'results': data
+        })
 
 
 # Trails views
@@ -16,8 +34,10 @@ from .serializers import (
 def trail_list(request):
     if request.method == "GET":
         trails = Trail.objects.all()
+        paginator = TrailPagination()
+        result_page = paginator.paginate_queryset(trails, request)
         serializer = TrailSerializer(trails, many=True, context={"request": request})
-        return Response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         if not request.user.is_authenticated:
             return Response(
@@ -63,8 +83,10 @@ def trail_detail(request, pk):
 @permission_classes([IsAuthenticated])
 def saved_trails_list(request):
     saved_trails = SavedTrail.objects.filter(user=request.user)
+    paginator = TrailPagination()
+    result_page = paginator.paginate_queryset(saved_trails, request)
     serializer = SavedTrailSerializer(saved_trails, many=True)
-    return Response(serializer.data)
+    return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(["POST", "DELETE"])

@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Tag, Post, Comment, PostLike, CommentLike
+from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     TagSerializer,
     PostSerializer,
@@ -11,6 +12,24 @@ from .serializers import (
     CommentLikeSerializer,
 )
 
+
+class PostPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'total': self.page.paginator.count,
+            'page_size': self.page_size,
+            'current_page': self.page.number,
+            'total_pages': self.page.paginator.num_pages,
+            'results': data
+        })
 
 # Tag views
 @api_view(["GET"])
@@ -26,6 +45,11 @@ def tag_list(request):
 def post_list(request):
     if request.method == "GET":
         posts = Post.objects.all()
+        paginator = PostPagination()
+        page = paginator.paginate_queryset(posts, request)
+        if page is not None:
+            serializer = PostSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -86,6 +110,13 @@ def comment_list(request, post_pk):
 
     if request.method == "GET":
         comments = Comment.objects.filter(post=post_pk)
+        paginator = PostPagination()
+        page = paginator.paginate_queryset(comments, request)
+        
+        if page is not None:
+            serializer = CommentSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
