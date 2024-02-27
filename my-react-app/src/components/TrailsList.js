@@ -17,14 +17,13 @@ function ListTrails() {
 
 
   useEffect(() => {
-    if (user) {
-      const fetchTrails = async () => {
-        await fetchMyTrails();
-        await fetchOtherTrails();
+    const fetchTrails = async () => {
+      await fetchAllTrails();
+      if (user) {
         await fetchSavedTrails();
-      };
-      fetchTrails();
-    }
+      }
+    };
+    fetchTrails();
   }, [user, trailSuccess]);
 
   const fetchAPI = async (url, options = {}) => {
@@ -41,14 +40,15 @@ function ListTrails() {
     }
   };
 
-  const fetchMyTrails = async () => {
+  const fetchAllTrails = async () => {
     const data = await fetchAPI('http://localhost:8000/activities/trails/');
-    setMyTrails(data.filter(trail => trail.creator.id === user.id));
-  };
-
-  const fetchOtherTrails = async () => {
-    const data = await fetchAPI('http://localhost:8000/activities/trails/');
-    setOtherTrails(data.filter(trail => trail.creator.id !== user.id));
+    if (user) {
+      setMyTrails(data.filter(trail => trail.creator.id === user.id));
+      setOtherTrails(data.filter(trail => trail.creator.id !== user.id));
+    } else {
+      setOtherTrails(data);
+      setMyTrails([]);
+    }
   };
 
 
@@ -158,7 +158,7 @@ function ListTrails() {
                         {user ? (
                           <NewTrails setTrailSuccess={setTrailSuccess} />
                         ) : (
-                          <AlertModal title="Hello!" feature="create a new trail" />
+                          <AlertModal title="Hello!" message="Please signup or login to create a new trail" />
                         )}
                       </div>
                     </div>
@@ -199,14 +199,34 @@ function ListTrails() {
                             <h5 className="card-title">{trail.name}</h5>
                             <Link to={`/profiles/${trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.creator.username}</h6></Link>
                             <p className="card-text">{trail.description}</p>
-                            {trail.is_saved ? (
+                            {user && trail.is_saved && (
                             <button className="btn btn-tertiary" disabled>
                               Save
                             </button>
-                            ) : (
+                            )}
+                            {user && !trail.is_saved && (
                             <button className="btn btn-primary" onClick={() => handleSaveTrail(trail.id)}>
                               Save
                             </button>
+                            )}
+                            {!user && (
+                            <div key={trail.id}>
+                              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                Save Trail
+                              </button>
+                              <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
+                                <div className="modal-dialog">
+                                  <div className="modal-content">
+                                    <div className="modal-header">
+                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                             )}
                           </div>
                         </div>
