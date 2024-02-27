@@ -20,6 +20,7 @@ function ListPosts() {
   const csrfToken = useCsrfToken();
 
 
+
   useEffect(() => {
     const fetchPosts = async () => {
       const apiUrl = `http://localhost:8000/content/posts/?page=${currentPage}`;

@@ -17,8 +17,8 @@ function ShowPost() {
   const [commentSuccess, setCommentSuccess] = useState(false);
   const [tagsList, setTagsList] = useState([]);
   const { user } = useAuthContext();
-
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalComments, setTotalComments] = useState(0);
   const csrfToken = useCsrfToken();
   console.log("CSRF Token:", csrfToken);
 
@@ -40,17 +40,18 @@ function ShowPost() {
 
 useEffect(() => {
   const fetchComments = async () => {
-    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/`
+    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/?page=${currentPage}`;
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      setComments(data.reverse());
+      setComments(data.results.reverse());
+      setTotalComments(data.count);
     } else {
-      console.error("Failed to fetch posts");
+      console.error("Failed to fetch comments");
     }
   };
   fetchComments();
-}, [postId, commentSuccess]);
+}, [postId, commentSuccess, currentPage]);
 
 
   useEffect(() => {
@@ -123,6 +124,10 @@ useEffect(() => {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     return new Intl.DateTimeFormat('en-US', {
@@ -135,8 +140,36 @@ useEffect(() => {
     }).format(date);
   }
 
-  return (
 
+  function renderPagination() {
+    const backendDefinedPageSize = 10;
+    const totalPages = Math.ceil(totalComments / backendDefinedPageSize);
+
+    let pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <li key={i} className={`page-item ${i === currentPage ? 'active' : ''}`}>
+          <button className="page-link" onClick={() => handlePageChange(i)}>{i}</button>
+        </li>
+      );
+    }
+
+    return (
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className="page-item">
+            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+          </li>
+          {pages}
+          <li className="page-item">
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
+
+  return (
     <div className="container mt-3 mt-md-5">
       <div className="col-12 mb-3" key={post.id}>
         <div className="card">
@@ -253,6 +286,7 @@ useEffect(() => {
           </div>
         ))}
       </div>
+      {renderPagination()}
     </div>
   );
 }
