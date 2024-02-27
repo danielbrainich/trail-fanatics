@@ -160,7 +160,27 @@ useEffect(() => {
                   </div>
                   <PostLikeButton postId={post.id} />
                   <Link to={`#`} className="card-link">Edit</Link>
-                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                  {user && user.id === post.author ? (
+                    <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                    ) : (
+                    <>
+                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                        Delete
+                      </a>
+                      <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                              <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -188,7 +208,7 @@ useEffect(() => {
               { user ? (
                 <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
               ) : (
-                <AlertModal title="Hello!" feature="comment on this post" />
+                <AlertModal title="Hello!" message="Please signup or login to comment on this post" />
               )}
             </div>
           </div>
