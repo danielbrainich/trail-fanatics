@@ -10,6 +10,8 @@ import { useAuthContext } from "../contexts/AuthContext";
 
 function ListPosts() {
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [postSuccess, setPostSuccess] = useState(false);
   const [tagsList, setTagsList] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
@@ -20,17 +22,18 @@ function ListPosts() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const apiUrl = `http://localhost:8000/content/posts/`;
+      const apiUrl = `http://localhost:8000/content/posts/?page=${currentPage}`;
       const response = await fetch(apiUrl);
       if (response.ok) {
         const data = await response.json();
-        setPosts(data.reverse());
+        setPosts(data.results.reverse());
+        setTotalPages(data.totalPages);
       } else {
         console.error("Failed to fetch posts");
       }
     };
     fetchPosts();
-  }, [postSuccess]);
+  }, [currentPage, postSuccess]);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -95,6 +98,34 @@ function ListPosts() {
 
     applyFilter();
   }, [selectedTags, posts]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  function renderPagination() {
+    let pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <li key={i} className={`page-item ${i === currentPage ? 'active' : ''}`}>
+          <button className="page-link" onClick={() => handlePageChange(i)}>{i}</button>
+        </li>
+      );
+    }
+    return (
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className="page-item">
+            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+          </li>
+          {pages}
+          <li className="page-item">
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
 
   return (
     <div className="container mt-3 mt-md-5">
@@ -187,6 +218,7 @@ function ListPosts() {
           </div>
         ))}
       </div>
+      {renderPagination()}
     </div>
   );
 }
