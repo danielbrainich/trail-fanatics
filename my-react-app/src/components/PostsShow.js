@@ -227,7 +227,27 @@ useEffect(() => {
               <p className="card-text">{comment.content}</p>
                 <div className="d-flex">
                   <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
-                  <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
+                  {user && user.id === comment.author ? (
+                    <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
+                    ) : (
+                    <>
+                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
+                        Delete
+                      </a>
+                      <div className="modal fade" id="nodeletecommentmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletecommentmodalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                              <AlertModal title="Hello!" message="To delete a comment, make sure you are logged-in and the comment belongs to you" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
             </div>
           </div>
