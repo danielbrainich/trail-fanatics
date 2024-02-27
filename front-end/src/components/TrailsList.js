@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useCsrfToken from '../hooks/useCsrfToken';
 import { Link } from "react-router-dom";
-import useAuth from '../hooks/useAuth';
 import NewTrails from './TrailsNew';
 import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
@@ -140,14 +139,14 @@ function ListTrails() {
               <li className="nav-item" role="presentation">
                 <button className="nav-link" id="saved-trails-tab" data-bs-toggle="tab" data-bs-target="#saved-trails" type="button" role="tab" aria-controls="saved-trails" aria-selected="false">Saved Trails</button>
               </li>
+              <li className="ms-auto">
+                <button type="button" className="btn btn-primary new-trail-button" data-bs-toggle="modal" data-bs-target="#addTrailModal">
+                  + New Trail
+                </button>
+              </li>
             </ul>
             <div className="tab-content" id="myTabContent">
               <div className="tab-pane fade show active" id="my-trails" role="tabpanel" aria-labelledby="my-trails-tab">
-                <div className="d-flex my-4">
-                  <button type="button" className="btn btn-primary new-trail-button" data-bs-toggle="modal" data-bs-target="#addTrailModal">
-                    + New Trail
-                  </button>
-                </div>
                 <div className="modal fade" id="addTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addTrailModalLabel" aria-hidden="true">
                   <div className="modal-dialog">
                     <div className="modal-content">

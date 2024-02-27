@@ -5,18 +5,19 @@
 
 // Include any default variable overrides here (though functions won't be available)
 
-$primary: black;
-$secondary: #FFAF82;
+$primary: #FFAF82;
+$secondary: #FFD984;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 // Then add additional custom code here
 
 :root {
-    --primary-color: black;
-    --secondary-color: #FFAF82;
-    --tertiary-color: #FFAF82;
-    --quaternary-color: #FFAF82;
+    --orange: #FFAF82;
+    --yellow: #FFD984;
+    --purple: #EECFE7;
+    --green: #BFE78A
+
   }
 
 .vh-90 {
@@ -57,13 +58,6 @@ position: absolute;
 transform: translateX(-50%);
 }
 
-.new-trail-button {
-    border: none;
-    height: fit-content;
-    border-radius: 0;
-    line-height: 1.25rem;
-}
-
 .borderless-card {
     border: none !important;
   }
@@ -75,12 +69,36 @@ transform: translateX(-50%);
   }
 
   .badge {
-    background-color: var(--tertiary-color);
+    background-color: var(--purple);
+    color: black;
     font-size: 1rem;
-    font-weight: 500
+    font-weight: 400;
+    border-radius: 6px;
   }
 
-  .form-control:focus {
-    border-color: var(--tertiary-color);
-    outline: none;
-    box-shadow: none;  }
+  .nav-link {
+    transition: background-color 0.3s ease;
+    color: black;
+  }
+
+  .nav-link:hover, a {
+    color: black;
+  }
+
+  .nav-link.active {
+    background-color: var(--yellow);
+    line-height: 1rem;
+    color: black;
+  }
+
+  .btn {
+    border: black 2px solid;
+  }
+
+  .btn:hover {
+    border: black 2px solid;
+  }
+
+  .new-trail-button {
+    line-height: 1.25rem;
+}

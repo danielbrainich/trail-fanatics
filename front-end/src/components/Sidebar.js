@@ -1,26 +1,23 @@
 import { NavLink } from 'react-router-dom';
 
-function Sidebar() {
-  const activeStyle = {
-    backgroundColor: 'var(--quaternary-color)',
-  };
 
+function Sidebar() {
   return (
     <div className="mt-md-5 col-md-3 col-lg-2 d-md-block pe-md-5">
       <div className="position-sticky">
         <ul className="nav flex-md-column flex-sm-row sidebar-nav">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/social" style={({ isActive }) => isActive ? activeStyle : undefined}>
+            <NavLink end className="nav-link" to="/social">
               Social
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/trails" style={({ isActive }) => isActive ? activeStyle : undefined}>
+            <NavLink end className="nav-link" to="/trails">
               Trails
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/about" style={({ isActive }) => isActive ? activeStyle : undefined}>
+            <NavLink end className="nav-link" to="/about">
               About
             </NavLink>
           </li>
