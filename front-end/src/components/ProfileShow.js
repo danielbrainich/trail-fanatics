@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useCsrfToken from '../hooks/useCsrfToken';
 import UpdateProfile from './ProfileUpdate';
+import sunglasses from '../assets/avatars/sunglasses.png';
+import dog from '../assets/avatars/dog.png';
+import mountains from '../assets/avatars/mountains.png';
+import map from '../assets/avatars/map.png';
+import bottle from '../assets/avatars/bottle.png';
+import shoe from '../assets/avatars/shoe.png';
+
+const avatarOptions = {
+  sunglasses,
+  dog,
+  mountains,
+  map,
+  bottle,
+  shoe,
+};
 
 function Profile() {
   const { userId } = useParams();
@@ -65,6 +80,10 @@ function Profile() {
               </div>
               <div className="mb-3">
                 <strong>Bio:</strong> {userProfile.bio}
+              </div>
+              <div className="mb-3">
+                <strong>Avatar:</strong> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
+
               </div>
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                 Update Profile

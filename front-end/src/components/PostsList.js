@@ -113,6 +113,7 @@ function ListPosts() {
         </li>
       );
     }
+
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
@@ -121,7 +122,7 @@ function ListPosts() {
           </li>
           {pages}
           <li className="page-item">
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0}>Next</button>
           </li>
         </ul>
       </nav>

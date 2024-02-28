@@ -69,7 +69,7 @@ transform: translateX(-50%);
   }
 
   .badge {
-    background-color: var(--purple);
+    background-color: var(--yellow);
     color: black;
     font-size: 1rem;
     font-weight: 400;
@@ -78,7 +78,7 @@ transform: translateX(-50%);
 
   .nav-link {
     transition: background-color 0.3s ease;
-    color: black;
+    color: var(--primary-color)z
   }
 
   .nav-link:hover, a {
@@ -91,14 +91,20 @@ transform: translateX(-50%);
     color: black;
   }
 
-  .btn {
-    border: black 2px solid;
-  }
-
-  .btn:hover {
-    border: black 2px solid;
-  }
-
   .new-trail-button {
     line-height: 1.25rem;
+}
+
+
+/* Add this CSS to your stylesheet */
+.pagination button[disabled] {
+  pointer-events: none; /* Disable pointer events */
+  opacity: 0.5; /* Reduce opacity for disabled state */
+}
+
+/* Remove stuck hover state */
+.pagination button:active,
+.pagination button:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: none; /* Remove default box shadow */
 }

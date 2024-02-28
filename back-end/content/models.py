@@ -28,6 +28,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="public")
 
+
     def __str__(self):
         return (
             f"Post by {self.author.username} at {self.created_at.strftime('%Y-%m-%d')}"
