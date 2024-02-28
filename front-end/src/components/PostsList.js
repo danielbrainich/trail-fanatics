@@ -25,19 +25,37 @@ function ListPosts() {
 
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const apiUrl = `http://localhost:8000/content/posts/?page=${currentPage}`;
-      const response = await fetch(apiUrl);
-      if (response.ok) {
-        const data = await response.json();
-        setPosts(data.results.reverse());
-        setTotalPages(data.totalPages);
-      } else {
-        console.error("Failed to fetch posts");
+    const fetchData = async () => {
+      try {
+        // Fetch posts
+        const postsUrl = `http://localhost:8000/content/posts/?page=${currentPage}`;
+        const postsResponse = await fetch(postsUrl);
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json();
+          setPosts(postsData.results.reverse());
+          setTotalPages(postsData.totalPages);
+        } else {
+          console.error("Failed to fetch posts");
+        }
+
+        // Fetch saved trails
+        if (user) {
+          const savedTrailsUrl = 'http://localhost:8000/trails/saved_trails/';
+          const savedTrailsResponse = await fetch(savedTrailsUrl, { credentials: 'include' });
+          if (savedTrailsResponse.ok) {
+            const savedTrailsData = await savedTrailsResponse.json();
+            setSavedTrails(savedTrailsData.results);
+          } else {
+            console.error("Failed to fetch saved trails");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
-    fetchPosts();
-  }, [currentPage, postSuccess]);
+
+    fetchData();
+  }, [currentPage, postSuccess, user]);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -146,6 +164,18 @@ function ListPosts() {
         await fetchSavedTrails();
         setTrailSuccess(!trailSuccess);
 
+        setPosts(posts.map(post => {
+          if (post.trail && post.trail.id === trailId) {
+            return {
+              ...post,
+              trail: {
+                ...post.trail,
+                is_saved: true
+              }
+            };
+          }
+          return post;
+        }));
       } else {
         console.error('Failed to save trail');
       }
@@ -260,40 +290,46 @@ function ListPosts() {
                         </div>
                       <div>
                       {post.trail && post.trail.name && (
-                        <MapComponent trail={post.trail} />
+                       <>
+                       <MapComponent trail={post.trail} />
+                       <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
+                         <Link to={`/trails/${post.trail.id}`}>
+                           <button className="btn btn-primary">View Trail Details</button>
+                         </Link>
+                         <div>
+                           {user && post.trail.is_saved && (
+                             <button className="btn btn-tertiary" disabled>
+                               Trail Saved
+                             </button>
+                           )}
+                           {user && !post.trail.is_saved && (
+                             <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>
+                               Save Trail
+                             </button>
+                           )}
+                           {!user && (
+                             <div key={post.trail.id}>
+                               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                 Save Trail
+                               </button>
+                               <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
+                                 <div className="modal-dialog">
+                                   <div className="modal-content">
+                                     <div className="modal-header">
+                                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                     </div>
+                                     <div className="modal-body">
+                                       <AlertModal title="Hello!" message="Please signup or login to save a trail" />
+                                     </div>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                           )}
+                         </div>
+                       </div>
+                     </>
                         )}
-                        <Link to={`/trails/${post.trail.id}`}>Trail Details</Link>
-
-
-                        {user && post.trail.is_saved && (
-                            <button className="btn btn-tertiary" disabled>
-                              Save
-                            </button>
-                            )}
-                            {user && !post.trail.is_saved && (
-                            <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>
-                              Save
-                            </button>
-                            )}
-                            {!user && (
-                            <div key={post.trail.id}>
-                              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                                Save Trail
-                              </button>
-                              <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
-                                <div className="modal-dialog">
-                                  <div className="modal-content">
-                                    <div className="modal-header">
-                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div className="modal-body">
-                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            )}
                     </div>
                   </div>
                 </div>

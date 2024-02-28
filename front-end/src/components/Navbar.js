@@ -34,7 +34,7 @@ function Navbar() {
               </button>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>My Profile</Link></li>
-                <li><Link className="dropdown-item" to={`/trails/`}>My Trails</Link></li>
+                <li><Link className="dropdown-item" to={`/trails/`}>My Saved Trails</Link></li>
                 <li><Logout /></li>
               </ul>
             </li>
