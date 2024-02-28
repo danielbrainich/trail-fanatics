@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Tag, Post, Comment, PostLike, CommentLike
 from rest_framework.pagination import PageNumberPagination
+from django.db import transaction
 from .serializers import (
     TagSerializer,
     PostSerializer,
@@ -11,25 +12,29 @@ from .serializers import (
     PostLikeSerializer,
     CommentLikeSerializer,
 )
+from activities.serializers import TrailSerializer
 
 
 class PostPagination(PageNumberPagination):
     page_size = 10
-    page_size_query_param = 'page_size'
+    page_size_query_param = "page_size"
     max_page_size = 100
 
     def get_paginated_response(self, data):
-        return Response({
-            'links': {
-                'next': self.get_next_link(),
-                'previous': self.get_previous_link()
-            },
-            'total': self.page.paginator.count,
-            'page_size': self.page_size,
-            'current_page': self.page.number,
-            'total_pages': self.page.paginator.num_pages,
-            'results': data
-        })
+        return Response(
+            {
+                "links": {
+                    "next": self.get_next_link(),
+                    "previous": self.get_previous_link(),
+                },
+                "total": self.page.paginator.count,
+                "page_size": self.page_size,
+                "current_page": self.page.number,
+                "total_pages": self.page.paginator.num_pages,
+                "results": data,
+            }
+        )
+
 
 # Tag views
 @api_view(["GET"])
@@ -42,6 +47,7 @@ def tag_list(request):
 
 # Post views
 @api_view(["GET", "POST"])
+@transaction.atomic
 def post_list(request):
     if request.method == "GET":
         posts = Post.objects.all()
@@ -60,13 +66,25 @@ def post_list(request):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        trail_data = request.data.get('trail')
+        trail_instance = None
+        if trail_data:
+            trail_serializer = TrailSerializer(data=trail_data)
+            if trail_serializer.is_valid():
+                trail_instance = trail_serializer.save(creator=request.user)
+            else:
+                return Response(trail_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        post_data = request.data.get('post')
+        if post_data:
+            post_serializer = PostSerializer(data=post_data)
+            if post_serializer.is_valid():
+                post = post_serializer.save(author=request.user, trail=trail_instance if trail_instance else None)
+                return Response(post_serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "No post data provided."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "PUT", "DELETE"])
 def post_detail(request, pk):
@@ -112,7 +130,7 @@ def comment_list(request, post_pk):
         comments = Comment.objects.filter(post=post_pk)
         paginator = PostPagination()
         page = paginator.paginate_queryset(comments, request)
-        
+
         if page is not None:
             serializer = CommentSerializer(page, many=True)
             return paginator.get_paginated_response(serializer.data)

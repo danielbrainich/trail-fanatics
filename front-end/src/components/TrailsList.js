@@ -169,6 +169,7 @@ function ListTrails() {
                       <div className="row g-0">
                         <div className="col-md-auto mx-md-auto p-3 d-flex justify-content-center">
                           <MapComponent trail={trail} />
+                          {console.log("mapcomponent trail:", trail)}
                         </div>
                         <div className="col-md">
                           <div className="card-body">

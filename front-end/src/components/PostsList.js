@@ -6,6 +6,7 @@ import PostLikeButton from "./PostLikeButton";
 import useCsrfToken from '../hooks/useCsrfToken';
 import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
+import MapComponent from './MapComponent';
 
 
 function ListPosts() {
@@ -131,7 +132,7 @@ function ListPosts() {
 
   return (
     <div className="container mt-3 mt-md-5">
-      {console.log(posts)}
+
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
           <div className="card w-100 mb-4">
@@ -145,7 +146,6 @@ function ListPosts() {
               </div>
             </div>
           </div>
-
           <div className="modal fade" id="newpostmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="newpostmodalLabel" aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">
@@ -162,65 +162,79 @@ function ListPosts() {
               </div>
             </div>
           </div>
-
         </div>
         <div className="d-flex col-md-5">
-        <FilterPosts onFilterChange={handleFilterChange} tagsList={tagsList} />
+          <FilterPosts onFilterChange={handleFilterChange} tagsList={tagsList} />
         </div>
       </div>
+
+
       <div className="row">
-      {filteredPosts.slice().reverse().map((post) => (
-        <div className="col-12 mb-3" key={post.id}>
+        {filteredPosts.slice().reverse().map((post) => (
+          <div className="col-12 mb-3" key={post.id}>
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
                   <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
                 </div>
-              <h6 className="card-title">{post.title}</h6>
-              <p className="card-text">{post.content}</p>
                 <div>
-                  <div>
-                  {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                      const tagObj = tagsList.find(tag => tag.id === tagId);
-                        return (
-                            <div key={tagId} className="badge mb-2 me-2">
-                                {tagObj ? tagObj.name : 'Unknown Tag'}
-                            </div>
-                        );
-                    })}
-                  </div>
-                  <PostLikeButton postId={post.id} />
-                  <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
-                  <Link to={`#`} className="card-link">Edit</Link>
-                  {user && user.id === post.author ? (
-                    <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
-                    ) : (
-                    <>
-                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
-                        Delete
-                      </a>
-                      <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                              <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                  <div className="d-flex justify-content-between">
+                    <div className="d-flex flex-column align-items-between justify-content-between">
+                      <h6 className="card-title">{post.title}</h6>
+                      <p className="card-text">{post.content}</p>
+                        <div className="d-flex">
+                          <PostLikeButton postId={post.id} />
+                          <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
+                          <Link to={`#`} className="card-link">Edit</Link>
+                          {user && user.id === post.author ? (
+                            <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                            ) : (
+                            <>
+                              <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                Delete
+                              </a>
+                              <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                                <div className="modal-dialog">
+                                  <div className="modal-content">
+                                    <div className="modal-header">
+                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                      <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                          <div>
+                            {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                              const tagObj = tagsList.find(tag => tag.id === tagId);
+                                return (
+                                  <div key={tagId} className="badge mb-2 me-2">
+                                      {tagObj ? tagObj.name : 'Unknown Tag'}
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </>
-                  )}
+                    <div>
+                    {console.log("Rendering map for trail:", post.trail)}
+                      {post.trail && post.trail.name && (
+                        <MapComponent trail={post.trail} />
+                        )}
+                    </div>
                   </div>
+
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-      {renderPagination()}
+    {renderPagination()}
     </div>
   );
 }

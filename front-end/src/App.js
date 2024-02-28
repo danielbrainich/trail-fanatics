@@ -23,17 +23,14 @@ function App() {
         <Navbar />
         <div className="container">
           <div className="d-flex flex-column flex-md-row">
-            {/* <nav className="navbar navbar-expand-md d-md-none">
-              Whatever is in here will show on a small screen only
-            </nav> */}
             <Sidebar />
             <div className="flex-grow-1">
               <Routes>
-                <Route path="/" element={<ListPosts />} />
+              <Route path="/" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
                 <Route path="/signup" element={<SignupForm />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profiles/:userId" element={<Profile />} />
-                <Route path="social" element={<ListPosts />} />
+                <Route path="/social" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
                 <Route path="social/posts/:postId" element={<ShowPost />} />
                 <Route path="trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
                 <Route path="about" element={<About />} />

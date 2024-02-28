@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Tag, Post, Comment, PostLike, CommentLike
+from activities.serializers import TrailSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -11,6 +12,7 @@ class TagSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source="author.username", read_only=True)
     author_id = serializers.CharField(source="author.id", read_only=True)
+    trail = TrailSerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -26,6 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "status",
+            "trail",
         ]
 
 

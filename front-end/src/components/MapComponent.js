@@ -2,17 +2,16 @@ import React from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 const MapComponent = ({ trail }) => {
-  const containerStyle = { width: '325px', height: '325px' };
+  const containerStyle = { width: '300px', height: '300px' };
   const defaultCenter = { lat: 37.8117, lng: -122.1815 };
-  const center = (trail && trail.coordinates && trail.coordinates.length > 0) ? trail.coordinates[0] : defaultCenter;
-  console.log("trail", trail);
+  const center = trail?.coordinates || defaultCenter;
 
   return (
     <div className="col-md-auto mx-md-auto p-3">
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={trail.coordinates[0] || defaultCenter}
-        zoom={12}
+        center={center}
+        zoom={8}
         options={{
           mapTypeId: 'roadmap',
           zoomControl: true,
@@ -21,7 +20,7 @@ const MapComponent = ({ trail }) => {
           fullscreenControl: false,
         }}
       >
-        {trail && trail.coordinates && trail.coordinates.length > 0 && (
+        {trail?.coordinates && (
           <Marker position={center} />
         )}
       </GoogleMap>
