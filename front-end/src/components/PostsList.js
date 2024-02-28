@@ -291,11 +291,32 @@ function ListPosts() {
                       <div>
                       {post.trail && post.trail.name && (
                        <>
-                       <MapComponent trail={post.trail} />
+                       {console.log("map component from post list", post.trail)}
+                       <MapComponent trail={post.trail} size="250px"/>
                        <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
-                         <Link to={`/trails/${post.trail.id}`}>
-                           <button className="btn btn-primary">View Trail Details</button>
-                         </Link>
+                       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Check Out Trail
+                        </button>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h2 class="modal-title fs-5" id="staticBackdropLabel">Map Details</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                              <MapComponent trail={post.trail} size="450px"/>
+                              <div className="mb-3">
+                                <strong>Trail Name:</strong> {post.trail.name}
+                              </div>
+                              <div className="mb-3">
+                                <strong>Trail Description:</strong> {post.trail.description}
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                          <div>
                            {user && post.trail.is_saved && (
                              <button className="btn btn-tertiary" disabled>

@@ -36,6 +36,18 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     });
   };
 
+  const resetForm = () => {
+    setFormData({
+      content: "",
+      tags: [],
+      trailName: "",
+      trailDescription: "",
+      trailCoordinates: null,
+    });
+    setMarkerPosition(null);
+    setShowMap(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -154,6 +166,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
             <textarea
               name="content"
               className="form-control"
+              value={formData.content}
               onChange={handleChangeInput}
               rows="4"
             ></textarea>
@@ -215,8 +228,12 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     )}
         </div>
           <div className="text-end">
-            <button className="btn btn-outline-primary me-2" data-bs-dismiss="modal" type="reset">
-              Clear
+          <button
+              className="btn btn-outline-primary me-2"
+              type="button"
+              onClick={resetForm}
+            >
+              Reset
             </button>
             <button className="btn btn-primary" data-bs-dismiss="modal" type="submit">
               Post

@@ -1,8 +1,8 @@
 import React from 'react';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 
-const MapComponent = ({ trail }) => {
-  const containerStyle = { width: '275px', height: '275px' };
+const MapComponent = ({ trail, size }) => {
+  const containerStyle = { width: size, height: size };
   const defaultCenter = { lat: 37.8117, lng: -122.1815 };
   const center = trail?.coordinates || defaultCenter;
 
@@ -20,9 +20,8 @@ const MapComponent = ({ trail }) => {
           fullscreenControl: false,
         }}
       >
-        {trail?.coordinates && (
-          <Marker position={center} />
-        )}
+        {trail?.coordinates && <MarkerF position={trail.coordinates} />}
+
       </GoogleMap>
     </div>
   );

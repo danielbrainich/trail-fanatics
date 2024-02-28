@@ -12,7 +12,12 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
   });
 
   const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
+
+  const resetForm = () => {
+    setFormData({
+      content: "",
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -67,8 +72,8 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
               ></textarea>
           </div>
           <div className="text-end">
-            <button className="btn btn-outline-primary me-2"  data-bs-dismiss="modal" type="reset">
-              Clear
+            <button className="btn btn-outline-primary me-2" type="button" onClick={resetForm}>
+              Reset
             </button>
             <button className="btn btn-primary"  data-bs-dismiss="modal" type="submit">
               Post
