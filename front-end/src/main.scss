@@ -73,7 +73,7 @@ transform: translateX(-50%);
     color: black;
     font-size: 1rem;
     font-weight: 400;
-    border-radius: 6px;
+    border-radius: 0px;
   }
 
   .nav-link {
@@ -129,6 +129,10 @@ transform: translateX(-50%);
   transform: scale(1.2);
 }
 
+.btn {
+  border-radius: 0px;
+}
+
 .btn-primary {
   color: white;
 }
@@ -141,4 +145,8 @@ transform: translateX(-50%);
   border-color: var(--yellow);
   background-color: white;
   color: var(--yellow);
+}
+
+.form-control {
+  border-radius: 0;
 }
