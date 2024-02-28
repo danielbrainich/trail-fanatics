@@ -156,7 +156,7 @@ function ListPosts() {
 
   const fetchSavedTrails = async () => {
     try {
-      const response = await fetch('http://localhost:8000/activities/saved_trails/', { credentials: 'include' });
+      const response = await fetch('http://localhost:8000/trails/saved_trails/', { credentials: 'include' });
       if (!response.ok) {
         console.error(`Fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`Network response was not ok: ${response.status}`);
@@ -176,8 +176,7 @@ function ListPosts() {
         <div className="col-md-7 d-flex flex-fill">
           <div className="card w-100 mb-4 card-solid">
             <div className="card-body">
-              <h5 className="card-title">New Post</h5>
-              <p className="card-text">Add to the conversation. </p>
+              <h5 className="card-title mb-3">New Post</h5>
               <div className="form-group">
                 <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#newpostmodal" role="button" tabIndex="0">
                   What's on your mind?
@@ -264,7 +263,37 @@ function ListPosts() {
                         <MapComponent trail={post.trail} />
                         )}
                         <Link to={`/trails/${post.trail.id}`}>Trail Details</Link>
-                        <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>Save Trail</button>
+
+
+                        {user && post.trail.is_saved && (
+                            <button className="btn btn-tertiary" disabled>
+                              Save
+                            </button>
+                            )}
+                            {user && !post.trail.is_saved && (
+                            <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>
+                              Save
+                            </button>
+                            )}
+                            {!user && (
+                            <div key={post.trail.id}>
+                              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                Save Trail
+                              </button>
+                              <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
+                                <div className="modal-dialog">
+                                  <div className="modal-content">
+                                    <div className="modal-header">
+                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            )}
                     </div>
                   </div>
                 </div>

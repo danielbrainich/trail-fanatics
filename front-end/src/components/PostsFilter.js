@@ -23,11 +23,9 @@ function FilterPosts({ onFilterChange, tagsList }) {
   return (
 <div className="card w-100 mb-4 card-solid">
   <div className="card-body">
-    <h5 className="card-title">Filter Posts</h5>
+    <h5 className="card-title">Filter Posts by Tag</h5>
     <div>
-      <label className="form-label mb-3">
-        Filter by Tag
-      </label>
+
       <div className="checkbox-grid">
         {tagsList && tagsList.map((tag) => (
           <div key={tag.id} className="form-check">
