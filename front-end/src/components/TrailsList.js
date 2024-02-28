@@ -42,10 +42,10 @@ function ListTrails() {
   const fetchAllTrails = async () => {
     const data = await fetchAPI('http://localhost:8000/activities/trails/');
     if (user) {
-      setMyTrails(data.filter(trail => trail.creator.id === user.id));
-      setOtherTrails(data.filter(trail => trail.creator.id !== user.id));
+      setMyTrails(data.results.filter(trail => trail.creator.id === user.id));
+      setOtherTrails(data.results.filter(trail => trail.creator.id !== user.id));
     } else {
-      setOtherTrails(data);
+      setOtherTrails(data.results);
       setMyTrails([]);
     }
   };
@@ -53,7 +53,7 @@ function ListTrails() {
 
   const fetchSavedTrails = async () => {
     const data = await fetchAPI('http://localhost:8000/activities/saved_trails/', { credentials: 'include' });
-    setSavedTrails(data);
+    setSavedTrails(data.results);
   };
 
 
