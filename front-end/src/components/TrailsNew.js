@@ -64,7 +64,7 @@ function NewTrails( {setTrailSuccess, trailSuccess} ) {
     };
 
     try {
-      const apiUrl = 'http://localhost:8000/activities/trails/';
+      const apiUrl = 'http://localhost:8000/trails/';
       const response = await fetch(apiUrl, {
         method: 'POST',
         credentials: 'include',

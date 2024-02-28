@@ -22,23 +22,18 @@ function App() {
       <AuthProvider>
         <Navbar />
         <div className="container">
-          <div className="d-flex flex-column flex-md-row">
-            <Sidebar />
-            <div className="flex-grow-1">
-              <Routes>
-              <Route path="/" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
-                <Route path="/signup" element={<SignupForm />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/profiles/:userId" element={<Profile />} />
-                <Route path="/social" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
-                <Route path="social/posts/:postId" element={<ShowPost />} />
-                <Route path="trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
-                <Route path="about" element={<About />} />
-                <Route path="new-trails" element={<GoogleMapsLoader><NewTrails /></GoogleMapsLoader>} />
-                <Route path="*" element={<div>Route not found</div>} />
-              </Routes>
-            </div>
-          </div>
+          <Routes>
+            <Route path="/" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/profiles/:userId" element={<Profile />} />
+            <Route path="/social" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
+            <Route path="social/posts/:postId" element={<ShowPost />} />
+            <Route path="trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
+            <Route path="about" element={<About />} />
+            <Route path="new-trails" element={<GoogleMapsLoader><NewTrails /></GoogleMapsLoader>} />
+            <Route path="*" element={<div>Route not found</div>} />
+          </Routes>
         </div>
       </ AuthProvider>
     </BrowserRouter>

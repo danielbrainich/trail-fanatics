@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Tag, Post, Comment, PostLike, CommentLike
-from activities.serializers import TrailSerializer
+from trails.serializers import TrailSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -22,7 +22,6 @@ class PostSerializer(serializers.ModelSerializer):
             "author_username",
             "author_id",
             "tags",
-            "title",
             "content",
             "image",
             "created_at",

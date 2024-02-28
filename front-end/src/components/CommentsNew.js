@@ -67,7 +67,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
               ></textarea>
           </div>
           <div className="text-end">
-            <button className="btn btn-secondary me-2"  data-bs-dismiss="modal" type="reset">
+            <button className="btn btn-outline-primary me-2"  data-bs-dismiss="modal" type="reset">
               Clear
             </button>
             <button className="btn btn-primary"  data-bs-dismiss="modal" type="submit">

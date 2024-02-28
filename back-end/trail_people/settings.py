@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
-    "activities.apps.ActivitiesConfig",
+    "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
 ]
 

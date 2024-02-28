@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from activities.models import Trail
+from trails.models import Trail
 
 
 class Tag(models.Model):
@@ -22,14 +22,17 @@ class Post(models.Model):
         null=True,
     )
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    title = models.CharField(max_length=100)
-    content = models.CharField(max_length=280)
+    content = models.CharField(max_length=560)
     image = models.ImageField(upload_to="post_images/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="public")
-    trail = models.ForeignKey(
-        Trail, on_delete=models.SET_NULL, null=True, blank=True, related_name="posts"
+    trail = models.OneToOneField(
+        Trail,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="post"
     )
 
     def __str__(self):

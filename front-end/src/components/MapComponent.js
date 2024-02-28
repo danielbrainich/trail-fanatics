@@ -2,12 +2,12 @@ import React from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 const MapComponent = ({ trail }) => {
-  const containerStyle = { width: '300px', height: '300px' };
+  const containerStyle = { width: '275px', height: '275px' };
   const defaultCenter = { lat: 37.8117, lng: -122.1815 };
   const center = trail?.coordinates || defaultCenter;
 
   return (
-    <div className="col-md-auto mx-md-auto p-3">
+    <div className="col-md-auto mx-md-auto p-2">
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}

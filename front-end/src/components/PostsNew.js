@@ -9,7 +9,6 @@ const center = { lat: 37.8117, lng: -122.1815 };
 function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
-    title: "",
     content: "",
     tags: [],
     author: user ? user.id : null,
@@ -71,7 +70,6 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     if (response.ok) {
       event.target.reset();
       setFormData({
-        title: "",
         content: "",
         tags: [],
         author: user ? user.id : null,
@@ -152,15 +150,6 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
             ))}
           </div>
           <div className="mb-3">
-            <label className="form-label">Title</label>
-            <input
-              name="title"
-              type="text"
-              className="form-control"
-              onChange={handleChangeInput}
-            />
-          </div>
-          <div className="mb-3">
             <label className="form-label">Content</label>
             <textarea
               name="content"
@@ -226,7 +215,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     )}
         </div>
           <div className="text-end">
-            <button className="btn btn-secondary me-2" data-bs-dismiss="modal" type="reset">
+            <button className="btn btn-outline-primary me-2" data-bs-dismiss="modal" type="reset">
               Clear
             </button>
             <button className="btn btn-primary" data-bs-dismiss="modal" type="submit">

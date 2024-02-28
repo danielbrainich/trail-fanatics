@@ -7,6 +7,7 @@ import useCsrfToken from '../hooks/useCsrfToken';
 import CommentLikeButton from "./CommentLikeButton";
 import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
+import MapComponent from './MapComponent';
 
 
 function ShowPost() {
@@ -172,54 +173,65 @@ useEffect(() => {
   return (
     <div className="container mt-3 mt-md-5">
       <div className="col-12 mb-3" key={post.id}>
-        <div className="card">
-          <div className="card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
-                  <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
-                </div>
-              <h6 className="card-title">{post.title}</h6>
-              <p className="card-text">{post.content}</p>
+
+      <div className="card">
+        <div className="card-body">
+          <div>
+            <div className="d-flex justify-content-between">
+              <div className="d-flex flex-column align-items-between justify-content-between">
                 <div>
-                  <div>
-                  {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                      const tagObj = tagsList.find(tag => tag.id === tagId);
+                  <h6 className="card-subtitle text-muted small mb-3">{formatDate(post.created_at)}</h6>
+                    <div className="mb-2">
+                      {tagsList && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                        const tagObj = tagsList.find(tag => tag.id === tagId);
                         return (
-                            <div key={tagId} className="badge mb-2 me-2">
-                                {tagObj ? tagObj.name : 'Unknown Tag'}
-                            </div>
+                          <div key={tagId} className="badge mb-2 me-2">
+                            {tagObj ? tagObj.name : 'Unknown Tag'}
+                          </div>
                         );
-                    })}
+                      })}
+                    </div>
+                    <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-3 text-muted">{post.author_username}</h6></Link>
+                    <p className="card-text">{post.content}</p>
                   </div>
-                  <PostLikeButton postId={post.id} />
-                  <Link to={`#`} className="card-link">Edit</Link>
-                  {user && user.id === post.author ? (
-                    <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
-                    ) : (
-                    <>
-                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
-                        Delete
-                      </a>
-                      <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                              <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                  <div className="d-flex">
+                    <PostLikeButton postId={post.id} />
+                    <Link to={`#`} className="card-link">Edit</Link>
+                    {user && user.id === post.author ? (
+                      <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                      ) : (
+                      <>
+                        <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                          Delete
+                        </a>
+                        <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div className="modal-body">
+                                <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </div>
                 </div>
+                {post.trail && post.trail.name && (
+                <div>
+                  <MapComponent trail={post.trail} />
+                </div>
+                )}
               </div>
-            </div>
+              </div>
           </div>
+        </div>
+      </div>
 
-      <div className="card mb-4">
+      <div className="card mb-4 card-solid">
         <div className="card-body">
           <h5 className="card-title">New Comment</h5>
           <p className="card-text">Add to the conversation. </p>
@@ -253,10 +265,8 @@ useEffect(() => {
         {comments.slice().reverse().map((comment) => (
           <div key={comment.id} className="card mb-3">
             <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-              <Link to={`/profiles/${comment.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{comment.author_username}</h6></Link>
-                  <h6 className="card-subtitle text-muted small">{formatDate(comment.created_at)}</h6>
-              </div>
+              <h6 className="card-subtitle text-muted small mb-3">{formatDate(comment.created_at)}</h6>
+              <Link to={`/profiles/${comment.author_id}`}><h6 className="card-subtitle mb-3 text-muted">{comment.author_username}</h6></Link>
               <p className="card-text">{comment.content}</p>
                 <div className="d-flex">
                   <CommentLikeButton postId={comment.post_id} commentId={comment.id} />

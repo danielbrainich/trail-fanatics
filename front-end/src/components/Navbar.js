@@ -33,7 +33,8 @@ function Navbar() {
                 {user?.avatar && <img src={avatarOptions[user.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
               </button>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>View Profile</Link></li>
+                <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>My Profile</Link></li>
+                <li><Link className="dropdown-item" to={`/trails/`}>My Trails</Link></li>
                 <li><Logout /></li>
               </ul>
             </li>

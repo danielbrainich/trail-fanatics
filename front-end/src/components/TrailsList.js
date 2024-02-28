@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useCsrfToken from '../hooks/useCsrfToken';
 import { Link } from "react-router-dom";
-import NewTrails from './TrailsNew';
-import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
 import MapComponent from './MapComponent';
 
 function ListTrails() {
   const [trailSuccess, setTrailSuccess] = useState(false);
   const [myTrails, setMyTrails] = useState([]);
-  const [otherTrails, setOtherTrails] = useState([]);
   const [savedTrails, setSavedTrails] = useState([]);
   const { user } = useAuthContext();
   const csrfToken = useCsrfToken();
@@ -40,49 +37,24 @@ function ListTrails() {
   };
 
   const fetchAllTrails = async () => {
-    const data = await fetchAPI('http://localhost:8000/activities/trails/');
+    const data = await fetchAPI('http://localhost:8000/trails/');
     if (user) {
       setMyTrails(data.results.filter(trail => trail.creator.id === user.id));
-      setOtherTrails(data.results.filter(trail => trail.creator.id !== user.id));
     } else {
-      setOtherTrails(data.results);
       setMyTrails([]);
     }
   };
 
 
   const fetchSavedTrails = async () => {
-    const data = await fetchAPI('http://localhost:8000/activities/saved_trails/', { credentials: 'include' });
+    const data = await fetchAPI('http://localhost:8000/trails/saved_trails/', { credentials: 'include' });
     setSavedTrails(data.results);
   };
 
 
-  const handleSaveTrail = async (trailId) => {
-    try {
-      const response = await fetch(`http://localhost:8000/activities/saved_trails/${trailId}/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken.csrfToken,
-        },
-        credentials: 'include',
-      });
-      if (response.ok) {
-        console.log('Trail saved successfully');
-        await fetchSavedTrails();
-        setTrailSuccess(!trailSuccess);
-
-      } else {
-        console.error('Failed to save trail');
-      }
-    } catch (error) {
-      console.error('Error saving trail:', error);
-    }
-  };
-
   const handleUnsaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`http://localhost:8000/activities/saved_trails/${trailId}/`, {
+      const response = await fetch(`http://localhost:8000/trails/saved_trails/${trailId}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -103,26 +75,6 @@ function ListTrails() {
     }
   };
 
-  const handleDeleteTrail = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:8000/activities/trails/${id}/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken.csrfToken,
-        },
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const updatedTrails = myTrails.filter(trail => trail.id !== id);
-        setMyTrails(updatedTrails);
-      } else {
-        console.error('Failed to delete trail');
-      }
-    } catch (error) {
-      console.error('Error deleting trail:', error);
-    }
-  };
 
   return (
     <div className="container mt-3 mt-md-5">
@@ -134,100 +86,23 @@ function ListTrails() {
                 <button className="nav-link active" id="my-trails-tab" data-bs-toggle="tab" data-bs-target="#my-trails" type="button" role="tab" aria-controls="my-trails" aria-selected="true">My Trails</button>
               </li>
               <li className="nav-item" role="presentation">
-                <button className="nav-link" id="other-trails-tab" data-bs-toggle="tab" data-bs-target="#other-trails" type="button" role="tab" aria-controls="other-trails" aria-selected="false">Trails Near Me</button>
-              </li>
-              <li className="nav-item" role="presentation">
                 <button className="nav-link" id="saved-trails-tab" data-bs-toggle="tab" data-bs-target="#saved-trails" type="button" role="tab" aria-controls="saved-trails" aria-selected="false">Saved Trails</button>
-              </li>
-              <li className="ms-auto">
-                <button type="button" className="btn btn-primary new-trail-button" data-bs-toggle="modal" data-bs-target="#addTrailModal">
-                  + New Trail
-                </button>
               </li>
             </ul>
             <div className="tab-content" id="myTabContent">
               <div className="tab-pane fade show active" id="my-trails" role="tabpanel" aria-labelledby="my-trails-tab">
-                <div className="modal fade" id="addTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addTrailModalLabel" aria-hidden="true">
-                  <div className="modal-dialog">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div className="modal-body">
-                        {user ? (
-                          <NewTrails setTrailSuccess={setTrailSuccess} />
-                        ) : (
-                          <AlertModal title="Hello!" message="Please signup or login to create a new trail" />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 {myTrails.map((trail, index) => (
                   <div key={index} className="my-4">
                     <div className="card">
                       <div className="row g-0">
                         <div className="col-md-auto mx-md-auto p-3 d-flex justify-content-center">
                           <MapComponent trail={trail} />
-                          {console.log("mapcomponent trail:", trail)}
                         </div>
                         <div className="col-md">
                           <div className="card-body">
                             <h5 className="card-title">{trail.name}</h5>
                             <Link to={`/profiles/${trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.creator.username}</h6></Link>
                             <p className="card-text">{trail.description}</p>
-                            <button className="btn btn-primary" onClick={() => handleDeleteTrail(trail.id, trail.creator.id)}>
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="tab-pane fade" id="other-trails" role="tabpanel" aria-labelledby="other-trails-tab">
-              {otherTrails.map((trail, index) => (
-                  <div key={index} className="my-4">
-                    <div className="card">
-                      <div className="row g-0">
-                        <div className="col-md-auto mx-md-auto p-3">
-                          <MapComponent trail={trail} />
-                        </div>
-                        <div className="col-md">
-                          <div className="card-body">
-                            <h5 className="card-title">{trail.name}</h5>
-                            <Link to={`/profiles/${trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.creator.username}</h6></Link>
-                            <p className="card-text">{trail.description}</p>
-                            {user && trail.is_saved && (
-                            <button className="btn btn-tertiary" disabled>
-                              Save
-                            </button>
-                            )}
-                            {user && !trail.is_saved && (
-                            <button className="btn btn-primary" onClick={() => handleSaveTrail(trail.id)}>
-                              Save
-                            </button>
-                            )}
-                            {!user && (
-                            <div key={trail.id}>
-                              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                                Save Trail
-                              </button>
-                              <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
-                                <div className="modal-dialog">
-                                  <div className="modal-content">
-                                    <div className="modal-header">
-                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div className="modal-body">
-                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            )}
                           </div>
                         </div>
                       </div>

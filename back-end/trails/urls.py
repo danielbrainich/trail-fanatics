@@ -9,8 +9,8 @@ from .views import (
 
 urlpatterns = [
     # All trails
-    path("trails/", trail_list, name="trail_list"),
-    path("trails/<int:pk>/", trail_detail, name="trail_detail"),
+    path("", trail_list, name="trail_list"),
+    path("<int:pk>/", trail_detail, name="trail_detail"),
     # Saved trails
     path("saved_trails/", saved_trails_list, name="saved_trails_detail_list"),
     path("saved_trails/<int:trail_id>/", manage_saved_trail, name="manage_saved_trail"),

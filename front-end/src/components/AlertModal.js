@@ -6,7 +6,7 @@ function AlertModal({ title, message }) {
             <div className="card-body">
                 <p className="card-text">{message}.</p>
                 <div className="text-end">
-                    <button className="btn btn-secondary me-2" data-bs-dismiss="modal" type="reset">
+                    <button className="btn btn-primary me-2" data-bs-dismiss="modal" type="reset">
                     Got it!
                     </button>
                 </div>

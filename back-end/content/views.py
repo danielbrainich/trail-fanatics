@@ -12,7 +12,7 @@ from .serializers import (
     PostLikeSerializer,
     CommentLikeSerializer,
 )
-from activities.serializers import TrailSerializer
+from trails.serializers import TrailSerializer
 
 
 class PostPagination(PageNumberPagination):

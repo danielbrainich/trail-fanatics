@@ -19,6 +19,8 @@ function ListPosts() {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const { user } = useAuthContext();
   const csrfToken = useCsrfToken();
+  const [trailSuccess, setTrailSuccess] = useState(false);
+  const [savedTrails, setSavedTrails] = useState([]);
 
 
 
@@ -114,7 +116,6 @@ function ListPosts() {
         </li>
       );
     }
-
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
@@ -130,12 +131,50 @@ function ListPosts() {
     );
   }
 
+  const handleSaveTrail = async (trailId) => {
+    try {
+      const response = await fetch(`http://localhost:8000/trails/saved_trails/${trailId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken.csrfToken,
+        },
+        credentials: 'include',
+      });
+      if (response.ok) {
+        console.log('Trail saved successfully');
+        await fetchSavedTrails();
+        setTrailSuccess(!trailSuccess);
+
+      } else {
+        console.error('Failed to save trail');
+      }
+    } catch (error) {
+      console.error('Error saving trail:', error);
+    }
+  };
+
+  const fetchSavedTrails = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/activities/saved_trails/', { credentials: 'include' });
+      if (!response.ok) {
+        console.error(`Fetch error: ${response.status} ${response.statusText}`);
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+      const data = await response.json();
+      setSavedTrails(data.results);
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  };
+
   return (
     <div className="container mt-3 mt-md-5">
 
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
-          <div className="card w-100 mb-4">
+          <div className="card w-100 mb-4 card-solid">
             <div className="card-body">
               <h5 className="card-title">New Post</h5>
               <p className="card-text">Add to the conversation. </p>
@@ -172,17 +211,27 @@ function ListPosts() {
       <div className="row">
         {filteredPosts.slice().reverse().map((post) => (
           <div className="col-12 mb-3" key={post.id}>
+
             <div className="card">
               <div className="card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-2 text-muted">{post.author_username}</h6></Link>
-                  <h6 className="card-subtitle text-muted small">{formatDate(post.created_at)}</h6>
-                </div>
                 <div>
                   <div className="d-flex justify-content-between">
                     <div className="d-flex flex-column align-items-between justify-content-between">
-                      <h6 className="card-title">{post.title}</h6>
-                      <p className="card-text">{post.content}</p>
+                      <div>
+                        <h6 className="card-subtitle text-muted small mb-3">{formatDate(post.created_at)}</h6>
+                        <div className="mb-2">
+                          {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                            const tagObj = tagsList.find(tag => tag.id === tagId);
+                              return (
+                                <div key={tagId} className="badge mb-2 me-2">
+                                    {tagObj ? tagObj.name : 'Unknown Tag'}
+                                </div>
+                              );
+                          })}
+                        </div>
+                        <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-3 text-muted">{post.author_username}</h6></Link>
+                        <p className="card-text mb-3">{post.content}</p>
+                      </div>
                         <div className="d-flex">
                           <PostLikeButton postId={post.id} />
                           <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
@@ -208,29 +257,20 @@ function ListPosts() {
                               </div>
                             </>
                           )}
-                          <div>
-                            {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                              const tagObj = tagsList.find(tag => tag.id === tagId);
-                                return (
-                                  <div key={tagId} className="badge mb-2 me-2">
-                                      {tagObj ? tagObj.name : 'Unknown Tag'}
-                                  </div>
-                                );
-                              })}
-                            </div>
                           </div>
                         </div>
-                    <div>
-                    {console.log("Rendering map for trail:", post.trail)}
+                      <div>
                       {post.trail && post.trail.name && (
                         <MapComponent trail={post.trail} />
                         )}
+                        <Link to={`/trails/${post.trail.id}`}>Trail Details</Link>
+                        <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>Save Trail</button>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
+
           </div>
         ))}
       </div>

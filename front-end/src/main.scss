@@ -5,7 +5,7 @@
 
 // Include any default variable overrides here (though functions won't be available)
 
-$primary: #FFAF82;
+$primary: #FFD984;
 $secondary: #FFD984;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
@@ -107,4 +107,38 @@ transform: translateX(-50%);
 .pagination button:focus {
   outline: none; /* Remove default outline */
   box-shadow: none; /* Remove default box shadow */
+}
+
+.card-solid {
+  background-color: var(--yellow);
+  border-radius: 0px;
+  border-style: none;
+}
+
+.card {
+  border-radius: 0px;
+}
+
+.heart-icon {
+  color: grey;
+  transition: transform 0.2s ease-in-out;
+}
+
+.heart-icon.liked {
+  color: var(--yellow);
+  transform: scale(1.2);
+}
+
+.btn-primary {
+  color: white;
+}
+
+.btn-primary:hover {
+  color: white;
+}
+
+.btn-outline-primary:hover {
+  border-color: var(--yellow);
+  background-color: white;
+  color: var(--yellow);
 }

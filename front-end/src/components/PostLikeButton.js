@@ -99,7 +99,11 @@ function PostLikeButton({ postId }) {
 
   return (
     <button className="like-button me-2" onClick={toggleLike} style={{ border: 'none', background: 'transparent' }}>
-      <FontAwesomeIcon icon={liked ? fasHeart : farHeart} style={{ color: liked ? '#ff69b4' : 'grey' }} size='1x' />
+      <FontAwesomeIcon
+        icon={liked ? fasHeart : farHeart}
+        className={liked ? 'heart-icon liked' : 'heart-icon'}
+        size='1x'
+      />
       <span className="ms-2">{likeCount}</span>
     </button>
   );
