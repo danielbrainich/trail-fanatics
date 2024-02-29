@@ -276,14 +276,15 @@ function ListPosts() {
                           </div>
                         </div>
                       <div>
-                      {post.trail && post.trail.name && (
-                       <>
-                       {console.log("map component from post list", post.trail)}
-                       <MapComponent trail={post.trail} size="250px"/>
-                       <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
-                       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Trail Details
-                        </button>
+                        {post.trail && post.trail.name && (
+                        <>
+                        <MapComponent trail={post.trail} size="250px"/>
+                        <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
+                        <div className="w-50 me-2">
+                          <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          Trail Details
+                          </button>
+                        </div>
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
@@ -304,41 +305,43 @@ function ListPosts() {
                           </div>
                         </div>
 
-                         <div>
-                         {user ? (
-            // Check if the trail is saved
-            savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
-              <button className="btn btn-tertiary" disabled>
-                Trail Saved
-              </button>
-            ) : (
-              <button className="btn btn-primary" onClick={() => handleSaveTrail(post.trail.id)}>
-                Save Trail
-              </button>
-            )
-          ) : (
-            // If user is not logged in, show a modal
-            <div key={post.trail.id}>
-              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                Save Trail
-              </button>
-              <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                      <AlertModal title="Hello!" message="Please signup or login to save a trail" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-                         </div>
-                       </div>
-                     </>
+                        <div className="w-50 ms-2">
+                          <div>
+                            {user ? (
+                              // Check if the trail is saved
+                              savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
+                                <button className="btn btn-tertiary btn-sm w-100" disabled>
+                                  Trail Saved
+                                </button>
+                              ) : (
+                                <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
+                                  Save Trail
+                                </button>
+                              )
+                            ) : (
+                              // If user is not logged in, show a modal
+                              <div key={post.trail.id}>
+                                <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                  Save Trail
+                                </button>
+                                <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
+                                  <div className="modal-dialog">
+                                    <div className="modal-content">
+                                      <div className="modal-header">
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div className="modal-body">
+                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            </div>
+                        </div>
+                        </div>
+                      </>
                         )}
                     </div>
                   </div>

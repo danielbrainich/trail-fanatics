@@ -12100,3 +12100,7 @@ h1, .h1 {
 .form-control {
   border-radius: 0;
 }
+
+.w-custom {
+  flex: 1;
+}
