@@ -211,7 +211,7 @@ useEffect(() => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div className="modal-body">
-                                <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                                <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
                               </div>
                             </div>
                           </div>
@@ -253,7 +253,7 @@ useEffect(() => {
               { user ? (
                 <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
               ) : (
-                <AlertModal title="Hello!" message="Please signup or login to comment on this post" />
+                <AlertModal message="Please signup or login to comment on this post" />
               )}
             </div>
           </div>

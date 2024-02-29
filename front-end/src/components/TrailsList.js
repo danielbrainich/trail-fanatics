@@ -4,6 +4,21 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import MapComponent from './MapComponent';
 
+const DummyTrail = ({ trail }) => (
+  <div className="col-xs-12 col-sm-10 col-md-6 col-lg-4">
+    <div className="card h-100">
+      <div className="card-body d-flex justify-content-center align-items-center">
+        <MapComponent trail={trail} size="250px" />
+      </div>
+      <div className="card-body">
+        <h5 className="card-title">{trail.name}</h5>
+        <h6 className="card-subtitle mb-2 text-muted">{trail.creator}</h6>
+        <p className="card-text">{trail.description}</p>
+      </div>
+    </div>
+  </div>
+);
+
 function ListTrails() {
   const [trailSuccess, setTrailSuccess] = useState(false);
   const [savedTrails, setSavedTrails] = useState([]);
@@ -53,10 +68,48 @@ function ListTrails() {
     }
   };
 
+  const dummyTrail = {
+    name: "Canyon Meadow",
+    creator: "Daniel",
+    description: "Canyon Meadow is a beautiful corner of Redwood Regional Park in the Oakland Hills. Run the Stream Trail some fast and flat running along a beautiful creek. Or take the Chown Trail up to the ridge line for some serious vert on well-maintained single-track. You'll see huge redwoods and lush greenery down in the canyon. And up on the rocky ridge line, you'll get a great view of the bay.",
+    coordinates: {
+      lat: 37.8142,
+      lng: -122.1838
+    }
+  };
+
+
+  if (!user) {
+    return (
+      <div className="container mt-3 mt-md-5">
+        <div className="row">
+          <div className="col d-flex flex-column">
+            <p>Please sign in and save some maps to see them here. Here's a sample map:</p>
+              <DummyTrail trail={dummyTrail} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (savedTrails.length === 0) {
+    return (
+      <div className="container mt-3 mt-md-5">
+        <div className="row">
+          <div className="col d-flex flex-column">
+            <p>Please sign in and save some maps to see them here. Here's a sample map:</p>
+              <DummyTrail trail={dummyTrail} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="container mt-3 mt-md-5">
       <div className="row">
+      <h3 className="mb-3">My Saved Trails</h3>
         {savedTrails.map((trail, index) => (
           <div key={index} className="col-xs-12 col-sm-10 col-md-6 col-lg-4">
             <div className="card h-100">

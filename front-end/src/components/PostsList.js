@@ -211,7 +211,7 @@ function ListPosts() {
                 {user ? (
                   <NewPostForm setPostSuccess={setPostSuccess} postSuccess={postSuccess} setTagsList={setTagsList} tagsList={tagsList} />
                   ) : (
-                  <AlertModal title="Hello!" message="Please signup or login to post a new post" />
+                  <AlertModal message="Please signup or login to post a new post" />
                   )}
                 </div>
               </div>
@@ -266,7 +266,7 @@ function ListPosts() {
                                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                      <AlertModal title="Hello!" message="To delete a post, make sure you are logged-in and the post belongs to you" />
+                                      <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
                                     </div>
                                   </div>
                                 </div>
@@ -285,20 +285,24 @@ function ListPosts() {
                           Trail Details
                           </button>
                         </div>
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h2 class="modal-title fs-5" id="staticBackdropLabel">Map Details</h2>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h2 className="modal-title fs-5" id="staticBackdropLabel">Trail Details</h2>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
-                              <div class="modal-body">
-                              <MapComponent trail={post.trail} size="450px"/>
+                              <div className="modal-body">
                               <div className="mb-3">
-                                <strong>Trail Name:</strong> {post.trail.name}
+                                <MapComponent trail={post.trail} size="450px"/>
                               </div>
                               <div className="mb-3">
-                                <strong>Trail Description:</strong> {post.trail.description}
+                                <div><strong>Trail Name:</strong></div>
+                                <div>{post.trail.name}</div>
+                              </div>
+                              <div className="mb-3">
+                                <div><strong>Trail Description:</strong></div>
+                                <div>{post.trail.description}</div>
                               </div>
                               </div>
                             </div>
@@ -331,7 +335,7 @@ function ListPosts() {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                       </div>
                                       <div className="modal-body">
-                                        <AlertModal title="Hello!" message="Please signup or login to save a trail" />
+                                        <AlertModal message="Please signup or login to save a trail" />
                                       </div>
                                     </div>
                                   </div>

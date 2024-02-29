@@ -53,13 +53,16 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     }
 
     const dataToSend = {
-        username: formData.username,
-        email: formData.email,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        bio: formData.bio,
-        avatar: formData.avatar,
+      username: formData.username,
+      email: formData.email,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      bio: formData.bio,
     };
+
+    if (formData.avatar !== "") {
+      dataToSend.avatar = formData.avatar;
+    }
 
     const apiUrl = `http://localhost:8000/accounts/profiles/${userId}/`;
 
@@ -89,6 +92,17 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       updateUser(updatedUserData);
       setProfileUpdateSuccess(!profileUpdateSuccess);
     }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      username: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      bio: "",
+      avatar: "",
+    });
   };
 
   const handleChangeInput = (e) => {
@@ -179,9 +193,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 ))}
               </div>
                 <div className="text-end">
-                    <button className="btn btn-outline-primary me-2" data-bs-dismiss="modal" type="reset">
-                    Clear
-                    </button>
                     <button className="btn btn-primary" data-bs-dismiss="modal" type="submit">
                     Post
                     </button>

@@ -11,7 +11,7 @@ const MapComponent = ({ trail, size }) => {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={8}
+        zoom={14}
         options={{
           mapTypeId: 'roadmap',
           zoomControl: true,

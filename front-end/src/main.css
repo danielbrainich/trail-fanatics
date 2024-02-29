@@ -12104,3 +12104,7 @@ h1, .h1 {
 .w-custom {
   flex: 1;
 }
+
+.profile-label {
+  font-weight: bold;
+}
