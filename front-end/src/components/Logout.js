@@ -1,11 +1,9 @@
 import React from 'react';
 import { useAuthContext } from "../contexts/AuthContext";
-import useCsrfToken from '../hooks/useCsrfToken';
 
 function LogoutButton() {
   const { logout } = useAuthContext();
 
-  const csrfToken = useCsrfToken();
 
   const handleLogout = async () => {
     try {

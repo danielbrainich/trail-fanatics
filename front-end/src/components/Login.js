@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useCsrfToken from '../hooks/useCsrfToken';
 import { useAuthContext } from "../contexts/AuthContext";
 
 
@@ -11,8 +10,6 @@ function LoginForm() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuthContext();
-
-  const csrfToken = useCsrfToken();
 
 
   const handleSubmit = async (e) => {

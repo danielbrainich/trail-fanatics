@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useCsrfToken from '../hooks/useCsrfToken';
 import UpdateProfile from './ProfileUpdate';
 import sunglasses from '../assets/avatars/sunglasses.png';
 import dog from '../assets/avatars/dog.png';
@@ -29,7 +28,6 @@ function Profile() {
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(null);
   const { user } = useAuth();
   const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
-  const csrfToken = useCsrfToken();
 
   useEffect(() => {
     const fetchUserProfile = async () => {

@@ -20,8 +20,8 @@ const avatarOptions = {
 
 function SignupForm() {
   const [selectedAvatar, setSelectedAvatar] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [password] = useState('');
+  const [passwordConfirm] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

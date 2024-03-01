@@ -19,7 +19,7 @@ const avatarOptions = {
 };
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
-  const { user, setUser, updateUser } = useAuth();
+  const { updateUser } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [formData, setFormData] = useState({
     username: username || "",
@@ -95,17 +95,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     }
   };
 
-  const handleReset = () => {
-    setFormData({
-      username: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      bio: "",
-      avatar: "",
-    });
-  };
-
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -117,10 +106,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleSelectAvatar = (key) => {
     setSelectedAvatar(key);
     setFormData(prev => ({ ...prev, avatar: key }));
-  };
-
-  const updateUserProfile = (updatedUser) => {
-    setUser(updatedUser);
   };
 
   return (
@@ -194,7 +179,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
               </div>
                 <div className="text-end">
                     <button className="btn btn-primary" data-bs-dismiss="modal" type="submit">
-                    Post
+                    Submit
                     </button>
                 </div>
             </form>

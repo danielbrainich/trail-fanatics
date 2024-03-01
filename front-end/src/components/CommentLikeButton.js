@@ -40,7 +40,7 @@ function CommentLikeButton({ commentId, postId }) {
     };
 
     fetchLikeCount();
-  }, [commentId, liked]);
+  }, [commentId, liked, postId]);
 
   const csrfToken = useCsrfToken();
 
