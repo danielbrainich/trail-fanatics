@@ -234,7 +234,7 @@ function ShowPost() {
       <div className="content">
           <div className="container mt-3 mt-md-5">
             <div className="col-12 mb-3" key={post.id}>
-              <div className="card mb-4 p-3">
+              <div className="card mb-4 p-1 pb-0">
                 <div className="card-body">
                   <div>
                   <div className="d-flex justify-content-between">
@@ -380,7 +380,7 @@ function ShowPost() {
           <div className="comments-section">
             <h5 className="mb-4 ms-3">Comments</h5>
             {comments.slice().reverse().map((comment) => (
-              <div key={comment.id} className="card mb-3">
+              <div key={comment.id} className="card mb-4 p-1 pb-0">
                 <div className="card-body">
                   <h6 className="card-subtitle text-muted small mb-1">{formatDate(comment.created_at)}</h6>
                   <span className="text-muted">by </span><Link to={`/profiles/${comment.author_id}`}>{comment.author_username}</Link>

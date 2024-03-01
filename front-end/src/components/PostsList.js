@@ -230,7 +230,7 @@ function ListPosts() {
           <div className="row">
             {filteredPosts.slice().reverse().map((post) => (
               <div className="col-12" key={post.id}>
-                <div className="card mb-4 p-3">
+                <div className="card mb-4 p-1 pb-0">
                   <div className="card-body">
                     <div>
                       <div className="d-flex justify-content-between">
