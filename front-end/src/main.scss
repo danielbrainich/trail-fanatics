@@ -1,11 +1,11 @@
 $primary: #F9C553;
-$secondary: #FC8954;
+$secondary: #F9C553;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 :root {
+  --bs-secondary: #AF8D46;
   --bs-primary: #F9C553;
-  --bs-secondary: #FC8954;
   --bs-tertiary: #AF8D46;
 }
 
@@ -57,7 +57,7 @@ h5 {
 
 
 .custom-nav-link {
-  color: var(--bs-primary);
+  color: var(--bs-secondary);
   font-family: "Orbitron", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;

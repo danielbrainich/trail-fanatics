@@ -15,7 +15,7 @@ const DummyTrail = ({ trail }) => (
             <MapComponent trail={trail} size="250px" />
           </div>
           <div className="card-body">
-            <h5 className="card-title mb-3">{trail.name}</h5>
+            <h4 className="card-title mb-3">{trail.name}</h4>
             <h6 className="card-subtitle mb-3 text-muted">{trail.creator}</h6>
             <p className="card-text">{trail.description}</p>
           </div>
