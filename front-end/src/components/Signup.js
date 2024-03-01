@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCsrfToken from '../hooks/useCsrfToken';
-
 import sunglasses from '../assets/avatars/sunglasses.png';
 import dog from '../assets/avatars/dog.png';
 import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
+import config from '../config';
 
 const avatarOptions = {
   sunglasses,
@@ -47,7 +47,7 @@ function SignupForm() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/accounts/signup/', {
+      const response = await fetch(`${config.API_BASE_URL}/accounts/signup/`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

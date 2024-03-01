@@ -3,6 +3,7 @@ import useCsrfToken from '../hooks/useCsrfToken';
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import MapComponent from './MapComponent';
+import config from '../config';
 
 const DummyTrail = ({ trail }) => (
 
@@ -34,7 +35,7 @@ function ListTrails() {
   const fetchSavedTrails = async () => {
     try {
       if (user) {
-        const response = await fetch('http://localhost:8000/trails/saved_trails/', { credentials: 'include' });
+        const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
         if (!response.ok) {
           throw new Error('Failed to fetch saved trails');
         }
@@ -52,7 +53,7 @@ function ListTrails() {
 
   const handleUnsaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`http://localhost:8000/trails/saved_trails/${trailId}/`, {
+      const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/${trailId}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

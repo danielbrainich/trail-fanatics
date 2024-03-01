@@ -12013,7 +12013,6 @@ h5, .h5 {
   font-weight: 500;
   font-style: normal;
   color: var(--bs-primary) !important;
-  text-transform: uppercase;
   letter-spacing: 0.1rem;
 }
 
@@ -12024,7 +12023,6 @@ h5, .h5 {
   font-weight: 500;
   font-style: normal;
   font-size: 1rem;
-  text-transform: uppercase;
   letter-spacing: 0.1rem;
 }
 

@@ -8,6 +8,7 @@ import CommentLikeButton from "./CommentLikeButton";
 import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
 import MapComponent from './MapComponent';
+import config from '../config';
 
 
 
@@ -29,7 +30,7 @@ function ShowPost() {
 
   useEffect(() => {
     const fetchTags = async () => {
-      const apiUrl = `http://localhost:8000/content/tags/`;
+      const apiUrl = `${config.API_BASE_URL}/content/tags/`;
       const response = await fetch(apiUrl);
       if (response.ok) {
         const tags = await response.json();
@@ -45,7 +46,7 @@ function ShowPost() {
 
   useEffect(() => {
     const fetchComments = async () => {
-      const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/?page=${currentPage}`;
+      const apiUrl = `${config.API_BASE_URL}/content/posts/${postId}/comments/?page=${currentPage}`;
       try {
         const response = await fetch(apiUrl);
         if (response.ok) {
@@ -68,7 +69,7 @@ function ShowPost() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/content/posts/${postId}/`
+          `${config.API_BASE_URL}/content/posts/${postId}/`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -95,7 +96,7 @@ function ShowPost() {
 
 
     const deletePost = async (postId) => {
-      const apiUrl = `http://localhost:8000/content/posts/${postId}/`;
+      const apiUrl = `${config.API_BASE_URL}/content/posts/${postId}/`;
       const fetchConfig = {
         method: "DELETE",
         headers: {
@@ -109,7 +110,7 @@ function ShowPost() {
     };
 
   const deleteComment = async (commentId, postId) => {
-    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/${commentId}/`;
+    const apiUrl = `${config.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/`;
     const fetchConfig = {
       method: "DELETE",
       headers: {
@@ -192,7 +193,7 @@ function ShowPost() {
 
   const fetchSavedTrails = async () => {
     try {
-      const response = await fetch('http://localhost:8000/trails/saved_trails/', { credentials: 'include' });
+      const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
       if (!response.ok) {
         console.error(`Fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`Network response was not ok: ${response.status}`);
@@ -207,7 +208,7 @@ function ShowPost() {
 
   const handleSaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`http://localhost:8000/trails/saved_trails/${trailId}/`, {
+      const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/${trailId}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

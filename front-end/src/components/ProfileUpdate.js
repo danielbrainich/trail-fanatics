@@ -7,6 +7,7 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
+import config from '../config';
 
 const avatarOptions = {
   sunglasses,
@@ -64,7 +65,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       dataToSend.avatar = formData.avatar;
     }
 
-    const apiUrl = `http://localhost:8000/accounts/profiles/${userId}/`;
+    const apiUrl = `${config.API_BASE_URL}/accounts/profiles/${userId}/`;
 
     const fetchConfig = {
       method: "PUT",

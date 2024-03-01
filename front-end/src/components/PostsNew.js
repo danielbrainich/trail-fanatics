@@ -2,6 +2,7 @@ import { useState } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import config from '../config';
 
 const containerStyle = { width: '300px', height: '300px' };
 const center = { lat: 37.8117, lng: -122.1815 };
@@ -65,7 +66,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
       };
     }
 
-    const apiUrl = `http://localhost:8000/content/posts/`;
+    const apiUrl = `${config.API_BASE_URL}/content/posts/`;
 
     const fetchConfig = {
       method: "POST",

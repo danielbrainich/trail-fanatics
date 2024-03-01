@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useCsrfToken from './useCsrfToken';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 
 const useAuth = () => {
@@ -12,7 +13,7 @@ const useAuth = () => {
   const fetchCurrentUser = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/accounts/current_user/', {
+      const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -47,7 +48,7 @@ const useAuth = () => {
   const login = async (username, password) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/accounts/login/', {
+      const response = await fetch(`${config.API_BASE_URL}/accounts/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +74,7 @@ const useAuth = () => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/accounts/logout/', {
+      const response = await fetch(`${config.API_BASE_URL}/accounts/logout/`, {
         method: 'POST',
         headers: {
           "X-CSRFToken": csrfToken,
