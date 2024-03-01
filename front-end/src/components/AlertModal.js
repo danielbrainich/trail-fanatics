@@ -1,4 +1,3 @@
-
 function AlertModal({ message }) {
     return (
         <div className="card w-100 my-3 border-0">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';

@@ -28,11 +28,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="public")
     trail = models.OneToOneField(
-        Trail,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="post"
+        Trail, on_delete=models.CASCADE, null=True, blank=True, related_name="post"
     )
 
     def __str__(self):

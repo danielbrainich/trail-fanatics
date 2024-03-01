@@ -66,25 +66,35 @@ def post_list(request):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        trail_data = request.data.get('trail')
+        trail_data = request.data.get("trail")
         trail_instance = None
         if trail_data:
             trail_serializer = TrailSerializer(data=trail_data)
             if trail_serializer.is_valid():
                 trail_instance = trail_serializer.save(creator=request.user)
             else:
-                return Response(trail_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    trail_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
 
-        post_data = request.data.get('post')
+        post_data = request.data.get("post")
         if post_data:
             post_serializer = PostSerializer(data=post_data)
             if post_serializer.is_valid():
-                post = post_serializer.save(author=request.user, trail=trail_instance if trail_instance else None)
+                post = post_serializer.save(
+                    author=request.user,
+                    trail=trail_instance if trail_instance else None,
+                )
                 return Response(post_serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    post_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         else:
-            return Response({"detail": "No post data provided."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "No post data provided."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 @api_view(["GET", "PUT", "DELETE"])
 def post_detail(request, pk):

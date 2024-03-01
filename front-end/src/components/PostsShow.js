@@ -22,9 +22,9 @@ function ShowPost() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalComments, setTotalComments] = useState(0);
   const csrfToken = useCsrfToken();
-  console.log("CSRF Token:", csrfToken);
   const [savedTrails, setSavedTrails] = useState([]);
   const [trailSuccess, setTrailSuccess] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
 
   useEffect(() => {
@@ -42,20 +42,26 @@ function ShowPost() {
     fetchTags();
   }, []);
 
-useEffect(() => {
-  const fetchComments = async () => {
-    const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/?page=${currentPage}`;
-    const response = await fetch(apiUrl);
-    if (response.ok) {
-      const data = await response.json();
-      setComments(data.results.reverse());
-      setTotalComments(data.count);
-    } else {
-      console.error("Failed to fetch comments");
-    }
-  };
-  fetchComments();
-}, [postId, commentSuccess, currentPage]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const apiUrl = `http://localhost:8000/content/posts/${postId}/comments/?page=${currentPage}`;
+      try {
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+          const data = await response.json();
+          setComments(data.results.reverse());
+          setTotalComments(data.total);
+          setTotalPages(data.total_pages);
+        } else {
+          console.error("Failed to fetch comments");
+        }
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+    fetchComments();
+  }, [postId, commentSuccess, currentPage]);
 
 
   useEffect(() => {
@@ -146,14 +152,13 @@ useEffect(() => {
 
 
   function renderPagination() {
-    const backendDefinedPageSize = 10;
-    const totalPages = Math.ceil(totalComments / backendDefinedPageSize);
-
     let pages = [];
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <li key={i} className={`page-item ${i === currentPage ? 'active' : ''}`}>
-          <button className="page-link" onClick={() => handlePageChange(i)}>{i}</button>
+          <button className="page-link" onClick={() => handlePageChange(i)}>
+            {i}
+          </button>
         </li>
       );
     }
@@ -162,11 +167,23 @@ useEffect(() => {
       <nav aria-label="Page navigation example">
         <ul className="pagination">
           <li className="page-item">
-            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+            <button
+              className="page-link"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
           </li>
           {pages}
           <li className="page-item">
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+            <button
+              className="page-link"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage >= totalPages}
+            >
+              Next
+            </button>
           </li>
         </ul>
       </nav>
@@ -211,193 +228,195 @@ useEffect(() => {
   };
 
     return (
-      <div className="container mt-3 mt-md-5">
-        <div className="col-12 mb-3" key={post.id}>
-          <div className="card mb-4 p-3">
-            <div className="card-body">
-              <div>
-              <div className="d-flex justify-content-between">
-                <div className="d-flex flex-column align-items-between justify-content-between">
+
+      <div className="page-container">
+      <div className="content">
+          <div className="container mt-3 mt-md-5">
+            <div className="col-12 mb-3" key={post.id}>
+              <div className="card mb-4 p-3">
+                <div className="card-body">
                   <div>
-                    <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
-                    <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
-                    <p className="card-text my-3">{post.content}</p>
-                      </div>
-                      <div className="d-flex flex-column">
-                    <div className="mb-2">
-                      {tagsList && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                        const tagObj = tagsList.find(tag => tag.id === tagId);
-                        return <div key={tagId} className="badge mb-2 me-2">{tagObj ? tagObj.name : 'Unknown Tag'}</div>;
-                      })}
-                    </div>
-                    <div>
-                      <PostLikeButton postId={post.id} />
-                      <Link to="#" className="card-link">Edit</Link>
-                      {user && user.id === post.author ? (
-                              <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                  <div className="d-flex justify-content-between">
+                    <div className="d-flex flex-column align-items-between justify-content-between">
+                      <div>
+                        <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
+                        <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
+                        <p className="card-text my-3">{post.content}</p>
+                          </div>
+                          <div className="d-flex flex-column">
+                        <div className="mb-2">
+                          {tagsList && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                            const tagObj = tagsList.find(tag => tag.id === tagId);
+                            return <div key={tagId} className="badge mb-2 me-2">{tagObj ? tagObj.name : 'Unknown Tag'}</div>;
+                          })}
+                        </div>
+                        <div>
+                          <PostLikeButton postId={post.id} />
+                          <Link to="#" className="card-link">Edit</Link>
+                          {user && user.id === post.author ? (
+                                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                                  ) : (
+                                  <>
+                                    <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                      Delete
+                                    </a>
+                                    <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div className="modal-body">
+                                            <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                                </div>
+                            </div>
+                        </div>
+                      <div>
+                      {post.trail && (
+                        <>
+                        <MapComponent trail={post.trail} size="250px"/>
+                        <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
+                        <div className="w-50 me-2">
+                          <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          Map Details
+                          </button>
+                        </div>
+                        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div className="modal-body m-3">
+                              <div className="mb-3 d-flex align-items-center">
+                                <MapComponent trail={post.trail} size="400px"/>
+                              </div>
+                              <h4 className="mb-3">{post.trail.name}</h4>
+                              <p className="card-text mb-3">{post.trail.description}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-50 ms-2">
+                          <div>
+                            {user ? (
+                              // Check if the trail is saved
+                              savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
+                                <button className="btn btn-tertiary btn-sm w-100" disabled>
+                                  Map Saved
+                                </button>
                               ) : (
-                              <>
-                                <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
-                                  Delete
-                                </a>
-                                <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                                <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
+                                  Save Map
+                                </button>
+                              )
+                            ) : (
+                              // If user is not logged in, show a modal
+                              <div key={post.trail.id}>
+                                <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                  Save Map
+                                </button>
+                                <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
                                   <div className="modal-dialog">
                                     <div className="modal-content">
                                       <div className="modal-header">
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                       </div>
                                       <div className="modal-body">
-                                        <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                                        <AlertModal message="Please signup or login to save a trail" />
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </>
+                              </div>
                             )}
                             </div>
                         </div>
-                    </div>
-                  <div>
-
-                  {post.trail && (
-                    <>
-                    <MapComponent trail={post.trail} size="250px"/>
-                    <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
-                    <div className="w-50 me-2">
-                      <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                      Map Details
-                      </button>
-                    </div>
-                    <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div className="modal-body m-3">
-                          <div className="mb-3 d-flex align-items-center">
-                            <MapComponent trail={post.trail} size="400px"/>
-                          </div>
-                          <h4 className="mb-3">{post.trail.name}</h4>
-                          <p className="card-text mb-3">{post.trail.description}</p>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="w-50 ms-2">
-                      <div>
-                        {user ? (
-                          // Check if the trail is saved
-                          savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
-                            <button className="btn btn-tertiary btn-sm w-100" disabled>
-                              Map Saved
-                            </button>
-                          ) : (
-                            <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
-                              Save Map
-                            </button>
-                          )
-                        ) : (
-                          // If user is not logged in, show a modal
-                          <div key={post.trail.id}>
-                            <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                              Save Map
-                            </button>
-                            <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
-                              <div className="modal-dialog">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div className="modal-body">
-                                    <AlertModal message="Please signup or login to save a trail" />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        </>
                         )}
                         </div>
-                    </div>
-                    </div>
-                    </>
-                    )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-      <div className="card mb-4">
-        <div className="card-body">
-          <h5 className="card-title">New Comment</h5>
-          <p className="card-text">Add to the conversation. </p>
-          <div className="form-group">
-            <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#commentModal" role="button" tabIndex="0">
-              What's on your mind?
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="modal fade" id="commentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-            <h5 className="modal-title fs-5" id="staticBackdropLabel">New Comment</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              { user ? (
-                <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
-              ) : (
-                <AlertModal message="Please signup or login to comment on this post" />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="comments-section">
-        <h5 className="mb-4">Comments</h5>
-        {comments.slice().reverse().map((comment) => (
-          <div key={comment.id} className="card mb-3">
+          <div className="card mb-4">
             <div className="card-body">
-              <h6 className="card-subtitle text-muted small mb-1">{formatDate(comment.created_at)}</h6>
-              <span className="text-muted">by </span><Link to={`/profiles/${comment.author_id}`}>{comment.author_username}</Link>
-              <p className="card-text mt-3">{comment.content}</p>
-                <div className="d-flex">
-                  <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
-                  {user && user.id === comment.author ? (
-                    <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
-                    ) : (
-                    <>
-                      <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
-                        Delete
-                      </a>
-                      <div className="modal fade" id="nodeletecommentmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletecommentmodalLabel" aria-hidden="true">
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                              <AlertModal title="Hello!" message="To delete a comment, make sure you are logged-in and the comment belongs to you" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
+              <h5 className="card-title">New Comment</h5>
+              <p className="card-text">Add to the conversation. </p>
+              <div className="form-group">
+                <div id="fakeInput" className="form-control" data-bs-toggle="modal" data-bs-target="#commentModal" role="button" tabIndex="0">
+                  What's on your mind?
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal fade" id="commentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                <h5 className="modal-title fs-5" id="staticBackdropLabel">New Comment</h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  { user ? (
+                    <NewComment postId={postId} setCommentSuccess={setCommentSuccess}commentSuccess={commentSuccess}/>
+                  ) : (
+                    <AlertModal message="Please signup or login to comment on this post" />
                   )}
                 </div>
+              </div>
             </div>
           </div>
-        ))}
+          <div className="comments-section">
+            <h5 className="mb-4 ms-3">Comments</h5>
+            {comments.slice().reverse().map((comment) => (
+              <div key={comment.id} className="card mb-3">
+                <div className="card-body">
+                  <h6 className="card-subtitle text-muted small mb-1">{formatDate(comment.created_at)}</h6>
+                  <span className="text-muted">by </span><Link to={`/profiles/${comment.author_id}`}>{comment.author_username}</Link>
+                  <p className="card-text mt-3">{comment.content}</p>
+                    <div className="d-flex">
+                      <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
+                      {user && user.id === comment.author ? (
+                        <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
+                        ) : (
+                        <>
+                          <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
+                            Delete
+                          </a>
+                          <div className="modal fade" id="nodeletecommentmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletecommentmodalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                  <AlertModal title="Hello!" message="To delete a comment, make sure you are logged-in and the comment belongs to you" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      {renderPagination()}
+      <div className="pagination-container">
+        {renderPagination()}
+      </div>
     </div>
   );
 }
