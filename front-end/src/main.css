@@ -11986,44 +11986,41 @@ textarea.form-control-lg {
 }
 
 .navbar-brand {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500;
+  font-weight: 700;
   font-style: normal;
   color: var(--bs-primary) !important;
   font-size: 2.25rem;
   margin-left: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
 }
 
 h4, .h4 {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
   color: var(--bs-tertiary) !important;
-  font-size: medium;
-  letter-spacing: 0.1rem;
+  font-size: 1.25rem;
 }
 
 h5, .h5 {
-  font-family: "Orbitron", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+  font-family: "Inter", sans-serif;
   color: var(--bs-primary) !important;
-  letter-spacing: 0.1rem;
+  font-size: x-large;
+  font-weight: 600;
+  font-size: 1.35rem;
+  text-transform: uppercase;
 }
 
 .custom-nav-link {
   color: var(--bs-secondary);
-  font-family: "Orbitron", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
-  font-size: 1rem;
-  letter-spacing: 0.1rem;
+  font-size: 1.1rem;
 }
 
 .nav-item.dropdown .dropdown-toggle, .nav-link, h1, .h1 {

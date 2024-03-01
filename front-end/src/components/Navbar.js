@@ -26,7 +26,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg mt-4">
       <div className="container">
       <Link className="navbar-brand no-underline" to="/">
-        <img src={tplogo} alt="Trail People" width="250px" />
+        Trail People
       </Link>
         <ul className="navbar-nav ms-auto d-flex flex-row">
           {user ? (
