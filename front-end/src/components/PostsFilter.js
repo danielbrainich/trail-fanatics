@@ -21,9 +21,9 @@ function FilterPosts({ onFilterChange, tagsList }) {
   }, [selectedTags, onFilterChange]);
 
   return (
-    <div className="card w-100 mb-4 card-solid">
+    <div className="card w-100 mb-4">
       <div className="card-body">
-        <h5 className="card-title">Filter Posts by Tag</h5>
+        <h5 className="card-title mb-2">Filter Posts</h5>
         <div>
 
           <div className="checkbox-grid">

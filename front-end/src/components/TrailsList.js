@@ -97,7 +97,7 @@ function ListTrails() {
       <div className="container mt-3 mt-md-5">
         <div className="row">
           <div className="col d-flex flex-column">
-            <p>Please sign in and save some maps to see them here. Here's a sample map:</p>
+            <p>You don't have any saved maps. When you save maps from your social feed, you'll see them here. Here's a sample map:</p>
               <DummyTrail trail={dummyTrail} />
           </div>
         </div>
@@ -109,15 +109,17 @@ function ListTrails() {
   return (
     <div className="container mt-3 mt-md-5">
       <div className="row">
-      <h3 className="mb-3">My Saved Trails</h3>
+      <h5 className="mb-4">My Saved Maps</h5>
         {savedTrails.map((trail, index) => (
           <div key={index} className="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <div className="card h-100">
-              <MapComponent trail={trail.trail} size="250px" />
+            <div className="card h-100 p-4">
+              <div class="mb-4 d-flex align-items-center">
+                <MapComponent trail={trail.trail} size="250px" />
+              </div>
               <div className="card-body">
-                <h5 className="card-title">{trail.trail.name}</h5>
-                <Link to={`/profiles/${trail.trail.creator.id}`}><h6 className="card-subtitle mb-2 text-muted">{trail.trail.creator.username}</h6></Link>
-                <p className="card-text">{trail.trail.description}</p>
+                <h5 className="card-title mb-3">{trail.trail.name}</h5>
+                <Link to={`/profiles/${trail.trail.creator.id}`}><h6 className="card-subtitle mb-3 text-muted">{trail.trail.creator.username}</h6></Link>
+                <p className="card-text mb-4">{trail.trail.description}</p>
                 <button className="btn btn-primary" onClick={() => handleUnsaveTrail(trail.trail.id)}>
                   Unsave
                 </button>

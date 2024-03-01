@@ -231,7 +231,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="card mb-4 card-solid">
+      <div className="card mb-4">
         <div className="card-body">
           <h5 className="card-title">New Comment</h5>
           <p className="card-text">Add to the conversation. </p>
@@ -247,6 +247,7 @@ useEffect(() => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
+            <h5 className="modal-title fs-5" id="staticBackdropLabel">New Comment</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -261,7 +262,7 @@ useEffect(() => {
       </div>
 
       <div className="comments-section">
-        <h5>Comments</h5>
+        <h5 className="mb-4">Comments</h5>
         {comments.slice().reverse().map((comment) => (
           <div key={comment.id} className="card mb-3">
             <div className="card-body">

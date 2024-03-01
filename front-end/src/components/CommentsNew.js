@@ -57,10 +57,9 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
 
   return (
     <div className="card w-100 my-3 border-0">
-      <h5 className="card-title">New Comment</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="form-label">Content</label>
               <textarea
                 name="content"

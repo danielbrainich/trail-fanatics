@@ -84,10 +84,10 @@ function SignupForm() {
 
   return (
     <div className="container mt-3 mt-md-5 mx-auto w-50">
-      <h4>Signup</h4>
+      <h5>Signup</h5>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-3">
+        <div className="mb-4">
           <label htmlFor="username" className="form-label">Username</label>
           <input
             type="text"
@@ -100,7 +100,7 @@ function SignupForm() {
             required
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-4">
           <label htmlFor="password" className="form-label">Password</label>
           <input
             type="password"
@@ -113,7 +113,7 @@ function SignupForm() {
             required
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-4">
           <label htmlFor="passwordConfirm" className="form-label">Confirm Password</label>
           <input
             type="password"
@@ -126,7 +126,7 @@ function SignupForm() {
             required
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-4">
           <div className="form-label">Choose an Avatar</div>
           {Object.entries(avatarOptions).map(([key, src]) => (
             <img

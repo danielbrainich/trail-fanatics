@@ -32,10 +32,11 @@ function LoginForm() {
 
   return (
     <div className="container mt-3 mt-md-5 mx-auto w-50">
-        <h4>Login</h4>
+        <h5>Login</h5>
         {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-3">
+          <label htmlFor="username" className="form-label">Username</label>
+        <div className="mb-4">
           <input
             id="username"
             type="text"
@@ -45,7 +46,7 @@ function LoginForm() {
             required
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-4">
           <label htmlFor="password" className="form-label">Password</label>
           <input
             id="password"

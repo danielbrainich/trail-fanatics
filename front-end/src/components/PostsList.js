@@ -191,7 +191,7 @@ function ListPosts() {
 
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
-          <div className="card w-100 mb-4 card-solid">
+          <div className="card w-100 mb-4">
             <div className="card-body">
               <h5 className="card-title mb-3">New Post</h5>
               <div className="form-group">
@@ -205,6 +205,7 @@ function ListPosts() {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
+                <h5 className="modal-title fs-5" id="staticBackdropLabel">New Post</h5>
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
@@ -228,7 +229,7 @@ function ListPosts() {
         {filteredPosts.slice().reverse().map((post) => (
           <div className="col-12 mb-3" key={post.id}>
 
-            <div className="card">
+            <div className="card mb-4">
               <div className="card-body">
                 <div>
                   <div className="d-flex justify-content-between">
@@ -282,14 +283,14 @@ function ListPosts() {
                         <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
                         <div className="w-50 me-2">
                           <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          Trail Details
+                          Map Details
                           </button>
                         </div>
                         <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                           <div className="modal-dialog">
                             <div className="modal-content">
                               <div className="modal-header">
-                                <h2 className="modal-title fs-5" id="staticBackdropLabel">Trail Details</h2>
+                                <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div className="modal-body">
@@ -297,11 +298,11 @@ function ListPosts() {
                                 <MapComponent trail={post.trail} size="450px"/>
                               </div>
                               <div className="mb-3">
-                                <div><strong>Trail Name:</strong></div>
+                                <div><strong>Map Name:</strong></div>
                                 <div>{post.trail.name}</div>
                               </div>
                               <div className="mb-3">
-                                <div><strong>Trail Description:</strong></div>
+                                <div><strong>Map Description:</strong></div>
                                 <div>{post.trail.description}</div>
                               </div>
                               </div>
@@ -315,18 +316,18 @@ function ListPosts() {
                               // Check if the trail is saved
                               savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
                                 <button className="btn btn-tertiary btn-sm w-100" disabled>
-                                  Trail Saved
+                                  Map Saved
                                 </button>
                               ) : (
                                 <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
-                                  Save Trail
+                                  Save Map
                                 </button>
                               )
                             ) : (
                               // If user is not logged in, show a modal
                               <div key={post.trail.id}>
                                 <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                                  Save Trail
+                                  Save Map
                                 </button>
                                 <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
                                   <div className="modal-dialog">

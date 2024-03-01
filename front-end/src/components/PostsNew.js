@@ -139,12 +139,11 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
 
   return (
     <div className="card w-100 my-3 border-0">
-      <h5 className="card-title">New Post</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Tags</label>
-            <div className="checkbox-grid mb-3">
+            <div className="checkbox-grid mb-4">
               {tagsList && tagsList.map((tag) => (
               <div key={tag.id} className="form-check">
                 <input
@@ -161,7 +160,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
             </div>
             ))}
           </div>
-          <div className="mb-3">
+          <div className="mb-4">
             <label className="form-label">Content</label>
             <textarea
               name="content"
@@ -172,7 +171,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
             ></textarea>
           </div>
 
-        <div className="mb-3 form-check form-switch">
+        <div className="mb-4 form-check form-switch">
       <input
         className="form-check-input"
         type="checkbox"
@@ -180,12 +179,12 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
         checked={showMap}
         onChange={(e) => setShowMap(e.target.checked)}
       />
-      <label className="form-check-label" htmlFor="showMapToggle">Add a Trail</label>
+      <label className="form-check-label" htmlFor="showMapToggle">Add a Map</label>
     </div>
 
     {showMap && isLoaded && !loadError && (
       <>
-      <div style={{ height: "300px", width: "300px" }}>
+      <div className="mb-4" style={{ height: "300px", width: "300px" }}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
@@ -202,8 +201,8 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
           {markerPosition && <Marker position={markerPosition} />}
         </GoogleMap>
       </div>
-      <div className="mb-3">
-        <label htmlFor="trailName" className="form-label">Trail Name:</label>
+      <div className="mb-4">
+        <label htmlFor="trailName" className="form-label">Map Name</label>
         <input
           type="text"
           className="form-control"
@@ -213,8 +212,8 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="mb-3">
-        <label htmlFor="trailDescription" className="form-label">Trail Description:</label>
+      <div className="mb-4">
+        <label htmlFor="trailDescription" className="form-label">Map Description</label>
         <textarea
           className="form-control"
           id="trailDescription"

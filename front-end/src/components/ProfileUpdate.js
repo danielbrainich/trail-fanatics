@@ -123,11 +123,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   };
 
   return (
-    <div className="card w-100 my-3 border-0">
-        <h5 className="card-title">Update Profile</h5>
+    <div className="card w-100 border-0">
         <div className="card-body">
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">Username</label>
                     <input
                     name="username"
@@ -137,7 +136,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     value={formData.username}
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">Email</label>
                     <input
                     name="email"
@@ -146,7 +145,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     value={formData.email}
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">First Name</label>
                     <input
                     name="firstName"
@@ -155,7 +154,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     value={formData.firstName}
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">Last Name</label>
                     <input
                     name="lastName"
@@ -164,7 +163,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     value={formData.lastName}
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">Bio</label>
                     <textarea
                     name="bio"
@@ -173,7 +172,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     value={formData.bio}
                     ></textarea>
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                 <div className="form-label">Avatar</div>
                 {Object.entries(avatarOptions).map(([key, src]) => (
                   <img

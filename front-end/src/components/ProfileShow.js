@@ -8,6 +8,9 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
+import { useAuthContext } from "../contexts/AuthContext";
+
+
 
 const avatarOptions = {
   sunglasses,
@@ -24,7 +27,7 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(null);
-
+  const { user, isAuthenticated } = useAuthContext();
   const csrfToken = useCsrfToken();
 
   useEffect(() => {
@@ -59,43 +62,48 @@ function Profile() {
     return <div className="text-center mt-3 mt-md-5">User not found</div>;
   }
 
+  const isCurrentUserProfile = isAuthenticated && user?.id.toString() === userId;
+
   return (
     <div className="container d-flex justify-content-center mt-3 mt-md-5 vh-100">
       <div className="row flex-fill d-flex justify-content-center">
         <div className="col-lg-9">
-          <div className="card">
+          <div className="card p-4">
             <div className="card-body">
-              <h3>Profile</h3>
-              <div className="mb-3">
+              <h5 className="mb-4">Profile</h5>
+              <div className="mb-4">
                 <strong>Username:</strong> {userProfile.username}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <strong>First Name:</strong> {userProfile.first_name}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <strong>Last Name:</strong> {userProfile.last_name}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <strong>Email:</strong> {userProfile.email}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <strong>Bio:</strong> {userProfile.bio}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <strong>Avatar:</strong> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
-
               </div>
+              {isCurrentUserProfile && (
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                 Update Profile
               </button>
+            )}
             </div>
           </div>
         </div>
       </div>
+
       <div className="modal fade" id="editProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
+              <h5 className="modal-title" id="editProfileModalLabel">Update Profile</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">

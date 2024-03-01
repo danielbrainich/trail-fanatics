@@ -24,20 +24,22 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg mt-4">
       <div className="container">
-        <Link className="navbar-brand" to="/">Trail People</Link>
+        <Link className="navbar-brand no-underline" to="/">Trail People</Link>
         <ul className="navbar-nav ms-auto d-flex flex-row">
           {user ? (
-            <li className="nav-item dropdown">
-              <button className="nav-link" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                {user?.username}
-                {user?.avatar && <img src={avatarOptions[user.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" to={`/profiles/${user?.id}`}>My Profile</Link></li>
-                <li><Link className="dropdown-item" to={`/trails/`}>My Saved Trails</Link></li>
-                <li><Logout /></li>
-              </ul>
-            </li>
+            <div>
+                <span className="custom-nav-link">{user?.username}</span>
+                <li className="nav-item dropdown">
+                  <button className="nav-link" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {user?.avatar && <img src={avatarOptions[user.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><Link className="dropdown-item no-underline" to={`/profiles/${user?.id}`}>My Profile</Link></li>
+                    <li><Link className="dropdown-item no-underline" to={`/trails/`}>My Saved Trails</Link></li>
+                    <li><Logout /></li>
+                  </ul>
+                </li>
+            </div>
             ) : (
             <ul className="list-unstyled d-flex flex-wrap align-items-center">
               <li className="nav-item me-3 me-sm-0">
