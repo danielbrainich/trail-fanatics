@@ -58,7 +58,7 @@ const useAuth = () => {
       });
       if (response.ok) {
         updateCsrfToken();
-        fetchCurrentUser();
+        await fetchCurrentUser();
       } else {
         console.error('Login failed');
       }

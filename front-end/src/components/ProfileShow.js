@@ -28,6 +28,7 @@ function Profile() {
   const [error, setError] = useState(null);
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(null);
   const { user, isAuthenticated } = useAuthContext();
+  const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
   const csrfToken = useCsrfToken();
 
   useEffect(() => {
@@ -50,6 +51,13 @@ function Profile() {
     fetchUserProfile();
   }, [userId, profileUpdateSuccess]);
 
+  useEffect(() => {
+    if (user && userProfile) {
+      setIsCurrentUserProfile(isAuthenticated && user.id === userProfile.id);
+    }
+  }, [user, userProfile, isAuthenticated]);
+
+
   if (loading) {
     return <div className="text-center mt-3 mt-md-5">Loading...</div>;
   }
@@ -62,8 +70,6 @@ function Profile() {
     return <div className="text-center mt-3 mt-md-5">User not found</div>;
   }
 
-  const isCurrentUserProfile = isAuthenticated && user?.id.toString() === userId;
-
   return (
     <div className="container d-flex justify-content-center mt-3 mt-md-5 vh-100">
       <div className="row flex-fill d-flex justify-content-center">
@@ -72,22 +78,22 @@ function Profile() {
             <div className="card-body">
               <h5 className="mb-4">Profile</h5>
               <div className="mb-4">
-                <strong>Username:</strong> {userProfile.username}
+                <h4>Username:</h4> {userProfile.username}
               </div>
               <div className="mb-4">
-                <strong>First Name:</strong> {userProfile.first_name}
+                <h4>First Name:</h4> {userProfile.first_name}
               </div>
               <div className="mb-4">
-                <strong>Last Name:</strong> {userProfile.last_name}
+                <h4>Last Name:</h4> {userProfile.last_name}
               </div>
               <div className="mb-4">
-                <strong>Email:</strong> {userProfile.email}
+                <h4>Email:</h4> {userProfile.email}
               </div>
               <div className="mb-4">
-                <strong>Bio:</strong> {userProfile.bio}
+                <h4>Bio:</h4> {userProfile.bio}
               </div>
               <div className="mb-4">
-                <strong>Avatar:</strong> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
+                <h4 className="mb-3">Avatar:</h4> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
               </div>
               {isCurrentUserProfile && (
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">

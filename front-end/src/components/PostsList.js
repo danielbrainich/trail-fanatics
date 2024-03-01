@@ -227,53 +227,54 @@ function ListPosts() {
 
       <div className="row">
         {filteredPosts.slice().reverse().map((post) => (
-          <div className="col-12 mb-3" key={post.id}>
-
-            <div className="card mb-4">
+          <div className="col-12" key={post.id}>
+            <div className="card mb-4 p-3">
               <div className="card-body">
                 <div>
                   <div className="d-flex justify-content-between">
                     <div className="d-flex flex-column align-items-between justify-content-between">
                       <div>
-                        <h6 className="card-subtitle text-muted small mb-3">{formatDate(post.created_at)}</h6>
-                        <div className="mb-2">
-                          {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                            const tagObj = tagsList.find(tag => tag.id === tagId);
-                              return (
-                                <div key={tagId} className="badge mb-2 me-2">
-                                    {tagObj ? tagObj.name : 'Unknown Tag'}
-                                </div>
-                              );
-                          })}
-                        </div>
-                        <Link to={`/profiles/${post.author_id}`}><h6 className="card-subtitle mb-3 text-muted">{post.author_username}</h6></Link>
-                        <p className="card-text mb-3">{post.content}</p>
+                        <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
+                        <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
+                        <p className="card-text my-3">{post.content}</p>
                       </div>
-                        <div className="d-flex">
-                          <PostLikeButton postId={post.id} />
-                          <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
-                          <Link to={`#`} className="card-link">Edit</Link>
-                          {user && user.id === post.author ? (
-                            <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
-                            ) : (
-                            <>
-                              <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
-                                Delete
-                              </a>
-                              <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
-                                <div className="modal-dialog">
-                                  <div className="modal-content">
-                                    <div className="modal-header">
-                                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div className="modal-body">
-                                      <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                        <div className="d-flex flex-column">
+                          <div className="mb-2">
+                            {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                              const tagObj = tagsList.find(tag => tag.id === tagId);
+                                return (
+                                  <div key={tagId} className="badge mb-2 me-2">
+                                      {tagObj ? tagObj.name : 'Unknown Tag'}
+                                  </div>
+                                );
+                            })}
+                          </div>
+                          <div>
+                            <PostLikeButton postId={post.id} />
+                            <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
+                            <Link to={`#`} className="card-link">Edit</Link>
+                            {user && user.id === post.author ? (
+                              <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                              ) : (
+                              <>
+                                <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                  Delete
+                                </a>
+                                <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                                  <div className="modal-dialog">
+                                    <div className="modal-content">
+                                      <div className="modal-header">
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div className="modal-body">
+                                        <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </>
-                          )}
+                              </>
+                            )}
+                            </div>
                           </div>
                         </div>
                       <div>
@@ -293,18 +294,12 @@ function ListPosts() {
                                 <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
-                              <div className="modal-body">
-                              <div className="mb-3">
-                                <MapComponent trail={post.trail} size="450px"/>
+                              <div className="modal-body m-3">
+                              <div className="mb-3 d-flex align-items-center">
+                                <MapComponent trail={post.trail} size="400px"/>
                               </div>
-                              <div className="mb-3">
-                                <div><strong>Map Name:</strong></div>
-                                <div>{post.trail.name}</div>
-                              </div>
-                              <div className="mb-3">
-                                <div><strong>Map Description:</strong></div>
-                                <div>{post.trail.description}</div>
-                              </div>
+                              <h4 className="mb-3">{post.trail.name}</h4>
+                              <p className="card-text mb-3">{post.trail.description}</p>
                               </div>
                             </div>
                           </div>

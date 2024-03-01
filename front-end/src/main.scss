@@ -1,12 +1,12 @@
-@import './fonts.css';
-
-
-$primary: #9A81D1;
+$primary: #F9C553;
+$secondary: #FC8954;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 :root {
-  --bs-primary: #9A81D1;
+  --bs-primary: #F9C553;
+  --bs-secondary: #FC8954;
+  --bs-tertiary: #AF8D46;
 }
 
 .vh-90 {
@@ -24,21 +24,48 @@ $primary: #9A81D1;
 }
 
 .navbar-brand {
-  font-family: 'sp-blunt-regular', sans-serif !important;
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
   color: var(--bs-primary) !important;
   font-size: 2.25rem;
   margin-left: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .2rem;
+
+}
+
+h4 {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  color: var(--bs-tertiary) !important;
+  font-size: medium;
+  letter-spacing: .1rem;
 }
 
 h5 {
-  font-family: 'sp-blunt-regular', sans-serif !important;
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
   color: var(--bs-primary) !important;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
 }
+
 
 .custom-nav-link {
   color: var(--bs-primary);
-  font-family: 'sp-blunt-regular', sans-serif !important;
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
   font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
 }
 
 .nav-item.dropdown .dropdown-toggle, .nav-link, h1 {
@@ -59,7 +86,7 @@ h5 {
 }
 
 .heart-icon.liked {
-  color: var(--bs-primary);
+  color: var(--bs-tertiary);
   transform: scale(1.2);
 }
 
@@ -80,7 +107,7 @@ h5 {
 }
 
 a {
-  color: var(--bs-primary);
+  color: var(--bs-secondary);
   text-decoration: none;
   position: relative;
   transition: all 0.3s ease;
@@ -92,7 +119,7 @@ a {
     height: 2px;
     bottom: -1px;
     left: 50%;
-    background-color: var(--bs-primary);
+    background-color: var(--bs-secondary);
     transition: width 0.3s ease, left 0.3s ease;
   }
 
@@ -108,4 +135,11 @@ a {
 
 body {
   background-color: #101010;
+}
+
+.badge {
+  background-color: var(--bs-tertiary);
+  color: var(--bs-black);
+  font-size: 1rem;
+  font-weight: 500;
 }

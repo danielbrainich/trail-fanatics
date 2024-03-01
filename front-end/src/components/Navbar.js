@@ -7,6 +7,7 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
+import tplogo from '../assets/avatars/tplogo.png';
 
 const avatarOptions = {
   sunglasses,
@@ -24,10 +25,12 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg mt-4">
       <div className="container">
-        <Link className="navbar-brand no-underline" to="/">Trail People</Link>
+      <Link className="navbar-brand no-underline" to="/">
+        <img src={tplogo} alt="Trail People" width="350px" />
+      </Link>
         <ul className="navbar-nav ms-auto d-flex flex-row">
           {user ? (
-            <div>
+            <div className="d-flex align-items-center">
                 <span className="custom-nav-link">{user?.username}</span>
                 <li className="nav-item dropdown">
                   <button className="nav-link" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,7 +38,7 @@ function Navbar() {
                   </button>
                   <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><Link className="dropdown-item no-underline" to={`/profiles/${user?.id}`}>My Profile</Link></li>
-                    <li><Link className="dropdown-item no-underline" to={`/trails/`}>My Saved Trails</Link></li>
+                    <li><Link className="dropdown-item no-underline" to={`/trails/`}>My Saved Maps</Link></li>
                     <li><Logout /></li>
                   </ul>
                 </li>
