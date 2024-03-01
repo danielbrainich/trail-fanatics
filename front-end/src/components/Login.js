@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCsrfToken from '../hooks/useCsrfToken';
-import { AuthProvider, useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 
 
 

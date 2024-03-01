@@ -7,7 +7,6 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
-import tplogo from '../assets/avatars/tplogo.png';
 
 const avatarOptions = {
   sunglasses,

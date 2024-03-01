@@ -258,7 +258,7 @@ function ShowPost() {
                                   <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
                                   ) : (
                                   <>
-                                    <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                    <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" tabIndex="0">
                                       Delete
                                     </button>
                                     <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
@@ -391,7 +391,7 @@ function ShowPost() {
                         <button className="card-link custom-btn-link" onClick={() => deleteComment(comment.id, postId)}>Delete</button>
                         ) : (
                         <>
-                          <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
+                          <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" tabIndex="0">
                             Delete
                           </button>
                           <div className="modal fade" id="nodeletecommentmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletecommentmodalLabel" aria-hidden="true">
