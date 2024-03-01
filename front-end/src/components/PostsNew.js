@@ -171,7 +171,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
             ></textarea>
           </div>
 
-        <div className="mb-4 form-check form-switch">
+        <div className="mb-2 form-check form-switch">
       <input
         className="form-check-input"
         type="checkbox"
@@ -184,6 +184,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
 
     {showMap && isLoaded && !loadError && (
       <>
+      <div className="mb-3">Click on the map to place a marker at the trail-head.</div>
       <div className="mb-4" style={{ height: "300px", width: "300px" }}>
         <GoogleMap
           mapContainerStyle={containerStyle}

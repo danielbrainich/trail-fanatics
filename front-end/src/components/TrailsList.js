@@ -125,8 +125,8 @@ function ListTrails() {
               </div>
               <div className="card-body">
                 <h4 className="card-title mb-3">{trail.trail.name}</h4>
-                <Link to={`/profiles/${trail.trail.creator.id}`}><h6 className="card-subtitle mb-3 text-muted">{trail.trail.creator.username}</h6></Link>
-                <p className="card-text mb-4">{trail.trail.description}</p>
+                <span className="text-muted">by </span><Link to={`/profiles/${trail.trail.creator.id}`}>{trail.trail.creator.username}</Link>
+                <p className="card-text my-3 mb-4">{trail.trail.description}</p>
                 <button className="btn btn-primary" onClick={() => handleUnsaveTrail(trail.trail.id)}>
                   Unsave
                 </button>

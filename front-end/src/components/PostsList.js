@@ -33,7 +33,9 @@ function ListPosts() {
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
           setPosts(postsData.results.reverse());
-          setTotalPages(postsData.totalPages);
+          setTotalPages(postsData.total_pages);
+          console.log("Posts Data:", postsData);
+          console.log("Total Pages:", postsData.total_pages);
         } else {
           console.error("Failed to fetch posts");
         }
@@ -74,14 +76,14 @@ function ListPosts() {
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
+    const hours = date.getHours() % 12 || 12;
     return new Intl.DateTimeFormat('en-US', {
       month: 'long',
       day: '2-digit',
-      year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
       hour12: true,
-    }).format(date);
+    }).format(date).replace(/(\d+):(\d+)/, `${hours}:$2`);
   }
 
 
@@ -134,6 +136,7 @@ function ListPosts() {
         </li>
       );
     }
+    console.log("Current Page:", currentPage, "Total Pages:", totalPages);
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
@@ -142,13 +145,12 @@ function ListPosts() {
           </li>
           {pages}
           <li className="page-item">
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 0}>Next</button>
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage >= totalPages}>Next</button>
           </li>
         </ul>
       </nav>
     );
   }
-
   const handleSaveTrail = async (trailId) => {
     try {
       const response = await fetch(`http://localhost:8000/trails/saved_trails/${trailId}/`, {
@@ -188,7 +190,6 @@ function ListPosts() {
 
   return (
     <div className="container mt-3 mt-md-5">
-
       <div className="row d-flex align-items-stretch">
         <div className="col-md-7 d-flex flex-fill">
           <div className="card w-100 mb-4">

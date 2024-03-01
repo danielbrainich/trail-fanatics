@@ -8,7 +8,7 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
-import { useAuthContext } from "../contexts/AuthContext";
+import useAuth from '../hooks/useAuth';
 
 
 
@@ -27,7 +27,7 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(null);
-  const { user, isAuthenticated } = useAuthContext();
+  const { user } = useAuth();
   const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
   const csrfToken = useCsrfToken();
 
@@ -52,10 +52,18 @@ function Profile() {
   }, [userId, profileUpdateSuccess]);
 
   useEffect(() => {
-    if (user && userProfile) {
-      setIsCurrentUserProfile(isAuthenticated && user.id === userProfile.id);
-    }
-  }, [user, userProfile, isAuthenticated]);
+    const userProfileId = userProfile ? String(userProfile.id) : null;
+    const currentUserId = user ? String(user.id) : null;
+
+    const isAuth = Boolean(user);
+
+    setIsCurrentUserProfile(isAuth && userProfileId === currentUserId);
+
+    console.log("User Profile ID:", userProfileId);
+    console.log("Current User ID:", currentUserId);
+    console.log("Is Authenticated:", isAuth);
+    console.log("Comparison Result:", isAuth && userProfileId === currentUserId);
+  }, [user, userProfile]);
 
 
   if (loading) {
@@ -78,22 +86,22 @@ function Profile() {
             <div className="card-body">
               <h5 className="mb-4">Profile</h5>
               <div className="mb-4">
-                <h4>Username:</h4> {userProfile.username}
+                <h4>Username</h4> {userProfile.username}
               </div>
               <div className="mb-4">
-                <h4>First Name:</h4> {userProfile.first_name}
+                <h4>First Name</h4> {userProfile.first_name}
               </div>
               <div className="mb-4">
-                <h4>Last Name:</h4> {userProfile.last_name}
+                <h4>Last Name</h4> {userProfile.last_name}
               </div>
               <div className="mb-4">
-                <h4>Email:</h4> {userProfile.email}
+                <h4>Email</h4> {userProfile.email}
               </div>
               <div className="mb-4">
-                <h4>Bio:</h4> {userProfile.bio}
+                <h4>Bio</h4> {userProfile.bio}
               </div>
               <div className="mb-4">
-                <h4 className="mb-3">Avatar:</h4> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
+                <h4 className="mb-3">Avatar</h4> {userProfile.avatar && <img src={avatarOptions[userProfile.avatar]} alt="avatar" className="rounded-circle ms-2" style={{width: "45px"}} />}
               </div>
               {isCurrentUserProfile && (
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
