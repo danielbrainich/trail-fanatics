@@ -12059,13 +12059,15 @@ h5, .h5 {
   border: none;
 }
 
-a {
+a, .custom-btn-link {
   color: var(--bs-secondary);
+  background-color: transparent;
+  border: none;
   text-decoration: none;
   position: relative;
   transition: all 0.3s ease;
 }
-a::after {
+a::after, .custom-btn-link::after {
   content: "";
   position: absolute;
   width: 0;
@@ -12075,7 +12077,7 @@ a::after {
   background-color: var(--bs-secondary);
   transition: width 0.3s ease, left 0.3s ease;
 }
-a:hover::after {
+a:hover::after, .custom-btn-link:hover::after {
   width: 100%;
   left: 0;
 }

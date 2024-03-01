@@ -255,12 +255,12 @@ function ShowPost() {
                           <PostLikeButton postId={post.id} />
                           <Link to="#" className="card-link">Edit</Link>
                           {user && user.id === post.author ? (
-                                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                                  <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
                                   ) : (
                                   <>
-                                    <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                    <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
                                       Delete
-                                    </a>
+                                    </button>
                                     <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
                                       <div className="modal-dialog">
                                         <div className="modal-content">
@@ -388,12 +388,12 @@ function ShowPost() {
                     <div className="d-flex">
                       <CommentLikeButton postId={comment.post_id} commentId={comment.id} />
                       {user && user.id === comment.author ? (
-                        <a href="#" className="card-link" onClick={() => deleteComment(comment.id, postId)}>Delete</a>
+                        <button className="card-link custom-btn-link" onClick={() => deleteComment(comment.id, postId)}>Delete</button>
                         ) : (
                         <>
-                          <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
+                          <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletecommentmodal" role="button" tabIndex="0">
                             Delete
-                          </a>
+                          </button>
                           <div className="modal fade" id="nodeletecommentmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletecommentmodalLabel" aria-hidden="true">
                             <div className="modal-dialog">
                               <div className="modal-content">

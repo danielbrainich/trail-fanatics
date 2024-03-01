@@ -256,12 +256,12 @@ function ListPosts() {
                                 <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
                                 <Link to={`#`} className="card-link">Edit</Link>
                                 {user && user.id === post.author ? (
-                                  <a href="#" className="card-link" onClick={() => deletePost(post.id)}>Delete</a>
+                                  <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
                                   ) : (
                                   <>
-                                    <a id="fakeInput" className="ms-3" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
+                                    <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" role="button" tabIndex="0">
                                       Delete
-                                    </a>
+                                    </button>
                                     <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
                                       <div className="modal-dialog">
                                         <div className="modal-content">

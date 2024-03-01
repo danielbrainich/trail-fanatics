@@ -25,7 +25,7 @@ function CommentLikeButton({ commentId, postId }) {
     };
 
     fetchLikeStatus();
-  }, [commentId]);
+  }, [commentId, postId]);
 
   useEffect(() => {
     const fetchLikeCount = async () => {

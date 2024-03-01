@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
-import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 import ListPosts from './components/PostsList';
 import Navbar from './components/Navbar';
 import ShowPost from './components/PostsShow';
