@@ -154,3 +154,9 @@ LOGIN_REDIRECT_URL = "http://localhost:3000/social"
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 3600
+
+SESSION_SAVE_EVERY_REQUEST = True
