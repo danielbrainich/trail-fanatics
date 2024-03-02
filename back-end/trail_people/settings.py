@@ -23,13 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-import os
-
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+DEBUG = True
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com']
 
@@ -153,10 +147,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://main--trail-people.netlify.app",
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
 LOGIN_REDIRECT_URL = "http://localhost:3000"
 
@@ -168,11 +159,4 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 SESSION_COOKIE_AGE = 3600
 
-
 SESSION_SAVE_EVERY_REQUEST = True
-
-SESSION_COOKIE_SAMESITE = 'None'
-# CSRF_COOKIE_SAMESITE = 'None'
-
-# CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
