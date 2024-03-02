@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useCsrfToken from './useCsrfToken';
 import { useNavigate } from 'react-router-dom';
 import config from '../config';
 
@@ -6,18 +7,11 @@ import config from '../config';
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { csrfToken, updateCsrfToken } = useCsrfToken();
   const navigate = useNavigate();
-
-  const getCsrfToken = () => {
-    const csrfToken = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('csrftoken='));
-    return csrfToken ? csrfToken.split('=')[1] : null;
-  };
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
-    const csrfToken = getCsrfToken();
     try {
       const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
         method: 'GET',
@@ -41,15 +35,18 @@ const useAuth = () => {
   };
 
   useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+    const fetchData = async () => {
+      if (csrfToken) {
+        await fetchCurrentUser();
+      }
+    };
+
+    fetchData();
+  }, [csrfToken]);
 
 
   const login = async (username, password) => {
     setIsLoading(true);
-    const csrfToken = getCsrfToken(); // Fetch CSRF token right before using it
-    console.log("CSRF Token being sent:", csrfToken);
-
     try {
       const response = await fetch(`${config.API_BASE_URL}/accounts/login/`, {
         method: 'POST',
@@ -61,12 +58,14 @@ const useAuth = () => {
         body: JSON.stringify({ username, password }),
       });
       if (response.ok) {
+        updateCsrfToken();
         await fetchCurrentUser();
       } else {
         console.error('Login failed');
       }
     } catch (error) {
       console.error('Login error', error);
+
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +73,6 @@ const useAuth = () => {
 
   const logout = async () => {
     setIsLoading(true);
-    const csrfToken = getCsrfToken();
     try {
       const response = await fetch(`${config.API_BASE_URL}/accounts/logout/`, {
         method: 'POST',
@@ -84,13 +82,17 @@ const useAuth = () => {
         credentials: 'include',
       });
       if (response.ok) {
+        updateCsrfToken();
         setUser(null);
         navigate('/login');
+
+
       } else {
         console.error('Logout failed');
       }
     } catch (error) {
       console.error('Logout error', error);
+
     } finally {
       setIsLoading(false);
     }

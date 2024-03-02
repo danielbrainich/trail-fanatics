@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com']
+ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -46,9 +46,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -147,19 +147,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://main--trail-people.netlify.app",
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
-LOGIN_REDIRECT_URL = "http://localhost:3000"
+LOGIN_REDIRECT_URL = "http://localhost:3000/social"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
-SESSION_COOKIE_AGE = 3600
-
-SESSION_SAVE_EVERY_REQUEST = True

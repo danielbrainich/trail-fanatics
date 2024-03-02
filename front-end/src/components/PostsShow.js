@@ -284,7 +284,7 @@ function ShowPost() {
                         <MapComponent trail={post.trail} size="250px"/>
                         <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
                         <div className="w-50 me-2">
-                          <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                           Map Details
                           </button>
                         </div>
