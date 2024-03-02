@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["main--trail-people.netlify.app"]
+ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com']
 
 
 # Application definition
