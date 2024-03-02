@@ -23,7 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+import os
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
@@ -168,4 +170,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True if not DEBUG else False
 SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
-
