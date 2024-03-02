@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app"]
 
