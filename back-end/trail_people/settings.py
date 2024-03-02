@@ -148,7 +148,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://main--trail-people.netlify.app",
-    "http://trail-people-793a505ff939.herokuapp.com",
+    "https://trail-people-793a505ff939.herokuapp.com",
 
 ]
 
