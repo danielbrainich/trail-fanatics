@@ -47,6 +47,7 @@ const useAuth = () => {
 
   const login = async (username, password) => {
     setIsLoading(true);
+    console.log("CSRF Token being sent:", csrfToken);
     try {
       const response = await fetch(`${config.API_BASE_URL}/accounts/login/`, {
         method: 'POST',
