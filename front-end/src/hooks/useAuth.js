@@ -12,6 +12,7 @@ const useAuth = () => {
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
+    console.log("token", csrfToken)
     try {
       const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
         method: 'GET',

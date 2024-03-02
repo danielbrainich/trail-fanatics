@@ -160,3 +160,12 @@ LOGIN_REDIRECT_URL = "http://localhost:3000"
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+
+
+
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True if not DEBUG else False
+SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
+
