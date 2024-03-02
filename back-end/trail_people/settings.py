@@ -161,7 +161,7 @@ CSRF_TRUSTED_ORIGINS = [
 if DEBUG:
     LOGIN_REDIRECT_URL = "http://localhost:3000"
 else:
-    LOGIN_REDIRECT_URL =  "https://main--trail-people.netlify.app"
+    LOGIN_REDIRECT_URL = "https://main--trail-people.netlify.app"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
@@ -170,6 +170,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 if DEBUG:
     CSRF_COOKIE_SAMESITE = None
     SESSION_COOKIE_SAMESITE = None
+else:
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SAMESITE = 'None'
 
