@@ -164,11 +164,13 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
-
-
-
-CSRF_COOKIE_SAMESITE = 'None'
+if DEBUG:
+    CSRF_COOKIE_SAMESITE = None  # Use browser's default SameSite behavior in development
+    SESSION_COOKIE_SAMESITE = None  # Use browser's default SameSite behavior in development
+else:
+    CSRF_COOKIE_SAMESITE = 'None'  # Explicitly set to 'None' for cross-site requests in production
+    SESSION_COOKIE_SAMESITE = 'None'  # Explicitly set to 'None' for cross-site requests in production
+    
 CSRF_COOKIE_SECURE = True if not DEBUG else False
 SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
 SESSION_SAVE_EVERY_REQUEST = True
