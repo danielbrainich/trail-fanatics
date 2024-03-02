@@ -14,8 +14,6 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {'username': username, 'password': password};
-    console.log("Form data:", formData);
 
     try {
       await login(username, password);
@@ -26,6 +24,7 @@ function LoginForm() {
       setError(error.message || 'Unknown error occurred');
     }
   };
+
 
   return (
     <div className="container mt-3 mt-md-5 mx-auto w-50">

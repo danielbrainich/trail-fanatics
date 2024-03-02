@@ -53,7 +53,6 @@ function ShowPost() {
           const data = await response.json();
           setComments(data.results.reverse());
           setTotalComments(data.total);
-          console.log(totalComments)
           setTotalPages(data.total_pages);
         } else {
           console.error("Failed to fetch comments");
@@ -107,7 +106,6 @@ function ShowPost() {
         credentials: 'include',
       }
       const response = await fetch(apiUrl, fetchConfig);
-      console.log(response)
       navigate('/social')
     };
 

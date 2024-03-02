@@ -56,11 +56,6 @@ function Profile() {
     const isAuth = Boolean(user);
 
     setIsCurrentUserProfile(isAuth && userProfileId === currentUserId);
-
-    console.log("User Profile ID:", userProfileId);
-    console.log("Current User ID:", currentUserId);
-    console.log("Is Authenticated:", isAuth);
-    console.log("Comparison Result:", isAuth && userProfileId === currentUserId);
   }, [user, userProfile]);
 
 

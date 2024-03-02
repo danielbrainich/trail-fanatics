@@ -35,8 +35,6 @@ function ListPosts() {
           const postsData = await postsResponse.json();
           setPosts(postsData.results.reverse());
           setTotalPages(postsData.total_pages);
-          console.log("Posts Data:", postsData);
-          console.log("Total Pages:", postsData.total_pages);
         } else {
           console.error("Failed to fetch posts");
         }
@@ -137,7 +135,6 @@ function ListPosts() {
         </li>
       );
     }
-    console.log("Current Page:", currentPage, "Total Pages:", totalPages);
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">

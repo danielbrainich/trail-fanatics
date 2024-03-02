@@ -40,7 +40,6 @@ function PostLikeButton({ postId }) {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("data", data);
         setLikeCount(data.likeCount);
       }
     };
@@ -53,7 +52,6 @@ function PostLikeButton({ postId }) {
   const toggleLike = async () => {
     if (!liked) {
       try {
-        console.log(csrfToken);
         const response = await fetch(`${config.API_BASE_URL}/content/posts/${postId}/post-likes/`, {
           method: 'POST',
           headers: {
