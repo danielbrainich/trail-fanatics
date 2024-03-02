@@ -145,11 +145,17 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://main--trail-people.netlify.app",
+    "http://trail-people-793a505ff939.herokuapp.com",
+
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+    "http://trail-people-793a505ff939.herokuapp.com",
+]
 
-LOGIN_REDIRECT_URL = "http://localhost:3000/social"
+LOGIN_REDIRECT_URL = "http://localhost:3000"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
