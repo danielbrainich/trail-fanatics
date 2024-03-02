@@ -147,7 +147,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://main--trail-people.netlify.app",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+]
 
 LOGIN_REDIRECT_URL = "http://localhost:3000"
 
