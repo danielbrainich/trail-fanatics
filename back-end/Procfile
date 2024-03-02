@@ -1,0 +1,1 @@
+web: gunicorn trail_people.wsgi --log-file -
