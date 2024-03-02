@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://main--trail-people.netlify.app/"]
+ALLOWED_HOSTS = ["main--trail-people.netlify.app"]
 
 
 # Application definition
@@ -137,7 +137,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://main--trail-people.netlify.app/",
+    "https://main--trail-people.netlify.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
