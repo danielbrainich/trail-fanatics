@@ -25,6 +25,7 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 import os
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+print(f"DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
