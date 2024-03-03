@@ -7,6 +7,9 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import login, authenticate, logout
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 CustomUser = get_user_model()
@@ -30,11 +33,17 @@ def custom_logout(request):
 def custom_login(request):
     username = request.data.get("username")
     password = request.data.get("password")
+
+    logger.debug(f"Attempting login for user: {username}")
+
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        logger.info(f"User {username} logged in successfully")
         return Response({"success": True, "message": "Login successful"})
     else:
+        logger.warning(f"Login failed for user: {username}")
+
         return Response(
             {"success": False, "message": "Invalid credentials"},
             status=status.HTTP_401_UNAUTHORIZED,
