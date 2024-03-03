@@ -12,33 +12,28 @@ const useAuth = () => {
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
-    console.log("token1", csrfToken)
     try {
-      if (csrfToken && document.cookie.includes("sessionid")) {
         const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
+            method: 'GET',
+            headers: {
+              "X-CSRFToken": csrfToken,
+            },
+            credentials: 'include',
         });
+
         if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
+            const userData = await response.json();
+            setUser(userData);
         } else {
-          setUser(null);
+            throw new Error('Failed to fetch user');
         }
-      } else {
-        console.error('CSRF token or credentials not available');
-        setUser(null);
-      }
     } catch (error) {
-      console.error('Failed to fetch user', error);
-      setUser(null);
+        console.error('Failed to fetch user', error);
+        setUser(null);
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
 
   useEffect(() => {
     const fetchData = async () => {
