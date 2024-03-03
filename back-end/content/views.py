@@ -13,7 +13,6 @@ from .serializers import (
     CommentLikeSerializer,
 )
 from trails.serializers import TrailSerializer
-from django.views.decorators.csrf import csrf_exempt
 
 
 class PostPagination(PageNumberPagination):
@@ -47,7 +46,6 @@ def tag_list(request):
 
 
 # Post views
-@csrf_exempt
 @api_view(["GET", "POST"])
 @transaction.atomic
 def post_list(request):
