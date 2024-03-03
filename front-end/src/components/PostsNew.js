@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useCsrfToken from '../hooks/useCsrfToken';
+// import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import config from '../config';
@@ -17,7 +17,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     trailDescription: '',
     trailCoordinates: null,
   });
-  const {csrfToken, updateCsrfToken} = useCsrfToken();
+  // const {csrfToken, updateCsrfToken} = useCsrfToken();
   const [markerPosition, setMarkerPosition] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const { isLoaded, loadError } = useJsApiLoader({
@@ -68,15 +68,15 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
 
     const apiUrl = `${config.API_BASE_URL}/content/posts/`;
 
-    if (!csrfToken) {
-      await updateCsrfToken();
-    }
+    // if (!csrfToken) {
+    //   await updateCsrfToken();
+    // }
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken.csrfToken,
+        // "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     };
