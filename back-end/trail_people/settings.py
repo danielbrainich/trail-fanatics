@@ -25,13 +25,14 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com']
+ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     "corsheaders",
+    "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -56,10 +57,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "trail_people.urls"
 
+import os
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'venv/Lib/site-packages/rest_framework/templates'),],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -74,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "trail_people.wsgi.application"
 
-import os
 import dj_database_url
 from pathlib import Path
 
