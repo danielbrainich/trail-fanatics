@@ -85,7 +85,9 @@ def post_list(request):
                     author=request.user,
                     trail=trail_instance if trail_instance else None,
                 )
-                return Response(post_serializer.data, status=status.HTTP_201_CREATED)
+                response = Response(post_serializer.data, status=status.HTTP_201_CREATED)
+                response["Access-Control-Allow-Credentials"] = "true"
+                return response
             else:
                 return Response(
                     post_serializer.errors, status=status.HTTP_400_BAD_REQUEST
