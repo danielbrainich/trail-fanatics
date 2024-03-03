@@ -26,7 +26,7 @@ def current_user(request):
 def custom_logout(request):
     logout(request)
     response = Response({"success": True, "message": "Logged out successfully"})
-    response["Access-Control-Allow-Credentials"] = "true"  
+    response["Access-Control-Allow-Credentials"] = "true"
     return response
 
 
