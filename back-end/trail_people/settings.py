@@ -25,7 +25,6 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 # SECURITY WARNING: don't run with debug turned on in production!
 import os
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
-print(DEBUG)
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
@@ -174,6 +173,9 @@ else:
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SAMESITE = 'None'
 
-CSRF_COOKIE_SECURE = True if not DEBUG else False
+# CSRF_COOKIE_SECURE = True if not DEBUG else False
+# SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
+
+
+CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
-SESSION_SAVE_EVERY_REQUEST = True
