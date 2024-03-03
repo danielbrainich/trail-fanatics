@@ -147,14 +147,18 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://main--trail-people.netlify.app",
+    "http://main--trail-people.netlify.app",
     "https://trail-people-793a505ff939.herokuapp.com",
+    "http://trail-people-793a505ff939.herokuapp.com",
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://main--trail-people.netlify.app",
+    "http://main--trail-people.netlify.app",
     "https://trail-people-793a505ff939.herokuapp.com",
+    "http://trail-people-793a505ff939.herokuapp.com",
 ]
 
 if DEBUG:
@@ -174,7 +178,7 @@ else:
     SESSION_COOKIE_SAMESITE = 'None'
 
 CSRF_COOKIE_SECURE = True if not DEBUG else False
-SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
+# SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
 
-if not DEBUG:
-    CSRF_COOKIE_DOMAIN = '.herokuapp.com'
+# if not DEBUG:
+#     CSRF_COOKIE_DOMAIN = '.herokuapp.com'
