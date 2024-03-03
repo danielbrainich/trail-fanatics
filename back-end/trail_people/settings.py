@@ -37,20 +37,20 @@ print(f"DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = ['trail-people-1aeb652111d5.herokuapp.com', 'localhost']
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
 
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# if not DEBUG:
+#     SESSION_COOKIE_SECURE = True
+#     CSRF_COOKIE_SECURE = True
+#     SECURE_SSL_REDIRECT = True
+#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://trail-people-1aeb652111d5.herokuapp.com',
-    'https://trail-people-1aeb652111d5.herokuapp.com'
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://trail-people-1aeb652111d5.herokuapp.com',
+#     'https://trail-people-1aeb652111d5.herokuapp.com'
+# ]
 
 # Application definition
 
@@ -100,9 +100,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "trail_people.wsgi.application"
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Common settings for all environments
 DATABASES = {
