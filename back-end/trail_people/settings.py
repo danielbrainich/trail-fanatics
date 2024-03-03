@@ -44,17 +44,19 @@ CSRF_TRUSTED_ORIGINS = [
     "http://main--trail-people.netlify.app",
 ]
 
-CSRF_COOKIE_DOMAIN = ".netlify.app"
-SESSION_COOKIE_DOMAIN = ".netlify.app"
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SAMESITE = 'Lax'
-
 if DEBUG:
+    CSRF_COOKIE_DOMAIN = None
+    SESSION_COOKIE_DOMAIN = None
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 else:
+    CSRF_COOKIE_DOMAIN = ".netlify.app"
+    SESSION_COOKIE_DOMAIN = ".netlify.app"
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
