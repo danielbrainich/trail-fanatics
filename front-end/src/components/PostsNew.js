@@ -68,16 +68,19 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
 
     const apiUrl = `${config.API_BASE_URL}/content/posts/`;
 
+    if (!csrfToken) {
+      await updateCsrfToken();
+    }
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        // "X-CSRFToken": csrfToken.csrfToken,
+        "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     };
-
+    console.log("fetchConfig", fetchConfig);
     const response = await fetch(apiUrl, fetchConfig);
 
     if (response.ok) {
