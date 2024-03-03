@@ -34,11 +34,7 @@ ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.he
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # CSRF settings
 
