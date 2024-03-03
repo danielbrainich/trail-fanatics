@@ -14,19 +14,23 @@ const useAuth = () => {
     setIsLoading(true);
     console.log("token1", csrfToken)
     try {
+      // Check if both csrfToken and credentials are available
       if (csrfToken && document.cookie.includes("sessionid")) {
-        console.log("token1", csrfToken)
-      const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          "X-CSRFToken": csrfToken,
-        },
-      });
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+        const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          setUser(null);
+        }
       } else {
+        console.error('CSRF token or credentials not available');
         setUser(null);
       }
     } catch (error) {
