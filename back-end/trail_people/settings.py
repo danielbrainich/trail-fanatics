@@ -175,3 +175,6 @@ else:
 
 CSRF_COOKIE_SECURE = True if not DEBUG else False
 SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
+
+if not DEBUG:
+    CSRF_COOKIE_DOMAIN = '.herokuapp.com'
