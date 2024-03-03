@@ -42,8 +42,13 @@ CORS_ALLOWED_ORIGINS = [
 
 # CSRF settings
 
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
-CSRF_COOKIE_DOMAIN = "netlify.app"
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+    "http://main--trail-people.netlify.app",
+]
+
+CSRF_COOKIE_DOMAIN = ".netlify.app"
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = False
@@ -171,23 +176,3 @@ else:
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        # Define a console handler
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        # Define logger for your app
-        'accounts': {
-            'handlers': ['console'],  # Use both console and file handlers
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
