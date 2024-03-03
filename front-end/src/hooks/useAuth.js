@@ -16,7 +16,7 @@ const useAuth = () => {
       if (!csrfToken) {
         await updateCsrfToken();
       }
-        console.log("sending request with csrfToken:". csrfToken);
+        console.log("sending request with csrfToken:", csrfToken);
 
         const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
             method: 'GET',
