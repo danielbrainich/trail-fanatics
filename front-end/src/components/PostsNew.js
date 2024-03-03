@@ -73,7 +73,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken.csrfToken,
+        // "X-CSRFToken": csrfToken.csrfToken,
       },
       credentials: 'include',
     };
