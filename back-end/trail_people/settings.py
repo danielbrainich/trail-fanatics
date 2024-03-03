@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+import secrets
+import dj_database_url
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import os
+
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 print(f"DEBUG: {DEBUG}")
 
@@ -51,7 +56,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
-    'django.contrib.staticfiles',
     "corsheaders",
     "rest_framework",
     "django.contrib.admin",
@@ -62,12 +66,12 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
-
-
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,7 +79,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "trail_people.urls"
@@ -98,9 +101,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "trail_people.wsgi.application"
 
-import os
-import dj_database_url
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -151,6 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = "/static/"
 
 # Default primary key field type
@@ -172,10 +173,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'front-end/build/static'),
-]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'front-end/build/static'),
+# ]
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
