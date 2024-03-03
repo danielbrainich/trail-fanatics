@@ -54,8 +54,6 @@ if DEBUG:
 else:
     CSRF_COOKIE_DOMAIN = ".netlify.app"
     SESSION_COOKIE_DOMAIN = ".netlify.app"
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
 
 # Application definition
 
