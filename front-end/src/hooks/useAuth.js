@@ -18,10 +18,6 @@ const useAuth = () => {
       }
         const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
             method: 'GET',
-            headers: {
-              "X-CSRFToken": csrfToken,
-            },
-            credentials: 'include',
         });
 
         if (response.ok) {
