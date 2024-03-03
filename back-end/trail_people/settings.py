@@ -29,14 +29,17 @@ print(f"DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
-
-# CORS settings
-
-CORS_ALLOW_CREDENTIALS = True
+# CORS and CSRF settings
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
-# CSRF settings
+if not DEBUG:
+    SESSION_COOKIE_SAMESITE = 'None'
+    CSRF_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
@@ -46,14 +49,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://65e3fdfb8cd5073cbf5ce906--trail-people.netlify.app/social",
 ]
 
-if DEBUG:
-    CSRF_COOKIE_DOMAIN = None
-    SESSION_COOKIE_DOMAIN = None
-    CSRF_COOKIE_SECURE = False
-    SESSION_COOKIE_SECURE = False
-else:
-    CSRF_COOKIE_DOMAIN = ".netlify.app"
-    SESSION_COOKIE_DOMAIN = ".netlify.app"
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
