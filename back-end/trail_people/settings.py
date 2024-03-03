@@ -23,35 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import os
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
-print(f"DEBUG: {DEBUG}")
+DEBUG = True
 
-ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com']
 
-
-# CORS settings
-
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-]
-
-# CSRF settings
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-]
-
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
 
 # Application definition
 
@@ -69,15 +44,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    'django.middleware.csrf.CsrfViewMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "trail_people.urls"
@@ -164,14 +138,25 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# misc settings
+# CORS settings
 
-if DEBUG:
-    LOGIN_REDIRECT_URL = "http://localhost:3000"
+CORS_ALLOW_CREDENTIALS = True
 
-else:
-    LOGIN_REDIRECT_URL = "https://main--trail-people.netlify.app"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+]
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+LOGIN_REDIRECT_URL = "http://localhost:3000"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 3600
+
+SESSION_SAVE_EVERY_REQUEST = True
