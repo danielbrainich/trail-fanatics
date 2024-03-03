@@ -175,7 +175,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'front-end/build'),
+    os.path.join(BASE_DIR, 'front-end/build/static'),
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
