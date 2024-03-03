@@ -27,46 +27,22 @@ import os
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 print(f"DEBUG: {DEBUG}")
 
-ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['trail-people-793a505ff939.herokuapp.com', 'localhost']
 
 # CORS and CSRF settings
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-CSRF_COOKIE_NAME = 'csrftoken'
-# CSRF_COOKIE_DOMAIN = 'trail-people-793a505ff939.herokuapp.com'
 
 if not DEBUG:
-    SESSION_COOKIE_SAMESITE = 'None'
-    CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    CSRF_COOKIE_HTTPONLY = False
 
-
-CORS_ALLOWED_ORIGINS = [
-    'https://main--trail-people.netlify.app',
-    'http://main--trail-people.netlify.app',
-    'http://localhost:3000',
-    'http://trail-people-793a505ff939.herokuapp.com'
-    'https://trail-people-793a505ff939.herokuapp.com'
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'https://main--trail-people.netlify.app',
-    'http://main--trail-people.netlify.app',
-    'http://localhost:3000',
-    'http://trail-people-793a505ff939.herokuapp.com'
-    'https://trail-people-793a505ff939.herokuapp.com'
-]
 CSRF_TRUSTED_ORIGINS = [
-    'https://main--trail-people.netlify.app',
-    'http://main--trail-people.netlify.app',
     'http://localhost:3000',
-    'http://trail-people-793a505ff939.herokuapp.com'
+    'http://trail-people-793a505ff939.herokuapp.com',
     'https://trail-people-793a505ff939.herokuapp.com'
 ]
 
@@ -84,6 +60,8 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
+    'whitenoise.runserver_nostatic',
+
 ]
 
 MIDDLEWARE = [
@@ -95,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "trail_people.urls"
@@ -191,4 +170,10 @@ else:
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'front-end/build/static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'front-end/build'),
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
