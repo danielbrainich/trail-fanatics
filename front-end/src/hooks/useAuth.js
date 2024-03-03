@@ -13,6 +13,9 @@ const useAuth = () => {
   const fetchCurrentUser = async () => {
     setIsLoading(true);
     try {
+      if (!csrfToken) {
+        await updateCsrfToken();
+      }
         const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
             method: 'GET',
             headers: {
