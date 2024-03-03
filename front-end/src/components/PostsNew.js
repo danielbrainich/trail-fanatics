@@ -17,7 +17,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     trailDescription: '',
     trailCoordinates: null,
   });
-  const csrfToken = useCsrfToken();
+  const {csrfToken, updateCsrfToken} = useCsrfToken();
   const [markerPosition, setMarkerPosition] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const { isLoaded, loadError } = useJsApiLoader({
