@@ -49,6 +49,7 @@ if not DEBUG:
 #     'http://trail-people-793a505ff939.herokuapp.com'
 # ]
 
+
 # Application definition
 
 INSTALLED_APPS = [
