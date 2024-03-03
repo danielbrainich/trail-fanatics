@@ -27,9 +27,10 @@ import os
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 print(f"DEBUG: {DEBUG}")
 
-ALLOWED_HOSTS = ['trail-people-793a505ff939.herokuapp.com', 'localhost']
 
 # CORS and CSRF settings
+
+ALLOWED_HOSTS = ['trail-people-1aeb652111d5.herokuapp.com', 'localhost']
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -42,8 +43,8 @@ if not DEBUG:
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'http://trail-people-793a505ff939.herokuapp.com',
-    'https://trail-people-793a505ff939.herokuapp.com'
+    'http://trail-people-1aeb652111d5.herokuapp.com',
+    'https://trail-people-1aeb652111d5.herokuapp.com'
 ]
 
 # Application definition
