@@ -182,3 +182,5 @@ CSRF_COOKIE_SECURE = True if not DEBUG else False
 
 # if not DEBUG:
 #     CSRF_COOKIE_DOMAIN = '.herokuapp.com'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
