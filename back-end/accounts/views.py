@@ -67,6 +67,15 @@ def signup_view(request):
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def user_list(request):
+    users = CustomUser.objects.all()
+    serializer = CustomUserSerializer(users, many=True)
+    response = Response(serializer.data)
+    response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+    return response
+
+
+@api_view(["GET", "PUT"])
+def user_detail(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if request.method == "GET":
