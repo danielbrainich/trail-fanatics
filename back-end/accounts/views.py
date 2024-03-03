@@ -16,14 +16,18 @@ CustomUser = get_user_model()
 @permission_classes([IsAuthenticated])
 def current_user(request):
     user_data = CustomUserSerializer(request.user).data
-    return Response(user_data)
+    response = Response(user_data)
+    response["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def custom_logout(request):
     logout(request)
-    return Response({"success": True, "message": "Logged out successfully"})
+    response = Response({"success": True, "message": "Logged out successfully"})
+    response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+    return response
 
 
 @api_view(["POST"])
@@ -33,7 +37,9 @@ def custom_login(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return Response({"success": True, "message": "Login successful"})
+        response = Response({"success": True, "message": "Login successful"})
+        response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+        return response
     else:
         return Response(
             {"success": False, "message": "Invalid credentials"},
@@ -58,28 +64,24 @@ def signup_view(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def user_list(request):
-    users = CustomUser.objects.all()
-    serializer = CustomUserSerializer(users, many=True)
-    return Response(serializer.data)
-
-
-@api_view(["GET", "PUT"])
-def user_detail(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if request.method == "GET":
         serializer = CustomUserSerializer(user)
-        return Response(serializer.data)
+        response = Response(serializer.data)
+        response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+        return response
     if request.method == "PUT":
         if request.user.is_authenticated and request.user.pk == user.pk:
             serializer = CustomUserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                response = Response(serializer.data)
+                response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+                return response
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif not request.user.is_authenticated:
             return Response(
