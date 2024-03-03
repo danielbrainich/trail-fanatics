@@ -31,14 +31,11 @@ ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.he
 
 # CORS and CSRF settings
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = [
-    'xsrfheadername',
-    'xsrfcookiename',
-    'content-type',
-    'x-csrftoken',
-]
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CSRF_COOKIE_NAME = 'csrftoken'
+# CSRF_COOKIE_DOMAIN = 'trail-people-793a505ff939.herokuapp.com'
 
 if not DEBUG:
     SESSION_COOKIE_SAMESITE = 'None'
@@ -51,8 +48,6 @@ if not DEBUG:
 
 
 CORS_ALLOWED_ORIGINS = [
-    'http://*',
-    "https://*",
     'https://main--trail-people.netlify.app',
     'http://main--trail-people.netlify.app',
     'http://localhost:3000',
@@ -61,8 +56,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://*',
-    "https://*",
     'https://main--trail-people.netlify.app',
     'http://main--trail-people.netlify.app',
     'http://localhost:3000',
@@ -70,8 +63,6 @@ CORS_ORIGIN_WHITELIST = [
     'https://trail-people-793a505ff939.herokuapp.com'
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'http://*',
-    "https://*",
     'https://main--trail-people.netlify.app',
     'http://main--trail-people.netlify.app',
     'http://localhost:3000',
