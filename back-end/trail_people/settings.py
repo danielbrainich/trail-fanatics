@@ -30,6 +30,29 @@ print(f"DEBUG: {DEBUG}")
 ALLOWED_HOSTS = ["main--trail-people.netlify.app", 'trail-people-793a505ff939.herokuapp.com', 'localhost']
 
 
+# CORS settings
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+    "http://main--trail-people.netlify.app",
+]
+
+# CSRF settings
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main--trail-people.netlify.app",
+    "http://main--trail-people.netlify.app",
+]
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,14 +69,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = "trail_people.urls"
@@ -140,21 +163,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# CORS settings
-
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-]
+# misc settings
 
 if DEBUG:
     LOGIN_REDIRECT_URL = "http://localhost:3000"
@@ -165,16 +174,3 @@ else:
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-if DEBUG:
-    CSRF_COOKIE_SAMESITE = None
-    SESSION_COOKIE_SAMESITE = None
-else:
-    CSRF_COOKIE_SAMESITE = 'None'
-    SESSION_COOKIE_SAMESITE = 'None'
-
-CSRF_COOKIE_SECURE = True if not DEBUG else False
-# SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE
-
-# if not DEBUG:
-#     CSRF_COOKIE_DOMAIN = '.herokuapp.com'
