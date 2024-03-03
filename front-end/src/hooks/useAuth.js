@@ -49,6 +49,9 @@ const useAuth = () => {
   const login = async (username, password) => {
     setIsLoading(true);
     try {
+      if (!csrfToken) {
+        await updateCsrfToken();
+      }
       const response = await fetch(`${config.API_BASE_URL}/accounts/login/`, {
         method: 'POST',
         headers: {
@@ -75,6 +78,9 @@ const useAuth = () => {
   const logout = async () => {
     setIsLoading(true);
     try {
+      if (!csrfToken) {
+        await updateCsrfToken();
+      }
       const response = await fetch(`${config.API_BASE_URL}/accounts/logout/`, {
         method: 'POST',
         headers: {
