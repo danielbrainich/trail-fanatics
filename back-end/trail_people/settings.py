@@ -153,13 +153,13 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-    "https://trail-people-793a505ff939.herokuapp.com",
-    "http://trail-people-793a505ff939.herokuapp.com",
-]
+CSRF_TRUSTED_ORIGINS = ["*"]
+
+    # "http://localhost:3000",
+    # "https://main--trail-people.netlify.app",
+    # "http://main--trail-people.netlify.app",
+    # "https://trail-people-793a505ff939.herokuapp.com",
+    # "http://trail-people-793a505ff939.herokuapp.com",
 
 if DEBUG:
     LOGIN_REDIRECT_URL = "http://localhost:3000"
@@ -182,5 +182,3 @@ CSRF_COOKIE_SECURE = True if not DEBUG else False
 
 # if not DEBUG:
 #     CSRF_COOKIE_DOMAIN = '.herokuapp.com'
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
