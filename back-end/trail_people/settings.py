@@ -45,10 +45,8 @@ if not DEBUG:
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "https://trail-people-793a505ff939.herokuapp.com",
     "https://main--trail-people.netlify.app",
-    "http://main--trail-people.netlify.app",
-    "https://65e3fdfb8cd5073cbf5ce906--trail-people.netlify.app/social",
-    "http://65e3fdfb8cd5073cbf5ce906--trail-people.netlify.app/social",
 ]
 
 
