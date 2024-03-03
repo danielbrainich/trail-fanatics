@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
     "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
