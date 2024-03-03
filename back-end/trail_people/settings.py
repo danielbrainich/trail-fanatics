@@ -42,12 +42,8 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_TRUSTED_ORIGINS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://trail-people-793a505ff939.herokuapp.com",
-    "https://main--trail-people.netlify.app",
-]
 
 
 # Application definition
