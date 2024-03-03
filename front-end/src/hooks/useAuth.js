@@ -12,8 +12,10 @@ const useAuth = () => {
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
-    console.log("token", csrfToken)
+    console.log("token1", csrfToken)
     try {
+      if (csrfToken && document.cookie.includes("sessionid")) {
+        console.log("token1", csrfToken)
       const response = await fetch(`${config.API_BASE_URL}/accounts/current_user/`, {
         method: 'GET',
         credentials: 'include',

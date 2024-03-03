@@ -26,7 +26,7 @@ def current_user(request):
 def custom_logout(request):
     logout(request)
     response = Response({"success": True, "message": "Logged out successfully"})
-    response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+    response["Access-Control-Allow-Credentials"] = "true"  
     return response
 
 
@@ -38,7 +38,7 @@ def custom_login(request):
     if user is not None:
         login(request, user)
         response = Response({"success": True, "message": "Login successful"})
-        response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+        response["Access-Control-Allow-Credentials"] = "true"
         return response
     else:
         return Response(
@@ -70,7 +70,7 @@ def user_list(request):
     users = CustomUser.objects.all()
     serializer = CustomUserSerializer(users, many=True)
     response = Response(serializer.data)
-    response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+    response["Access-Control-Allow-Credentials"] = "true"
     return response
 
 
@@ -81,7 +81,7 @@ def user_detail(request, pk):
     if request.method == "GET":
         serializer = CustomUserSerializer(user)
         response = Response(serializer.data)
-        response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+        response["Access-Control-Allow-Credentials"] = "true"
         return response
     if request.method == "PUT":
         if request.user.is_authenticated and request.user.pk == user.pk:
@@ -89,7 +89,7 @@ def user_detail(request, pk):
             if serializer.is_valid():
                 serializer.save()
                 response = Response(serializer.data)
-                response["Access-Control-Allow-Credentials"] = "true"  # Add this line
+                response["Access-Control-Allow-Credentials"] = "true"
                 return response
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif not request.user.is_authenticated:
