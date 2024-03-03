@@ -50,6 +50,8 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
     "corsheaders",
     "rest_framework",
     "django.contrib.admin",
@@ -61,7 +63,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
-    'whitenoise.runserver_nostatic',
+
 
 ]
 
@@ -174,7 +176,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'front-end/build',
+    os.path.join(BASE_DIR, 'front-end/build'),
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
