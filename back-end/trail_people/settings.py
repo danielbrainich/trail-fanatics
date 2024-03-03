@@ -163,15 +163,15 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # misc settings
 
-if DEBUG:
-    LOGIN_REDIRECT_URL = "http://localhost:3000"
+# if DEBUG:
+#     LOGIN_REDIRECT_URL = "http://localhost:3000"
 
-else:
-    LOGIN_REDIRECT_URL = "https://main--trail-people.netlify.app"
+# else:
+#     LOGIN_REDIRECT_URL = "https://main--trail-people.netlify.app"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'front-end/build/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'build/static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'front-end/build'),
