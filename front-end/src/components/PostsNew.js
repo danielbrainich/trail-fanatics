@@ -7,6 +7,7 @@ const containerStyle = { width: '300px', height: '300px' };
 const center = { lat: 37.8117, lng: -122.1815 };
 
 function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     content: "",
@@ -65,7 +66,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
       };
     }
 
-    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/content/posts/`;
+    const apiUrl = `${baseUrl}/content/posts/`;
 
     if (!csrfToken) {
       await updateCsrfToken();

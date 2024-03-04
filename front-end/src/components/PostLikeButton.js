@@ -11,12 +11,13 @@ function PostLikeButton({ postId }) {
   const [liked, setLiked] = useState(false);
   const [likeId, setLikeId] = useState(null);
   const { user } = useAuthContext();
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
 
 
   useEffect(() => {
     if (user) {
       const fetchLikeStatus = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/check-like/`, {
+        const response = await fetch(`${baseUrl}/content/posts/${postId}/check-like/`, {
           credentials: 'include',
         });
         if (response.ok) {
@@ -34,7 +35,7 @@ function PostLikeButton({ postId }) {
 
   useEffect(() => {
     const fetchLikeCount = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/`, {
+      const response = await fetch(`${baseUrl}/content/posts/${postId}/`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -51,7 +52,7 @@ function PostLikeButton({ postId }) {
   const toggleLike = async () => {
     if (!liked) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/post-likes/`, {
+        const response = await fetch(`${baseUrl}/content/posts/${postId}/post-likes/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -73,7 +74,7 @@ function PostLikeButton({ postId }) {
     } else {
       try {
         if (likeId) {
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/post-likes/${likeId}/`, {
+          const response = await fetch(`${baseUrl}/content/posts/${postId}/post-likes/${likeId}/`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

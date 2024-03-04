@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-import secrets
 import dj_database_url
 
 
@@ -46,11 +45,11 @@ CORS_ALLOW_CREDENTIALS = True
 #     SECURE_SSL_REDIRECT = True
 #     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://localhost:3000',
-#     'http://trail-people-1aeb652111d5.herokuapp.com',
-#     'https://trail-people-1aeb652111d5.herokuapp.com'
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'https://trail-people-06a6eafa5395.herokuapp.com/',
+    'https://trail-people-06a6eafa5395.herokuapp.com/'
+]
 
 # Application definition
 

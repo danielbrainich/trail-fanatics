@@ -7,6 +7,8 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const {csrfToken, updateCsrfToken} = useCsrfToken();
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
@@ -16,7 +18,7 @@ const useAuth = () => {
       }
         console.log("sending currentuser request with csrfToken:", csrfToken);
 
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/current_user/`, {
+        const response = await fetch(`${baseUrl}/accounts/current_user/`, {
             method: 'GET',
             headers: {
               "X-CSRFToken": csrfToken,
@@ -55,7 +57,7 @@ const useAuth = () => {
       if (!csrfToken) {
         await updateCsrfToken();
       }
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/login/`, {
+      const response = await fetch(`${baseUrl}/accounts/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +86,7 @@ const useAuth = () => {
       if (!csrfToken) {
         await updateCsrfToken();
       }
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/logout/`, {
+      const response = await fetch(`${baseUrl}/accounts/logout/`, {
         method: 'POST',
         headers: {
           "X-CSRFToken": csrfToken,

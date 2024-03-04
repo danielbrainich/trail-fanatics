@@ -27,12 +27,14 @@ function Profile() {
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState(null);
   const { user } = useAuth();
   const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/profiles/${userId}/`);
+        const response = await fetch(`${baseUrl}/accounts/profiles/${userId}/`);
         if (!response.ok) {
           throw new Error('Could not fetch user profile');
         }

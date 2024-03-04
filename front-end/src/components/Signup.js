@@ -29,7 +29,7 @@ function SignupForm() {
     passwordConfirm: '',
   });
   const csrfToken = useCsrfToken();
-
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +46,7 @@ function SignupForm() {
     };
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/signup/`, {
+      const response = await fetch(`${baseUrl}/accounts/signup/`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

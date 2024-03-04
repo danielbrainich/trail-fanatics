@@ -10,9 +10,8 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
     content: "",
     author: user ? user.id : null,
   });
-
   const csrfToken = useCsrfToken();
-
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
   const resetForm = () => {
     setFormData({
       content: "",
@@ -22,7 +21,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/comments/`;
+    const apiUrl = `${baseUrl}/content/posts/${postId}/comments/`;
 
     const fetchConfig = {
       method: "POST",
