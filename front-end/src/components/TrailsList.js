@@ -34,7 +34,7 @@ function ListTrails() {
   const fetchSavedTrails = async () => {
     try {
       if (user) {
-        const response = await fetch(`${process.env.API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
         if (!response.ok) {
           throw new Error('Failed to fetch saved trails');
         }
@@ -52,7 +52,7 @@ function ListTrails() {
 
   const handleUnsaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`${process.env.API_BASE_URL}/trails/saved_trails/${trailId}/`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/trails/saved_trails/${trailId}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

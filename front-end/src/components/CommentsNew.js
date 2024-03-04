@@ -22,7 +22,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const apiUrl = `${process.env.API_BASE_URL}/content/posts/${postId}/comments/`;
+    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/content/posts/${postId}/comments/`;
 
     const fetchConfig = {
       method: "POST",

@@ -64,7 +64,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       dataToSend.avatar = formData.avatar;
     }
 
-    const apiUrl = `${process.env.API_BASE_URL}/accounts/profiles/${userId}/`;
+    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/accounts/profiles/${userId}/`;
 
     const fetchConfig = {
       method: "PUT",

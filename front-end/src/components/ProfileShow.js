@@ -32,7 +32,7 @@ function Profile() {
     const fetchUserProfile = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${process.env.API_BASE_URL}/accounts/profiles/${userId}/`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/accounts/profiles/${userId}/`);
         if (!response.ok) {
           throw new Error('Could not fetch user profile');
         }
