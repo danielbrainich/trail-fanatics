@@ -35,7 +35,7 @@ print(f"DEBUG: {DEBUG}")
 
 # CORS and CSRF and related settings
 
-ALLOWED_HOSTS = ['trail-people-1aeb652111d5.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['trail-people-06a6eafa5395.herokuapp.com', 'localhost']
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
