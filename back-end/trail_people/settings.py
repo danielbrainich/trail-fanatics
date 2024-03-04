@@ -33,7 +33,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 print(f"DEBUG: {DEBUG}")
 
 
-# CORS and CSRF settings
+# CORS and CSRF and related settings
 
 ALLOWED_HOSTS = ['trail-people-1aeb652111d5.herokuapp.com', 'localhost']
 
