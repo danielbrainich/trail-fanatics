@@ -7,7 +7,6 @@ import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
-import config from '../config';
 
 const avatarOptions = {
   sunglasses,
@@ -47,7 +46,7 @@ function SignupForm() {
     };
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}/accounts/signup/`, {
+      const response = await fetch(`${process.env.API_BASE_URL}/accounts/signup/`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

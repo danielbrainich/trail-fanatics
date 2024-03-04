@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import useCsrfToken from '../hooks/useCsrfToken';
-import config from '../config';
 
 function CommentLikeButton({ commentId, postId }) {
   const [likeCount, setLikeCount] = useState(0);
@@ -12,7 +11,7 @@ function CommentLikeButton({ commentId, postId }) {
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
-      const response = await fetch(`${config.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/check-comment-like/`, {
+      const response = await fetch(`${process.env.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/check-comment-like/`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -29,7 +28,7 @@ function CommentLikeButton({ commentId, postId }) {
 
   useEffect(() => {
     const fetchLikeCount = async () => {
-      const response = await fetch(`${config.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/`, {
+      const response = await fetch(`${process.env.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -46,7 +45,7 @@ function CommentLikeButton({ commentId, postId }) {
   const toggleLike = async () => {
     if (!liked) {
       try {
-        const response = await fetch(`${config.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/comment-likes/`, {
+        const response = await fetch(`${process.env.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/comment-likes/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +67,7 @@ function CommentLikeButton({ commentId, postId }) {
     } else {
       try {
         if (likeId) {
-          const response = await fetch(`${config.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/comment-likes/${likeId}/`, {
+          const response = await fetch(`${process.env.API_BASE_URL}/content/posts/${postId}/comments/${commentId}/comment-likes/${likeId}/`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

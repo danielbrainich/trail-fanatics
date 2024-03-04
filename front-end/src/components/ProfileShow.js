@@ -8,7 +8,6 @@ import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
 import useAuth from '../hooks/useAuth';
-import config from '../config';
 
 
 const avatarOptions = {
@@ -33,7 +32,7 @@ function Profile() {
     const fetchUserProfile = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${config.API_BASE_URL}/accounts/profiles/${userId}/`);
+        const response = await fetch(`${process.env.API_BASE_URL}/accounts/profiles/${userId}/`);
         if (!response.ok) {
           throw new Error('Could not fetch user profile');
         }

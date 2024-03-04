@@ -7,7 +7,6 @@ import useCsrfToken from '../hooks/useCsrfToken';
 import AlertModal from './AlertModal';
 import { useAuthContext } from "../contexts/AuthContext";
 import MapComponent from './MapComponent';
-import config from '../config';
 
 
 function ListPosts() {
@@ -29,7 +28,7 @@ function ListPosts() {
     const fetchData = async () => {
       try {
         // Fetch posts
-        const postsUrl = `${config.API_BASE_URL}/content/posts/?page=${currentPage}`;
+        const postsUrl = `${process.env.API_BASE_URL}/content/posts/?page=${currentPage}`;
         const postsResponse = await fetch(postsUrl);
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
@@ -41,7 +40,7 @@ function ListPosts() {
 
         // Fetch saved trails
         if (user) {
-          const savedTrailsUrl = `${config.API_BASE_URL}/trails/saved_trails/`;
+          const savedTrailsUrl = `${process.env.API_BASE_URL}/trails/saved_trails/`;
           const savedTrailsResponse = await fetch(savedTrailsUrl, { credentials: 'include' });
           if (savedTrailsResponse.ok) {
             const savedTrailsData = await savedTrailsResponse.json();
@@ -60,7 +59,7 @@ function ListPosts() {
 
   useEffect(() => {
     const fetchTags = async () => {
-      const apiUrl = `${config.API_BASE_URL}/content/tags/`;
+      const apiUrl = `${process.env.API_BASE_URL}/content/tags/`;
       const response = await fetch(apiUrl);
       if (response.ok) {
         const tags = await response.json();
@@ -87,7 +86,7 @@ function ListPosts() {
 
 
   const deletePost = async (postId) => {
-    const apiUrl = `${config.API_BASE_URL}/content/posts/${postId}/`;
+    const apiUrl = `${process.env.API_BASE_URL}/content/posts/${postId}/`;
     const fetchConfig = {
       method: "DELETE",
       headers: {
@@ -151,7 +150,7 @@ function ListPosts() {
   }
   const handleSaveTrail = async (trailId) => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/${trailId}/`, {
+      const response = await fetch(`${process.env.API_BASE_URL}/trails/saved_trails/${trailId}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +172,7 @@ function ListPosts() {
 
   const fetchSavedTrails = async () => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
+      const response = await fetch(`${process.env.API_BASE_URL}/trails/saved_trails/`, { credentials: 'include' });
       if (!response.ok) {
         console.error(`Fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`Network response was not ok: ${response.status}`);

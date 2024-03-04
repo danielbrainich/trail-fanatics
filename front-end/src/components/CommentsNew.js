@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useCsrfToken from '../hooks/useCsrfToken';
 import useAuth from '../hooks/useAuth';
-import config from '../config';
 
 
 
@@ -23,7 +22,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const apiUrl = `${config.API_BASE_URL}/content/posts/${postId}/comments/`;
+    const apiUrl = `${process.env.API_BASE_URL}/content/posts/${postId}/comments/`;
 
     const fetchConfig = {
       method: "POST",
