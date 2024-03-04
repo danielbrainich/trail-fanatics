@@ -37,8 +37,8 @@ print(f"DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = ['trail-people-1aeb652111d5.herokuapp.com', 'localhost']
 
-# CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # if not DEBUG:
 #     SESSION_COOKIE_SECURE = True
