@@ -21,7 +21,8 @@ function ListPosts() {
   const csrfToken = useCsrfToken();
   const [trailSuccess, setTrailSuccess] = useState(false);
   const [savedTrails, setSavedTrails] = useState([]);
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 
   useEffect(() => {

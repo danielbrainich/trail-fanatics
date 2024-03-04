@@ -7,7 +7,8 @@ const containerStyle = { width: '300px', height: '300px' };
 const center = { lat: 37.8117, lng: -122.1815 };
 
 function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     content: "",

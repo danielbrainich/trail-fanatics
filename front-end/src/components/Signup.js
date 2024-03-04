@@ -29,7 +29,8 @@ function SignupForm() {
     passwordConfirm: '',
   });
   const csrfToken = useCsrfToken();
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -7,7 +7,8 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const {csrfToken, updateCsrfToken} = useCsrfToken();
   const navigate = useNavigate();
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 
   const fetchCurrentUser = async () => {
