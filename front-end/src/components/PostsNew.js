@@ -72,7 +72,6 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
     if (!csrfToken) {
       await updateCsrfToken();
     }
-    console.log("sending postsnew request with csrfToken:", csrfToken);
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(payload),
@@ -82,7 +81,6 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
       },
       credentials: 'include',
     };
-    console.log("fetchConfig", fetchConfig);
     const response = await fetch(apiUrl, fetchConfig);
 
     if (response.ok) {

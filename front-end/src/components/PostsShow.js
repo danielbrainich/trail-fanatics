@@ -254,7 +254,7 @@ function ShowPost() {
                         </div>
                         <div>
                           <PostLikeButton postId={post.id} />
-                          <Link to="#" className="card-link">Edit</Link>
+                          {/* <Link to="#" className="card-link">Edit</Link> */}
                           {user && user.id === post.author ? (
                                   <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
                                   ) : (
@@ -402,7 +402,7 @@ function ShowPost() {
                                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div className="modal-body">
-                                  <AlertModal title="Hello!" message="To delete a comment, make sure you are logged-in and the comment belongs to you" />
+                                  <AlertModal title="Hello!" message="To delete a comment, make sure you're logged-in and it's a comment you posted" />
                                 </div>
                               </div>
                             </div>

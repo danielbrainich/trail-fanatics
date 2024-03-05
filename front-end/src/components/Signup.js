@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useCsrfToken from '../hooks/useCsrfToken';
 import sunglasses from '../assets/avatars/sunglasses.png';
 import dog from '../assets/avatars/dog.png';
 import mountains from '../assets/avatars/mountains.png';
 import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
+import useAuth from '../hooks/useAuth';
+
 
 const avatarOptions = {
   sunglasses,
@@ -17,57 +18,43 @@ const avatarOptions = {
   shoe,
 };
 
-function SignupForm() {
+function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
   const [selectedAvatar, setSelectedAvatar] = useState('');
-  const [password] = useState('');
-  const [passwordConfirm] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     passwordConfirm: '',
   });
-  const csrfToken = useCsrfToken();
-  const isProduction = process.env.NODE_ENV === 'production';
-  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+  const { signup } = useAuth();
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== passwordConfirm) {
+    if (formData.password !== formData.passwordConfirm) {
       setError('Passwords do not match');
       return;
     }
 
-    const dataToSend = {
-      username: formData.username,
-      password: formData.password,
-      passwordConfirm: formData.passwordConfirm,
-      avatar: selectedAvatar,
-    };
+    if (!selectedAvatar) {
+      setError('Please select an avatar');
+      return;
+    }
 
     try {
-      const response = await fetch(`${baseUrl}/accounts/signup/`, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken.csrfToken,
-        },
-        credentials: 'include',
-        body: JSON.stringify(dataToSend),
+      await signup({
+        ...formData,
+        avatar: selectedAvatar,
       });
-
-      if (response.ok) {
-        console.log("Signup successful");
-        navigate('/login');
-      } else {
-        const data = await response.json();
-        setError(data.error || 'An unknown error occurred');
-      }
+      onSignupSuccess();
+      setSignupSuccess(!signupSuccess);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setError('Failed to submit form');
-    }
+      if (error.response && error.response.status === 400 && error.response.data.error === 'A user with that username already exists.') {
+        setError('Username already exists');
+      } else {
+        setError(error.response.data.error || 'Failed to submit form');
+      }    }
   };
 
   const handleSelectAvatar = (key) => {
@@ -83,8 +70,7 @@ function SignupForm() {
   };
 
   return (
-    <div className="container mt-3 mt-md-5 mx-auto w-50">
-      <h5>Signup</h5>
+    <div className="container my-4">
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-4">
@@ -99,6 +85,7 @@ function SignupForm() {
             placeholder="Enter your username"
             required
           />
+          <div className="invalid-feedback">Please enter a username.</div>
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="form-label">Password</label>
@@ -111,7 +98,9 @@ function SignupForm() {
             onChange={handleChangeInput}
             placeholder="Enter a password"
             required
+            minLength="4"
           />
+          <div className="invalid-feedback">Password must be at least 8 characters.</div>
         </div>
         <div className="mb-4">
           <label htmlFor="passwordConfirm" className="form-label">Confirm Password</label>
@@ -124,7 +113,9 @@ function SignupForm() {
             onChange={handleChangeInput}
             placeholder="Confirm your password"
             required
+            minLength="4"
           />
+          <div className="invalid-feedback">Passwords must match.</div>
         </div>
         <div className="mb-4">
           <div className="form-label">Choose an Avatar</div>

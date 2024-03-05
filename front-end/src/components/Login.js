@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from "../contexts/AuthContext";
 
 
 
-function LoginForm() {
+function LoginForm( { onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
   const { login } = useAuthContext();
 
 
@@ -18,18 +16,18 @@ function LoginForm() {
     try {
       await login(username, password);
       console.log('Login successful');
-      navigate('/social');
+      onLoginSuccess();
+
     } catch (error) {
-      console.error('Error during login:', error);
-      setError(error.message || 'Unknown error occurred');
+      console.error('Login was not successful.', error);
+      setError(error.message || 'Login was not successful.');
     }
   };
 
 
   return (
-    <div className="container mt-3 mt-md-5 mx-auto w-50">
-        <h5>Login</h5>
-        {error && <div className="alert alert-danger" role="alert">{error}</div>}
+    <div className="container my-4">
+      {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit} className="mt-4">
           <label htmlFor="username" className="form-label">Username</label>
         <div className="mb-4">

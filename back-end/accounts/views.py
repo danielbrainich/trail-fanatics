@@ -15,7 +15,9 @@ CustomUser = get_user_model()
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def current_user(request):
-    user_data = CustomUserSerializer(request.user).data
+    serializer = CustomUserSerializer(request.user)
+    user_data = serializer.data
+    user_data['email'] = None
     response = Response(user_data)
     response["Access-Control-Allow-Credentials"] = "true"
     return response
@@ -64,33 +66,22 @@ def signup_view(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(["GET"])
-@permission_classes([IsAdminUser])
-def user_list(request):
-    users = CustomUser.objects.all()
-    serializer = CustomUserSerializer(users, many=True)
-    response = Response(serializer.data)
-    response["Access-Control-Allow-Credentials"] = "true"
-    return response
-
-
 @api_view(["GET", "PUT"])
 def user_detail(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if request.method == "GET":
-        serializer = CustomUserSerializer(user)
-        response = Response(serializer.data)
-        response["Access-Control-Allow-Credentials"] = "true"
-        return response
-    if request.method == "PUT":
+        serializer = CustomUserSerializer(user, context={'request': request})
+        data = serializer.data
+        data['email'] = None
+        return Response(data)
+
+    elif request.method == "PUT":
         if request.user.is_authenticated and request.user.pk == user.pk:
             serializer = CustomUserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                response = Response(serializer.data)
-                response["Access-Control-Allow-Credentials"] = "true"
-                return response
+                return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif not request.user.is_authenticated:
             return Response(

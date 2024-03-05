@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {csrfToken, updateCsrfToken} = useCsrfToken();
+  const { csrfToken, updateCsrfToken } = useCsrfToken();
   const navigate = useNavigate();
+
   const isProduction = process.env.NODE_ENV === 'production';
   const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
-
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
@@ -17,29 +17,27 @@ const useAuth = () => {
       if (!csrfToken) {
         await updateCsrfToken();
       }
-        console.log("sending currentuser request with csrfToken:", csrfToken);
+      const response = await fetch(`${baseUrl}/accounts/current_user/`, {
+        method: 'GET',
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+        credentials: 'include',
+      });
 
-        const response = await fetch(`${baseUrl}/accounts/current_user/`, {
-            method: 'GET',
-            headers: {
-              "X-CSRFToken": csrfToken,
-            },
-            credentials: 'include',
-        });
-
-        if (response.ok) {
-            const userData = await response.json();
-            setUser(userData);
-        } else {
-            throw new Error('Failed to fetch user');
-        }
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        throw new Error('Failed to fetch user');
+      }
     } catch (error) {
-        console.error('Failed to fetch user', error);
-        setUser(null);
+      console.error('Failed to fetch user', error);
+      setUser(null);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,10 +45,8 @@ const useAuth = () => {
         await fetchCurrentUser();
       }
     };
-
     fetchData();
   }, [csrfToken]);
-
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -67,15 +63,17 @@ const useAuth = () => {
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
-      if (response.ok) {
-        updateCsrfToken();
-        await fetchCurrentUser();
-      } else {
-        console.error('Login failed');
+
+      if (!response.ok) {
+        throw new Error('Login was unsuccessful, Please try again.');
       }
+
+      updateCsrfToken();
+      await fetchCurrentUser();
+      navigate('/');
     } catch (error) {
       console.error('Login error', error);
-
+      throw new Error('Login was unsuccessful. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -94,18 +92,43 @@ const useAuth = () => {
         },
         credentials: 'include',
       });
+
       if (response.ok) {
         updateCsrfToken();
         setUser(null);
-        navigate('/login');
-
-
+        navigate('/');
       } else {
         console.error('Logout failed');
       }
     } catch (error) {
       console.error('Logout error', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  const signup = async (formData) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${baseUrl}/accounts/signup/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": csrfToken,
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        await login(formData.username, formData.password);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'An unknown error occurred during signup.');
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +138,7 @@ const useAuth = () => {
     setUser(updatedUser);
   };
 
-  return { user, isLoading, login, logout, updateUser };
+  return { user, isLoading, login, logout, fetchCurrentUser, updateUser, signup };
 };
 
 export default useAuth;

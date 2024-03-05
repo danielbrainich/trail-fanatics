@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import (
     signup_view,
-    user_list,
     user_detail,
     custom_login,
     custom_logout,
@@ -10,7 +9,6 @@ from .views import (
 
 urlpatterns = [
     # User Profile
-    path("profiles/", user_list, name="user_profile_list"),
     path("profiles/<int:pk>/", user_detail, name="user_profile_detail"),
     # User Auth
     path("login/", custom_login, name="custom_login"),

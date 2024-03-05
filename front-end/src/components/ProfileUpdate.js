@@ -18,8 +18,6 @@ const avatarOptions = {
 };
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
   const { updateUser } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [formData, setFormData] = useState({
@@ -49,10 +47,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!emailRegex.test(formData.email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
+    if (formData.email && !emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+  }
 
     const dataToSend = {
       username: formData.username,
@@ -66,7 +64,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       dataToSend.avatar = formData.avatar;
     }
 
-    const apiUrl = `${baseUrl}/accounts/profiles/${userId}/`;
+    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/accounts/profiles/${userId}/`;
 
     const fetchConfig = {
       method: "PUT",
@@ -112,6 +110,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return (
     <div className="card w-100 border-0">
         <div className="card-body">
+            <div className="mb-3 text-muted small">Your email address will remain private. </div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="form-label">Username</label>

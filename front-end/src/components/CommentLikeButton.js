@@ -3,11 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import useCsrfToken from '../hooks/useCsrfToken';
+import { useAuthContext } from "../contexts/AuthContext";
+import AlertModal from './AlertModal';
+
 
 function CommentLikeButton({ commentId, postId }) {
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [likeId, setLikeId] = useState(null);
+  const { user } = useAuthContext();
   const isProduction = process.env.NODE_ENV === 'production';
   const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
@@ -93,13 +97,42 @@ function CommentLikeButton({ commentId, postId }) {
   };
 
   return (
-    <button className="like-button me-2" onClick={toggleLike} style={{ border: 'none', background: 'transparent' }}>
-      <FontAwesomeIcon
-        icon={liked ? fasHeart : farHeart}
-        className={liked ? 'heart-icon liked' : 'heart-icon'}
-        size='1x'
-      />      <span className="ms-1">{likeCount}</span>
-    </button>
+    <>
+    {user ? (
+      <button className="like-button me-2" onClick={toggleLike} style={{ border: 'none', background: 'transparent' }}>
+        <FontAwesomeIcon
+          icon={liked ? fasHeart : farHeart}
+          className={liked ? 'heart-icon liked' : 'heart-icon'}
+          size='1x'
+        />
+        <span className="ms-2">{likeCount}</span>
+      </button>
+    ) : (
+      <>
+      <button className="like-button me-2" data-bs-toggle="modal" data-bs-target="#noLikeCommentModal" tabIndex="0" style={{ border: 'none', background: 'transparent' }}>
+        <FontAwesomeIcon
+          icon={liked ? fasHeart : farHeart}
+          className={liked ? 'heart-icon liked' : 'heart-icon'}
+          size='1x'
+        />
+        <span className="ms-2">{likeCount}</span>
+      </button>
+
+      <div className="modal fade" id="noLikeCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="noLikeCommentModalLabel" aria-hidden="true">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            <AlertModal message="Please signup or login to like this comment" />
+          </div>
+        </div>
+      </div>
+    </div>
+      </>
+    )}
+    </>
   );
 }
 

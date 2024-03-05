@@ -90,9 +90,6 @@ function Profile() {
                 <h4>Last Name</h4> {userProfile.last_name}
               </div>
               <div className="mb-4">
-                <h4>Email</h4> {userProfile.email}
-              </div>
-              <div className="mb-4">
                 <h4>Bio</h4> {userProfile.bio}
               </div>
               <div className="mb-4">

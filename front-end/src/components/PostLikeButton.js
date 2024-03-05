@@ -4,6 +4,7 @@ import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import useCsrfToken from '../hooks/useCsrfToken';
 import { useAuthContext } from "../contexts/AuthContext";
+import AlertModal from './AlertModal';
 
 
 function PostLikeButton({ postId }) {
@@ -50,7 +51,9 @@ function PostLikeButton({ postId }) {
 
   const csrfToken = useCsrfToken();
 
-  const toggleLike = async () => {
+
+    const toggleLike = async () => {
+
     if (!liked) {
       try {
         const response = await fetch(`${baseUrl}/content/posts/${postId}/post-likes/`, {
@@ -98,14 +101,42 @@ function PostLikeButton({ postId }) {
   };
 
   return (
-    <button className="like-button me-2" onClick={toggleLike} style={{ border: 'none', background: 'transparent' }}>
-      <FontAwesomeIcon
-        icon={liked ? fasHeart : farHeart}
-        className={liked ? 'heart-icon liked' : 'heart-icon'}
-        size='1x'
-      />
-      <span className="ms-2">{likeCount}</span>
-    </button>
+    <>
+      {user ? (
+        <button className="like-button me-2" onClick={toggleLike} style={{ border: 'none', background: 'transparent' }}>
+          <FontAwesomeIcon
+            icon={liked ? fasHeart : farHeart}
+            className={liked ? 'heart-icon liked' : 'heart-icon'}
+            size='1x'
+          />
+          <span className="ms-2">{likeCount}</span>
+        </button>
+      ) : (
+        <>
+          <button className="like-button me-2" data-bs-toggle="modal" data-bs-target="#noLikePostModal" tabIndex="0" style={{ border: 'none', background: 'transparent' }}>
+            <FontAwesomeIcon
+              icon={liked ? fasHeart : farHeart}
+              className={liked ? 'heart-icon liked' : 'heart-icon'}
+              size='1x'
+            />
+            <span className="ms-2">{likeCount}</span>
+          </button>
+
+          <div className="modal fade" id="noLikePostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="noLikePostModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  <AlertModal message="Please signup or login to like this post" />
+                </div>
+              </div>
+            </div>
+          </div>
+          </>
+      )}
+    </>
   );
 }
 
