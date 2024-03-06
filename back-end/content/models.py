@@ -52,7 +52,7 @@ class Comment(models.Model):
         related_name="comments",
         on_delete=models.CASCADE,
     )
-    content = models.CharField(max_length=280)
+    content = models.CharField(max_length=560)
     image = models.ImageField(upload_to="comment_images/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

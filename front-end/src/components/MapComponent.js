@@ -7,23 +7,22 @@ const MapComponent = ({ trail, size }) => {
   const center = trail?.coordinates || defaultCenter;
 
   return (
-    <div className="col-md-auto mx-md-auto p-2">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={14}
-        options={{
-          mapTypeId: 'roadmap',
-          zoomControl: true,
-          mapTypeControl: false,
-          streetViewControl: false,
-          fullscreenControl: false,
-        }}
-      >
-        {trail?.coordinates && <MarkerF position={trail.coordinates} />}
-
-      </GoogleMap>
-    </div>
+    <div className="col-md-auto mx-md-auto p-2 d-flex">
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={14}
+          options={{
+            mapTypeId: 'roadmap',
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+          }}
+        >
+          {trail?.coordinates && <MarkerF position={trail.coordinates} />}
+        </GoogleMap>
+      </div>
   );
 };
 

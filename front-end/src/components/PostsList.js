@@ -229,14 +229,13 @@ function ListPosts() {
               <div className="col-12" key={post.id}>
                 <div className="card mb-4 p-1 pb-0">
                   <div className="card-body">
-                    <div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex flex-column align-items-between justify-content-between">
-                          <div>
-                            <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
-                            <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
-                            <p className="card-text my-3">{post.content}</p>
-                          </div>
+                      <div className="row">
+                        <div className={`d-flex flex-column align-items-between justify-content-between ${post.trail ? "col-lg-8" : "col-12"}`}>
+                            <div>
+                              <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
+                              <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
+                              <p className="card-text my-3">{post.content}</p>
+                            </div>
                             <div className="d-flex flex-column">
                               <div className="mb-2">
                                 {tagsList && post && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
@@ -273,12 +272,12 @@ function ListPosts() {
                                     </div>
                                   </>
                                 )}
-                                </div>
                               </div>
                             </div>
-                          <div>
-                            {post.trail && post.trail.name && (
-                            <>
+                        </div>
+                        {post.trail && post.trail.name && (
+                          <div className="d-flex col-lg-4 justify-content-lg-end">
+                            <div className="d-flex flex-column mt-3 mt-lg-0" style={{width: '270px'}}>
                             <MapComponent trail={post.trail} size="250px"/>
                             <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
                             <div className="w-50 me-2">
@@ -286,6 +285,7 @@ function ListPosts() {
                               Map Details
                               </button>
                             </div>
+
                             <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                               <div className="modal-dialog">
                                 <div className="modal-content">
@@ -339,10 +339,9 @@ function ListPosts() {
                                 </div>
                             </div>
                             </div>
-                          </>
-                            )}
+                                                </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>

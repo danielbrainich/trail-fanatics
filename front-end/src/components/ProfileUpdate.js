@@ -18,6 +18,8 @@ const avatarOptions = {
 };
 
 function UpdateProfile({userId, setProfileUpdateSuccess, profileUpdateSuccess, username, email, firstName, lastName, bio}) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
   const { updateUser } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [formData, setFormData] = useState({
@@ -64,7 +66,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       dataToSend.avatar = formData.avatar;
     }
 
-    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/accounts/profiles/${userId}/`;
+    const apiUrl = `${baseUrl}/accounts/profiles/${userId}/`;
 
     const fetchConfig = {
       method: "PUT",

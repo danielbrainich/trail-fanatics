@@ -231,125 +231,125 @@ function ShowPost() {
 
     return (
 
-      <div className="page-container">
       <div className="content">
           <div className="container mt-3 mt-md-5">
             <div className="col-12 mb-3" key={post.id}>
               <div className="card mb-4 p-1 pb-0">
                 <div className="card-body">
-                  <div>
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex flex-column align-items-between justify-content-between">
-                      <div>
-                        <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
-                        <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
-                        <p className="card-text my-3">{post.content}</p>
+                  <div className="row">
+                  <div className={`d-flex flex-column align-items-between justify-content-between ${post.trail ? "col-lg-8" : "col-12"}`}>
+                    <div>
+                      <h6 className="card-subtitle text-muted small mb-1">{formatDate(post.created_at)}</h6>
+                      <span className="text-muted">by </span><Link to={`/profiles/${post.author_id}`}>{post.author_username}</Link>
+                      <p className="card-text my-3">{post.content}</p>
+                    </div>
+                    <div className="d-flex flex-column">
+                      <div className="mb-2">
+                        {tagsList && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
+                          const tagObj = tagsList.find(tag => tag.id === tagId);
+                          return <div key={tagId} className="badge mb-2 me-2">{tagObj ? tagObj.name : 'Unknown Tag'}</div>;
+                        })}
+                      </div>
+                    <div>
+                      <PostLikeButton postId={post.id} />
+                      {/* <Link to="#" className="card-link">Edit</Link> */}
+                      {user && user.id === post.author ? (
+                        <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
+                        ) : (
+                        <>
+                          <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" tabIndex="0">
+                            Delete
+                          </button>
+                          <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                  <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="d-flex flex-column">
-                        <div className="mb-2">
-                          {tagsList && post.tags && tagsList.length > 0 && post.tags.map(tagId => {
-                            const tagObj = tagsList.find(tag => tag.id === tagId);
-                            return <div key={tagId} className="badge mb-2 me-2">{tagObj ? tagObj.name : 'Unknown Tag'}</div>;
-                          })}
-                        </div>
-                        <div>
-                          <PostLikeButton postId={post.id} />
-                          {/* <Link to="#" className="card-link">Edit</Link> */}
-                          {user && user.id === post.author ? (
-                                  <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>
-                                  ) : (
-                                  <>
-                                    <button id="fakeInput" className="ms-3 custom-btn-link" data-bs-toggle="modal" data-bs-target="#nodeletemodal" tabIndex="0">
-                                      Delete
+                        </>
+                        )}
+                    </div>
+                    </div>
+                    </div>
+
+                        {post.trail && (
+                        <div className="d-flex col-lg-4 justify-content-lg-end">
+                          <div className="d-flex flex-column mt-3 mt-lg-0" style={{width: '270px'}}>
+                            <MapComponent trail={post.trail} size="250px"/>
+                            <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
+                            <div className="w-50 me-2">
+                              <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                              Map Details
+                              </button>
+                            </div>
+
+                            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div className="modal-dialog">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div className="modal-body m-3">
+                                  <div className="mb-3 d-flex align-items-center">
+                                    <MapComponent trail={post.trail} size="400px"/>
+                                  </div>
+                                  <h4 className="mb-3">{post.trail.name}</h4>
+                                  <p className="card-text mb-3">{post.trail.description}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="w-50 ms-2">
+                              <div>
+                                {user ? (
+                                  // Check if the trail is saved
+                                  savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
+                                    <button className="btn btn-tertiary btn-sm w-100" disabled>
+                                      Map Saved
                                     </button>
-                                    <div className="modal fade" id="nodeletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="nodeletemodalLabel" aria-hidden="true">
+                                  ) : (
+                                    <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
+                                      Save Map
+                                    </button>
+                                  )
+                                ) : (
+                                  // If user is not logged in, show a modal
+                                  <div key={post.trail.id}>
+                                    <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
+                                      Save Map
+                                    </button>
+                                    <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
                                       <div className="modal-dialog">
                                         <div className="modal-content">
                                           <div className="modal-header">
                                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                           </div>
                                           <div className="modal-body">
-                                            <AlertModal message="To delete a post, make sure you're logged-in and it's a post you posted" />
+                                            <AlertModal message="Please signup or login to save a trail" />
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </>
+                                  </div>
                                 )}
                                 </div>
                             </div>
-                        </div>
-                      <div>
-                      {post.trail && (
-                        <>
-                        <MapComponent trail={post.trail} size="250px"/>
-                        <div className="d-flex justify-content-between align-items-center mt-1 mx-2">
-                        <div className="w-50 me-2">
-                          <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          Map Details
-                          </button>
-                        </div>
-                        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                          <div className="modal-dialog">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <h5 className="modal-title fs-5" id="staticBackdropLabel">Map Details</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div className="modal-body m-3">
-                              <div className="mb-3 d-flex align-items-center">
-                                <MapComponent trail={post.trail} size="400px"/>
-                              </div>
-                              <h4 className="mb-3">{post.trail.name}</h4>
-                              <p className="card-text mb-3">{post.trail.description}</p>
-                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div className="w-50 ms-2">
-                          <div>
-                            {user ? (
-                              // Check if the trail is saved
-                              savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
-                                <button className="btn btn-tertiary btn-sm w-100" disabled>
-                                  Map Saved
-                                </button>
-                              ) : (
-                                <button className="btn btn-primary btn-sm w-100" onClick={() => handleSaveTrail(post.trail.id)}>
-                                  Save Map
-                                </button>
-                              )
-                            ) : (
-                              // If user is not logged in, show a modal
-                              <div key={post.trail.id}>
-                                <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
-                                  Save Map
-                                </button>
-                                <div className="modal fade" id="saveTrailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="saveTrailModalLabel" aria-hidden="true">
-                                  <div className="modal-dialog">
-                                    <div className="modal-content">
-                                      <div className="modal-header">
-                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div className="modal-body">
-                                        <AlertModal message="Please signup or login to save a trail" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
                             </div>
                         </div>
-                        </div>
-                        </>
-                        )}
+                          )}
                         </div>
                       </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+
+
           <div className="card mb-4">
             <div className="card-body">
               <h5 className="card-title">New Comment</h5>

@@ -93,7 +93,7 @@ function ListTrails() {
         <div className="row">
           <div className="col d-flex flex-column">
             <h5 className="mb-4">My Saved Maps</h5>
-            <p>Please sign in and save some maps to see them here. Here's what they'll look like:</p>
+            <p>Please sign in and save some maps from your social feed to see them here. Here's what they'll look like:</p>
               <DummyTrail trail={dummyTrail} />
           </div>
         </div>
@@ -107,7 +107,7 @@ function ListTrails() {
         <div className="row">
           <div className="col d-flex flex-column">
             <h5 className="mb-4">My Saved Maps</h5>
-            <p>You don't have any saved maps. When you save maps from your social feed, you'll see them here. Here's what they'll look like</p>
+            <p>When you save maps from your social feed, you'll see them here. Here's what they'll look like:</p>
               <DummyTrail trail={dummyTrail} />
           </div>
         </div>
