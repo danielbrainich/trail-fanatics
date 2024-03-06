@@ -93,3 +93,11 @@ def user_detail(request, pk):
                 {"detail": "You do not have permission to edit this user."},
                 status=status.HTTP_403_FORBIDDEN,
             )
+
+from django.http import HttpResponse
+from django.conf import settings
+import os
+
+def index(request):
+    with open(os.path.join(settings.BASE_DIR, 'front-end/build', 'index.html')) as file:
+        return HttpResponse(file.read())
