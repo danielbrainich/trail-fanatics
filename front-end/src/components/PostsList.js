@@ -249,7 +249,7 @@ function ListPosts() {
                               </div>
                               <div>
                                 <PostLikeButton postId={post.id} />
-                                <Link to={`/social/posts/${post.id}`} className="card-link">Comments</Link>
+                                <Link to={`/posts/${post.id}`} className="card-link">Comments</Link>
                                 {/* <Link to={`#`} className="card-link">Edit</Link> */}
                                 {user && user.id === post.author ? (
                                   <button className="custom-btn-link ms-3" onClick={() => deletePost(post.id)}>Delete</button>

@@ -1,7 +1,7 @@
 {
   "name": "Trail People",
   "version": "0.1.0",
-  "homepage": "/",
+  "homepage": "https://trail-people-06a6eafa5395.herokuapp.com",
   "private": true,
   "dependencies": {
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
