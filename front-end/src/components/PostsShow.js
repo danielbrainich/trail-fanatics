@@ -29,6 +29,25 @@ function ShowPost() {
   const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 
+  const fetchSavedTrails = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/trails/saved_trails/`, { credentials: 'include' });
+      if (!response.ok) {
+        console.error(`Fetch error: ${response.status} ${response.statusText}`);
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+      const data = await response.json();
+      setSavedTrails(data.results);
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetchSavedTrails();
+  }, [trailSuccess]);
+
   useEffect(() => {
     const fetchTags = async () => {
       const apiUrl = `${baseUrl}/content/tags/`;
@@ -192,21 +211,6 @@ function ShowPost() {
     );
   }
 
-  const fetchSavedTrails = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/trails/saved_trails/`, { credentials: 'include' });
-      if (!response.ok) {
-        console.error(`Fetch error: ${response.status} ${response.statusText}`);
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-      const data = await response.json();
-      setSavedTrails(data.results);
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
-    }
-  };
-
   const handleSaveTrail = async (trailId) => {
     try {
       const response = await fetch(`${baseUrl}/trails/saved_trails/${trailId}/`, {
@@ -308,6 +312,7 @@ function ShowPost() {
                             </div>
                             <div className="w-50 ms-2">
                               <div>
+                                {console.log(savedTrails)}
                                 {user ? (
                                   // Check if the trail is saved
                                   savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
