@@ -18,10 +18,10 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<GoogleMapsLoader><ListPosts /></GoogleMapsLoader>} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/profiles/:userId" element={<Profile />} />
-            <Route path="/posts/:postId" element={<ShowPost />} />
-            <Route path="/trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
+            <Route path="/welcome/" element={<Welcome />} />
+            <Route path="/profiles/:userId/" element={<Profile />} />
+            <Route path="/posts/:postId/" element={<ShowPost />} />
+            <Route path="/trails/" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
             <Route path="*" element={<div>Route not found</div>} />
           </Routes>
         </div>

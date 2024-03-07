@@ -123,7 +123,7 @@ function ListTrails() {
         {savedTrails.map((trail, index) => (
           <div key={index} className="col-xs-12 col-sm-10 col-md-6 col-lg-4 my-2">
             <div className="card h-100 p-2">
-            <div className="card-body d-flex justify-content-center align-items-center">
+            <div className="card-body d-flex justify-content-center align-items-start">
                 <MapComponent trail={trail.trail} size="250px" />
               </div>
               <div className="card-body">
