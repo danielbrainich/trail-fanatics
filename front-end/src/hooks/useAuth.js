@@ -68,9 +68,9 @@ const useAuth = () => {
         throw new Error('Login was unsuccessful, Please try again.');
       }
 
-      updateCsrfToken();
+      await updateCsrfToken();
       await fetchCurrentUser();
-      navigate('/');
+      navigate('/welcome');
     } catch (error) {
       console.error('Login error', error);
       throw new Error('Login was unsuccessful. Please try again.');

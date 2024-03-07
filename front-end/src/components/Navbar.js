@@ -10,6 +10,7 @@ import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
 import SignupForm from './Signup';
 import LoginForm from './Login';
+import About from './About';
 
 
 
@@ -27,6 +28,7 @@ function Navbar() {
   const { user, fetchCurrentUser } = useAuthContext();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
 
   useEffect(() => {
@@ -39,6 +41,10 @@ function Navbar() {
 
   const handleSignupSuccess = () => {
     setShowSignupModal(false);
+  };
+
+  const handleAboutClose = () => {
+    setShowAboutModal(false);
   };
 
   return (
@@ -65,6 +71,11 @@ function Navbar() {
           ) : (
             <>
               <ul className="list-unstyled d-flex flex-wrap align-items-center">
+                <li className="nav-item me-3 me-sm-0">
+                  <button type="button" className="nav-link text-primary" onClick={() => setShowAboutModal(true)}>
+                    About
+                  </button>
+                </li>
                 <li className="nav-item me-3 me-sm-0">
                   <button type="button" className="nav-link text-primary" onClick={() => setShowLoginModal(true)}>
                     Login
@@ -113,6 +124,23 @@ function Navbar() {
         </div>
       )}
 
+      {showAboutModal && (
+        <div className="modal fade show" style={{ display: "block" }} tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5">About</h1>
+                <button type="button" className="btn-close" onClick={() => setShowAboutModal(false)} aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <About />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAboutModal && <div className="modal-backdrop fade show"></div>}
       {showLoginModal && <div className="modal-backdrop fade show"></div>}
       {showSignupModal && <div className="modal-backdrop fade show"></div>}
     </nav>

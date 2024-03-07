@@ -12112,3 +12112,21 @@ body {
   justify-content: center;
   margin-bottom: 8rem;
 }
+
+.txt-larger {
+  font-size: 1.25rem;
+}
+
+.txt-yellow {
+  color: var(--bs-primary);
+}
+
+.txt-logo {
+  color: var(--bs-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-style: normal;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  text-transform: uppercase;
+}

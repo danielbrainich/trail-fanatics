@@ -47,7 +47,7 @@ function PostLikeButton({ postId }) {
     };
 
     fetchLikeCount();
-  }, [postId, liked]);
+  }, [postId, liked, user]);
 
   const csrfToken = useCsrfToken();
 
