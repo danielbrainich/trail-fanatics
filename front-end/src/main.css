@@ -12114,7 +12114,7 @@ body {
 }
 
 .txt-larger {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 
 .txt-yellow {
@@ -12123,7 +12123,7 @@ body {
 
 .txt-logo {
   color: var(--bs-primary);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   font-style: normal;
   font-family: "Inter", sans-serif;

@@ -6,7 +6,7 @@ import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 function About() {
   return (
     <>
-      <div className="mb-3 txt-larger">Welcome <span className="txt-logo">Trail People</span>, your destination for all things trail running! We're here to foster a vibrant community of
+      <div className="mb-3 txt-larger">Welcome to <span className="txt-logo">Trail People</span>, your destination for all things trail running! We're here to foster a vibrant community of
       trail runners and facilitate connections.
       </div>
       <div className="mb-3 txt-larger">

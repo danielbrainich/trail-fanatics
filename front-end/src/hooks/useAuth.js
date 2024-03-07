@@ -7,9 +7,10 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { csrfToken, updateCsrfToken } = useCsrfToken();
   const navigate = useNavigate();
-
   const isProduction = process.env.NODE_ENV === 'production';
   const baseUrl = isProduction ? '' : process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+  const [error, setError] = useState(null);
+
 
   const fetchCurrentUser = async () => {
     setIsLoading(true);
@@ -125,10 +126,14 @@ const useAuth = () => {
         await login(formData.username, formData.password);
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'An unknown error occurred during signup.');
+        const errorMessage = errorData.username
+          ? errorData.username[0]
+          : errorData.detail || 'An unknown error occurred during signup.';
+        throw new Error(errorMessage);
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Signup error:", error.message);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +143,7 @@ const useAuth = () => {
     setUser(updatedUser);
   };
 
-  return { user, isLoading, login, logout, fetchCurrentUser, updateUser, signup };
+  return { user, isLoading, login, logout, fetchCurrentUser, updateUser, signup, setError };
 };
 
 export default useAuth;

@@ -312,9 +312,7 @@ function ShowPost() {
                             </div>
                             <div className="w-50 ms-2">
                               <div>
-                                {console.log(savedTrails)}
                                 {user ? (
-                                  // Check if the trail is saved
                                   savedTrails.some(savedTrail => savedTrail.trail.id === post.trail.id) ? (
                                     <button className="btn btn-tertiary btn-sm w-100" disabled>
                                       Map Saved
@@ -325,7 +323,6 @@ function ShowPost() {
                                     </button>
                                   )
                                 ) : (
-                                  // If user is not logged in, show a modal
                                   <div key={post.trail.id}>
                                     <button type="button" className="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#saveTrailModal">
                                       Save Map

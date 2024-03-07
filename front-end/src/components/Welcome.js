@@ -36,7 +36,7 @@ function Welcome () {
                 {user && (
                   <div className="mb-3 txt-larger txt-yellow">Hey {user.username}!</div>
                   )}
-                  <div className="mb-3 txt-larger">Welcome to the trailhead of <span className="txt-logo">Trail People</span>, your destination for all things trail running! We're here to foster a vibrant community of
+                  <div className="mb-3 txt-larger">Welcome to <span className="txt-logo">Trail People</span>, your destination for all things trail running! We're here to foster a vibrant community of
                   trail runners and facilitate connections.
                   </div>
                     <ul className="list-unstyled">

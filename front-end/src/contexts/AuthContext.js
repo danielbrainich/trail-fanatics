@@ -4,10 +4,17 @@ import useAuth from "../hooks/useAuth";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const auth = useAuth();
-  const value = useMemo(() => auth, [auth.user]);
+  const { user, isLoading, error, setError, ...rest } = useAuth();
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  const value = useMemo(() => ({
+    user,
+    isLoading,
+    error,
+    setError,
+    ...rest
+  }), [user, isLoading, error, setError, rest]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => useContext(AuthContext);

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import sunglasses from '../assets/avatars/sunglasses.png';
 import dog from '../assets/avatars/dog.png';
 import mountains from '../assets/avatars/mountains.png';
@@ -7,6 +6,7 @@ import map from '../assets/avatars/map.png';
 import bottle from '../assets/avatars/bottle.png';
 import shoe from '../assets/avatars/shoe.png';
 import useAuth from '../hooks/useAuth';
+import { useAuthContext } from '../contexts/AuthContext';
 
 
 const avatarOptions = {
@@ -20,7 +20,8 @@ const avatarOptions = {
 
 function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
   const [selectedAvatar, setSelectedAvatar] = useState('');
-  const [error, setError] = useState('');
+  const authContext = useAuthContext();
+  const { error, setError } = authContext;
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -28,9 +29,32 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
   });
   const { signup } = useAuth();
 
+  useEffect(() => {
+  }, [error]);
+
+  const validateUsername = (username) => {
+    if (username.includes(' ')) {
+      return 'Username cannot contain spaces';
+    }
+    if (username.length < 3) {
+      return 'Username must be at least 3 characters long';
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return 'Username can only contain letters, numbers, and underscores';
+    }
+
+    return '';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    const usernameError = validateUsername(formData.username);
+    if (usernameError) {
+      setError(usernameError);
+      return;
+    }
 
     if (formData.password !== formData.passwordConfirm) {
       setError('Passwords do not match');
@@ -46,15 +70,25 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
       await signup({
         ...formData,
         avatar: selectedAvatar,
-      });
+    });
       onSignupSuccess();
       setSignupSuccess(!signupSuccess);
     } catch (error) {
-      if (error.response && error.response.status === 400 && error.response.data.error === 'A user with that username already exists.') {
-        setError('Username already exists');
+      if (error.response) {
+        if (error.response.status === 400) {
+          const usernameErrors = error.response.data.username;
+          if (usernameErrors && usernameErrors.length > 0) {
+            setError(usernameErrors[0]);
+          } else {
+            setError('Failed to submit form due to validation errors.');
+          }
+        } else {
+          setError('An unexpected error occurred.');
+        }
       } else {
-        setError(error.response.data.error || 'Failed to submit form');
-      }    }
+        setError('An error occurred, please try again later.');
+      }
+    }
   };
 
   const handleSelectAvatar = (key) => {
@@ -100,7 +134,7 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
             required
             minLength="4"
           />
-          <div className="invalid-feedback">Password must be at least 8 characters.</div>
+          <div className="invalid-feedback">Password must be at least 4 characters.</div>
         </div>
         <div className="mb-4">
           <label htmlFor="passwordConfirm" className="form-label">Confirm Password</label>
