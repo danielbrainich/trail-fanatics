@@ -6,8 +6,6 @@ import ShowPost from './components/PostsShow';
 import Profile from "./components/ProfileShow";
 import TrailsList from "./components/TrailsList";
 import GoogleMapsLoader from "./components/GoogleMapsLoader";
-import LoginSuccessModal from './components/LoginSuccessModal';
-import { useAuthContext } from "./contexts/AuthContext";
 import Welcome from "./components/Welcome";
 import './main.css';
 
@@ -23,7 +21,7 @@ function App() {
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/profiles/:userId" element={<Profile />} />
             <Route path="/posts/:postId" element={<ShowPost />} />
-            <Route path="trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
+            <Route path="/trails" element={<GoogleMapsLoader><TrailsList /></GoogleMapsLoader>} />
             <Route path="*" element={<div>Route not found</div>} />
           </Routes>
         </div>
