@@ -68,6 +68,7 @@ function NewComment({ postId, setCommentSuccess, commentSuccess }) {
                 onChange={handleChangeInput}
                 placeholder="Write your comment here"
                 rows="3"
+                required
               ></textarea>
           </div>
           <div className="text-end">

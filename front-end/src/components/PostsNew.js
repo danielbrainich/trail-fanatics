@@ -172,6 +172,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
               value={formData.content}
               onChange={handleChangeInput}
               rows="4"
+              required
             ></textarea>
           </div>
 
@@ -215,6 +216,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
           name="trailName"
           value={formData.trailName}
           onChange={handleChangeInput}
+          required
         />
       </div>
       <div className="mb-4">
@@ -226,6 +228,7 @@ function NewPosts({ setPostSuccess, postSuccess, setTagsList, tagsList}) {
           rows="3"
           value={formData.trailDescription}
           onChange={handleChangeInput}
+          required
         ></textarea>
       </div>
       </>

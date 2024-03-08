@@ -75,8 +75,9 @@ h5 {
   transform: translateX(-50%);
 }
 
-.heart-icon {
+.heart-icon, .heart-count {
   transition: transform 0.2s ease-in-out;
+  color: white;
 }
 
 .heart-icon.liked {

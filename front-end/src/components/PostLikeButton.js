@@ -109,7 +109,7 @@ function PostLikeButton({ postId }) {
             className={liked ? 'heart-icon liked' : 'heart-icon'}
             size='1x'
           />
-          <span className="ms-2">{likeCount}</span>
+          <span className="ms-2 heart-count">{likeCount}</span>
         </button>
       ) : (
         <>
@@ -119,7 +119,7 @@ function PostLikeButton({ postId }) {
               className={liked ? 'heart-icon liked' : 'heart-icon'}
               size='1x'
             />
-            <span className="ms-2">{likeCount}</span>
+            <span className="ms-2 heart-count">{likeCount}</span>
           </button>
 
           <div className="modal fade" id="noLikePostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="noLikePostModalLabel" aria-hidden="true">

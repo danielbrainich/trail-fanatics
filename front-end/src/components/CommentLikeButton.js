@@ -105,7 +105,7 @@ function CommentLikeButton({ commentId, postId }) {
           className={liked ? 'heart-icon liked' : 'heart-icon'}
           size='1x'
         />
-        <span className="ms-2">{likeCount}</span>
+        <span className="ms-2 heart-count">{likeCount}</span>
       </button>
     ) : (
       <>
@@ -115,7 +115,7 @@ function CommentLikeButton({ commentId, postId }) {
           className={liked ? 'heart-icon liked' : 'heart-icon'}
           size='1x'
         />
-        <span className="ms-2">{likeCount}</span>
+        <span className="ms-2 heart-count">{likeCount}</span>
       </button>
 
       <div className="modal fade" id="noLikeCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="noLikeCommentModalLabel" aria-hidden="true">

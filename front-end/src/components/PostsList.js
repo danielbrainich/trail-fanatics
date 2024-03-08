@@ -295,7 +295,7 @@ function ListPosts() {
                                   </div>
                                   <div className="modal-body m-3">
                                   <div className="mb-3 d-flex align-items-center">
-                                    <MapComponent trail={post.trail} size="400px"/>
+                                    <MapComponent trail={post.trail} size="350px"/>
                                   </div>
                                   <h4 className="mb-3">{post.trail.name}</h4>
                                   <p className="card-text mb-3">{post.trail.description}</p>
