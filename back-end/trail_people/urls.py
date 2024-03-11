@@ -27,8 +27,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("trails/", include("trails.urls")),
     path("content/", include("content.urls")),
-    re_path('.*', index),
-
+    re_path(".*", index),
 ]
 
 if settings.DEBUG:

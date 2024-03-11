@@ -12,7 +12,7 @@ AVATAR_CHOICES = (
 
 
 class CustomUser(AbstractUser):
-    bio = models.TextField(max_length=500, blank=True)
+    bio = models.TextField(max_length=560, blank=True)
     profile_picture = models.ImageField(
         upload_to="profile_pictures/", null=True, blank=True
     )

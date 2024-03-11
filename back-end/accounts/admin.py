@@ -5,9 +5,5 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("bio", "profile_picture", "avatar")}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {"fields": ("bio", "profile_picture", "avatar")}),
-    )
+
+admin.site.register(CustomUser, CustomUserAdmin)

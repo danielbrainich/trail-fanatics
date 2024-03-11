@@ -39,7 +39,7 @@ def trail_list(request):
         trails = Trail.objects.all()
         paginator = TrailPagination()
         result_page = paginator.paginate_queryset(trails, request)
-        serializer = TrailSerializer(trails, many=True, context={"request": request})
+        serializer = TrailSerializer(result_page, many=True, context={"request": request})
         return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         if not request.user.is_authenticated:

@@ -21,14 +21,19 @@ Trail People is a platform designed for trail runners, providing a social media 
 Trail People aims to provide a comprehensive platform where the trail running
 community can meet and engage!
 
-
 ## Project Progress
 
-Trail People is a work in progress and is currently my main focus. This project will consolidate and build upon the full-stack skills showcased in my earlier projects, and will be a comprehensive demonstration of my capabilities.
+Trail People is currently fully functioning and deployed, but I'm working on improving a couple aspects of the project:
+
+- **Code Refactoring:**
+  - Refactoring code to improve cleanliness and introduce more reusable components in React for better maintainability, scalability, and readability.
+
+- **Integration of Redux:**
+  - Planning to introduce Redux for more effective state management, enhancing the application's stability and performance.
 
 ## Screenshots
 
-Coming soon!
+![Trail People Screenshot](front-end/public/trail-people-screenshot.png)
 
 ## Tech Stack
 
@@ -142,7 +147,125 @@ This project consists of the following data models divided into three Django app
 | created_at     | DateTimeField           |
 
 ## API Endpoints
-Coming soon!
+
+This section outlines the API endpoints available in the Trail People platform, organized by functional area.
+
+### Accounts
+
+#### User Profile
+
+- **GET /accounts/profiles/{pk}/**
+  - Retrieve details of a user profile. (Email address remains private.)
+
+- **PUT /accounts/profiles/{pk}/**
+  - Update details of a user profile. Authenticated users can only update their own profile.
+
+#### User Authentication
+
+- **POST /accounts/login/**
+  - Authenticate a user.
+
+- **POST /accounts/logout/**
+  - Log out an authenticated user.
+
+- **POST /accounts/signup/**
+  - Register a new user.
+
+#### Current User
+
+- **GET /accounts/current_user/**
+  - Fetch the current authenticated user's details.
+
+### Content
+
+#### Tags
+
+- **GET /content/tags/**
+  - List all tags.
+
+#### Posts
+
+- **GET /content/posts/**
+  - Retrieve a paginated list of posts.
+
+- **POST /content/posts/**
+  - Create a new post. Authenticated users only.
+
+- **GET /content/posts/{pk}/**
+  - Retrieve details of a specific post.
+
+- **PUT /content/posts/{pk}/**
+  - Update a specific post. Only the author of the post.
+
+- **DELETE /content/posts/{pk}/**
+  - Delete a specific post. Only the author of the post.
+
+#### Comments
+
+- **GET /content/posts/{post_pk}/comments/**
+  - List comments for a specific post.
+
+- **POST /content/posts/{post_pk}/comments/**
+  - Add a new comment to a post. Authenticated users only.
+
+- **GET /content/posts/{post_pk}/comments/{pk}/**
+  - Retrieve details of a specific comment.
+
+- **PUT /content/posts/{post_pk}/comments/{pk}/**
+  - Update a specific comment. Only the author of the comment.
+
+- **DELETE /content/posts/{post_pk}/comments/{pk}/**
+  - Delete a specific comment. Only the author of the comment.
+
+#### Likes
+
+- **GET /content/posts/{post_pk}/check-like/**
+  - Check if the current user has liked a specific post.
+
+- **POST /content/posts/{post_pk}/post-likes/**
+  - Like a specific post.
+
+- **DELETE /content/posts/{post_pk}/post-likes/{pk}/**
+  - Remove a like from a post.
+
+- **GET /content/posts/{post_pk}/comments/{comment_pk}/check-comment-like/**
+  - Check if the current user has liked a specific comment.
+
+- **POST /content/posts/{post_pk}/comments/{comment_pk}/comment-likes/**
+  - Like a specific comment.
+
+- **DELETE /content/posts/{post_pk}/comments/{comment_pk}/comment-likes/{pk}/**
+  - Remove a like from a comment.
+
+### Trails
+
+#### All Trails
+
+- **GET /trails/**
+  - List all trails with pagination.
+
+- **POST /trails/**
+  - Create a new trail. Authenticated users only.
+
+- **GET /trails/{pk}/**
+  - Retrieve details of a specific trail.
+
+- **PUT /trails/{pk}/**
+  - Update a specific trail. Only the creator of the trail.
+
+- **DELETE /trails/{pk}/**
+  - Delete a specific trail. Only the creator of the trail.
+
+#### Saved Trails
+
+- **GET /trails/saved_trails/**
+  - List all saved trails for the authenticated user.
+
+- **POST /trails/saved_trails/{trail_id}/**
+  - Save a trail to the authenticated user's list of saved trails.
+
+- **DELETE /trails/saved_trails/{trail_id}/**
+  - Remove a trail from the authenticated user's list of saved trails.
 
 ## Integrations
 

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth import login, authenticate, logout
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 
 
 CustomUser = get_user_model()
@@ -17,7 +17,7 @@ CustomUser = get_user_model()
 def current_user(request):
     serializer = CustomUserSerializer(request.user)
     user_data = serializer.data
-    user_data['email'] = None
+    user_data["email"] = None
     response = Response(user_data)
     response["Access-Control-Allow-Credentials"] = "true"
     return response
@@ -66,14 +66,15 @@ def signup_view(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["GET", "PUT"])
 def user_detail(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
 
     if request.method == "GET":
-        serializer = CustomUserSerializer(user, context={'request': request})
+        serializer = CustomUserSerializer(user, context={"request": request})
         data = serializer.data
-        data['email'] = None
+        data["email"] = None
         return Response(data)
 
     elif request.method == "PUT":
@@ -94,10 +95,12 @@ def user_detail(request, pk):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
+
 from django.http import HttpResponse
 from django.conf import settings
 import os
 
+
 def index(request):
-    with open(os.path.join(settings.BASE_DIR, 'front-end/build', 'index.html')) as file:
+    with open(os.path.join(settings.BASE_DIR, "front-end/build", "index.html")) as file:
         return HttpResponse(file.read())

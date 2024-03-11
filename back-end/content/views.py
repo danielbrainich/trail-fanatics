@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view
 from .models import Tag, Post, Comment, PostLike, CommentLike
 from rest_framework.pagination import PageNumberPagination
 from django.db import transaction
+from trails.serializers import TrailSerializer
+from django.views.decorators.csrf import csrf_exempt
 from .serializers import (
     TagSerializer,
     PostSerializer,
@@ -12,8 +14,6 @@ from .serializers import (
     PostLikeSerializer,
     CommentLikeSerializer,
 )
-from trails.serializers import TrailSerializer
-from django.views.decorators.csrf import csrf_exempt
 
 
 class PostPagination(PageNumberPagination):
@@ -47,7 +47,6 @@ def tag_list(request):
 
 
 # Post views
-@csrf_exempt
 @api_view(["GET", "POST"])
 @transaction.atomic
 def post_list(request):
@@ -87,7 +86,9 @@ def post_list(request):
                     author=request.user,
                     trail=trail_instance if trail_instance else None,
                 )
-                response = Response(post_serializer.data, status=status.HTTP_201_CREATED)
+                response = Response(
+                    post_serializer.data, status=status.HTTP_201_CREATED
+                )
                 response["Access-Control-Allow-Credentials"] = "true"
                 return response
             else:

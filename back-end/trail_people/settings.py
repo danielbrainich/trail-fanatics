@@ -15,10 +15,8 @@ from pathlib import Path
 import dj_database_url
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -28,33 +26,24 @@ SECRET_KEY = "django-insecure-##91t%qjnphgb^u2$4@s-5bd^%qdfcpl)9@k19e!2cy+ostqht
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
-print(f"DEBUG: {DEBUG}")
-
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 # CORS and CSRF and related settings
 
-ALLOWED_HOSTS = ['trail-people-06a6eafa5395.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ["trail-people-06a6eafa5395.herokuapp.com", "localhost"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-
-# if not DEBUG:
-#     SESSION_COOKIE_SECURE = True
-#     CSRF_COOKIE_SECURE = True
-#     SECURE_SSL_REDIRECT = True
-#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'https://trail-people-06a6eafa5395.herokuapp.com/',
-    'https://trail-people-06a6eafa5395.herokuapp.com/'
+    "http://localhost:3000",
+    "https://trail-people-06a6eafa5395.herokuapp.com/",
+    "https://trail-people-06a6eafa5395.herokuapp.com/",
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
+    "whitenoise.runserver_nostatic",
     "corsheaders",
     "rest_framework",
     "django.contrib.admin",
@@ -65,19 +54,19 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "trails.apps.TrailsConfig",
     "content.apps.ContentConfig",
-    'django.contrib.staticfiles',
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "trail_people.urls"
@@ -85,7 +74,9 @@ ROOT_URLCONF = "trail_people.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'venv/Lib/site-packages/rest_framework/templates'),],
+        "DIRS": [
+            os.path.join(BASE_DIR, "venv/Lib/site-packages/rest_framework/templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -100,17 +91,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "trail_people.wsgi.application"
 
-# Common settings for all environments
+# Database settings
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
 # Heroku (Production) settings
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+if "DATABASE_URL" in os.environ:
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Password validation
@@ -136,18 +129,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "/static/"
 
 # Default primary key field type
@@ -156,14 +146,14 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Media files configuration
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "front-end/build/static"),
+]
+
+# Custom user model
 
 AUTH_USER_MODEL = "accounts.CustomUser"
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'front-end/build/static'),
-]
