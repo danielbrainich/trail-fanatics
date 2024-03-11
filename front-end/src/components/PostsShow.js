@@ -359,10 +359,7 @@ function ShowPost() {
 
                     <div className="card mb-4">
                         <div className="card-body">
-                            <h5 className="card-title">New Comment</h5>
-                            <p className="card-text">
-                                Add to the conversation.{" "}
-                            </p>
+                            <h5 className="card-title mb-3">New Comment</h5>
                             <div className="form-group">
                                 <div
                                     id="fakeInput"
