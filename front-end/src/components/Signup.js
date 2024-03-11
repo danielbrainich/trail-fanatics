@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import sunglasses from "../assets/avatars/sunglasses.png";
 import dog from "../assets/avatars/dog.png";
 import mountains from "../assets/avatars/mountains.png";
@@ -27,8 +27,6 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
         passwordConfirm: "",
     });
     const { signup } = useAuth();
-
-    useEffect(() => {}, [error]);
 
     const validateUsername = (username) => {
         if (username.includes(" ")) {
