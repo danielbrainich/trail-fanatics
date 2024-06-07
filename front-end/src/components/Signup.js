@@ -70,7 +70,7 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
             setSignupSuccess(!signupSuccess);
         } catch (error) {
             console.error("Signup was not successful.", error);
-            setError(error.message || "Login was not successful.");
+            setError(error.message || "Signup was not successful.");
         }
     };
 

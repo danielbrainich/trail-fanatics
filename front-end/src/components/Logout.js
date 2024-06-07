@@ -5,11 +5,11 @@ function LogoutButton() {
     const { logout } = useAuthContext();
 
     const handleLogout = async () => {
-        try {
-            await logout();
+        const success = await logout();
+        if (success) {
             console.log("Logged out successfully");
-        } catch (error) {
-            console.error("Logout failed", error);
+        } else {
+            console.error("Logout failed");
         }
     };
 

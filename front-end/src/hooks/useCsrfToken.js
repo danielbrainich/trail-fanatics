@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 function useCsrfToken() {
     const [csrfToken, setCsrfToken] = useState('');
+
     const getCookie = useCallback((name) => {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -17,13 +18,17 @@ function useCsrfToken() {
         return cookieValue;
     }, []);
 
-    useEffect(() => {
-        setCsrfToken(getCookie('csrftoken'));
+    const fetchCsrfToken = useCallback(async () => {
+        const token = await getCookie('csrftoken');
+        setCsrfToken(token);
+        return token;
     }, [getCookie]);
 
-    const updateCsrfToken = () => setCsrfToken(getCookie('csrftoken'));
+    useEffect(() => {
+        fetchCsrfToken();
+    }, [fetchCsrfToken]);
 
-    return { csrfToken, updateCsrfToken };
+    return { csrfToken, fetchCsrfToken };
 }
 
 export default useCsrfToken;
