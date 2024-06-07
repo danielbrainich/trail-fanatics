@@ -101,13 +101,13 @@ function Navbar() {
                                 <li className="nav-item me-3 me-sm-0">
                                     <button
                                         type="button"
-                                        className="nav-link text-primary"
+                                        className="nav-link text-primary mx-2"
                                         onClick={() => setShowAboutModal(true)}
                                     >
                                         About
                                     </button>
                                 </li>
-                                <li className="nav-item me-3 me-sm-0">
+                                <li className="nav-item me-3 me-sm-0 mx-2">
                                     <button
                                         type="button"
                                         className="nav-link text-primary"
@@ -119,7 +119,7 @@ function Navbar() {
                                 <li className="nav-item">
                                     <button
                                         type="button"
-                                        className="nav-link text-primary"
+                                        className="nav-link text-primary mx-2"
                                         onClick={() => setShowSignupModal(true)}
                                     >
                                         Signup

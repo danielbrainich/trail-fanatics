@@ -20,7 +20,7 @@ const avatarOptions = {
 function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
     const [selectedAvatar, setSelectedAvatar] = useState("");
     const authContext = useAuthContext();
-    const { error, setError } = authContext;
+    const [ error, setError ] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -69,22 +69,8 @@ function SignupForm({ onSignupSuccess, setSignupSuccess, signupSuccess }) {
             onSignupSuccess();
             setSignupSuccess(!signupSuccess);
         } catch (error) {
-            if (error.response) {
-                if (error.response.status === 400) {
-                    const usernameErrors = error.response.data.username;
-                    if (usernameErrors && usernameErrors.length > 0) {
-                        setError(usernameErrors[0]);
-                    } else {
-                        setError(
-                            "Failed to submit form due to validation errors."
-                        );
-                    }
-                } else {
-                    setError("An unexpected error occurred.");
-                }
-            } else {
-                setError("An error occurred, please try again later.");
-            }
+            console.error("Signup was not successful.", error);
+            setError(error.message || "Login was not successful.");
         }
     };
 
